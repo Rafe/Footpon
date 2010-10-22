@@ -1,5 +1,9 @@
 package j3.footpon;
 
+import j3.footpon.model.Footpon;
+import j3.footpon.model.FootponRepository;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.android.maps.GeoPoint;
@@ -20,7 +24,7 @@ public class FootponMapActivity extends MapActivity {
 
 	MapView mapView;
 	FootponMapActivity footponMapActivity = this;
-	
+	ArrayList<Footpon> footpons;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,20 +32,21 @@ public class FootponMapActivity extends MapActivity {
         
         mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
+        footpons = FootponRepository.getFootponsInArea(1, 0, 0, 100);
         
         List<Overlay> mapOverlays = mapView.getOverlays();
         Drawable drawable = this.getResources().getDrawable(R.drawable.icon);
         FootponItemizedOverlay footponOverlay = new FootponItemizedOverlay(drawable, this);
         
-        GeoPoint poly = new GeoPoint(40692882 ,-73984399);
-        OverlayItem oItem = new OverlayItem(poly,"poly","this is a test overlay");
-        oItem.setMarker(drawable);
-        footponOverlay.addOverlay(oItem);
+        GeoPoint poly = new GeoPoint(40757942,-73979478);
+        
+        setMapItems(footponOverlay, drawable, footpons);
+        
         mapOverlays.add(footponOverlay);
         
         MapController controller = mapView.getController();
         controller.setCenter(poly);
-        controller.setZoom(17);
+        controller.setZoom(15);
     }
 
 	@Override
@@ -70,6 +75,17 @@ public class FootponMapActivity extends MapActivity {
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
+	}
+	
+	public void setMapItems(FootponItemizedOverlay overlay,Drawable drawable,ArrayList<Footpon> footpons){
+		
+		for(Footpon f : footpons){
+			GeoPoint point = new GeoPoint((int)(f.getLatitude()* 1E6) ,(int)(f.getLongitude()* 1E6));
+	        OverlayItem oItem = new OverlayItem(point,f.getStoreName(),f.getDescription() +"\npoints: " + f.getPointsRequired());
+	        oItem.setMarker(drawable);
+			overlay.addOverlay(oItem);
+		}
+		
 	}
 	
 }
