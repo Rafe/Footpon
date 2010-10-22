@@ -13,9 +13,22 @@
         android:clickable="true"
         android:apiKey="@string/api_key"
     />
-    <TextView android:id="@+id/steps" android:layout_width="wrap_content"
-	android:layout_height="wrap_content" android:text="37steps"
-	android:textStyle="bold"
-	android:textSize="24sp"
-	android:textColor="#000"></TextView>
+    <LinearLayout android:layout_width="fill_parent"
+    	android:layout_height="wrap_content" 
+    	android:background="#EEE">
+    	<TextView android:layout_width="match_parent"
+			android:layout_height="wrap_content" android:text="Points:"
+			android:textStyle="bold"
+			android:textSize="24sp"
+			android:textColor="#222"
+			android:layout_weight="1"
+		></TextView>
+		<TextView android:id="@+id/points" android:layout_width="match_parent"
+			android:layout_height="wrap_content" android:text="37"
+			android:textStyle="bold"
+			android:textSize="24sp"
+			android:textColor="#222"
+			android:layout_weight="2"
+		></TextView>
+	</LinearLayout>
 </RelativeLayout>

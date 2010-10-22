@@ -1,10 +1,19 @@
 package j3.footpon;
 
+import j3.footpon.model.Footpon;
+import j3.footpon.model.FootponRepository;
+
 import java.util.ArrayList;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.sax.StartElementListener;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.maps.ItemizedOverlay;
@@ -29,12 +38,37 @@ private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 	protected boolean onTap(int index) {
 	  OverlayItem item = mOverlays.get(index);
 	  
-	  Toast t = Toast.makeText(mContext, item.getTitle() + " \n" + item.getSnippet() , Toast.LENGTH_LONG);
-	  t.show();
-	  //AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
-	  //dialog.setTitle(item.getTitle());
-	  //dialog.setMessage(item.getSnippet());
-	  //dialog.show();
+	  //Toast t = Toast.makeText(mContext, item.getTitle() + " \n" + item.getSnippet() , Toast.LENGTH_LONG);
+	  //t.show();
+	  Dialog dialog = new Dialog(mContext);
+	  dialog.setTitle(item.getTitle());
+	  dialog.setContentView(R.layout.footpon_dialog);
+	  Footpon fp = FootponRepository.getFootponsInArea(1, 1, 1, 1).get(index);
+	  
+	  TextView storeName = (TextView) dialog.findViewById(R.id.dialog_store_name);
+      TextView description = (TextView) dialog.findViewById(R.id.dialog_description);
+      TextView pointsRequired = (TextView) dialog.findViewById(R.id.dialog_pointsRequired);
+      Button detailsButton = (Button) dialog.findViewById(R.id.dialog_show_details);
+      
+      detailsButton.setOnClickListener(new Button.OnClickListener(){
+
+		@Override
+		public void onClick(View v) {
+			
+			Intent i = new Intent(mContext,FootponDetailsActivity.class);
+			i.putExtra("index", 1);
+			mContext.startActivity(i);
+		}
+		
+      });
+      storeName.setText(fp.getStoreName());
+      description.setText(fp.getDescription());
+      pointsRequired.setText("Points:" + fp.getPointsRequired());
+	  
+      
+      
+	  dialog.show();
+	  
 	  return true;
 	}
 	

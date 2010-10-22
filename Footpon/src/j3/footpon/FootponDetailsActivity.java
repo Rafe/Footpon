@@ -18,18 +18,25 @@ public class FootponDetailsActivity extends Activity {
         
         ArrayList<Footpon> footpons = new ArrayList<Footpon>();
         footpons = FootponRepository.getFootponsInArea(1, 0, 0, 100);
-        TextView storeName = (TextView) findViewById(R.id.details_store_name);
+        
+        Intent i = getIntent();
+        
+        if(i != null){
+        	int position = i.getExtras().getInt("index");
+        	setDetails(footpons.get(position));
+        }
+	}
+	
+	public void setDetails(Footpon fp){
+		
+		TextView storeName = (TextView) findViewById(R.id.details_store_name);
         TextView description = (TextView) findViewById(R.id.details_description);
         TextView pointsRequired = (TextView) findViewById(R.id.details_pointsRequired);
         
-        Intent i = getIntent();
-        if(i != null){
-        	int position = i.getExtras().getInt("index");
-        	Footpon fp = footpons.get(position);
-        	storeName.setText(fp.getStoreName());
-            description.setText(fp.getDescription());
-            pointsRequired.setText("Points:" + fp.getPointsRequired());
-        }
+        storeName.setText(fp.getStoreName());
+        description.setText(fp.getDescription());
+        pointsRequired.setText("Points:" + fp.getPointsRequired());
+        
 	}
 	
 }
