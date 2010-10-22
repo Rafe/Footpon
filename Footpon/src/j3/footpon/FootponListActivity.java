@@ -38,7 +38,7 @@ public class FootponListActivity extends Activity {
 	    	//Footpon fp = footpons.get(position);
 	    	
 	    	Intent i = new Intent(footponListActivity,FootponDetailsActivity.class);
-
+	    	i.putExtra("index",position);
 	    	startActivity(i);
 	    }
 	};

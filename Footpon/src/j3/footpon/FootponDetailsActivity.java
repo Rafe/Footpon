@@ -6,6 +6,7 @@ import j3.footpon.model.FootponRepository;
 import java.util.ArrayList;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -21,12 +22,14 @@ public class FootponDetailsActivity extends Activity {
         TextView description = (TextView) findViewById(R.id.details_description);
         TextView pointsRequired = (TextView) findViewById(R.id.details_pointsRequired);
         
-        Footpon fp = footpons.get(0);
-        
-        storeName.setText(fp.getStoreName());
-        description.setText(fp.getDescription());
-        pointsRequired.setText("Points:" + fp.getPointsRequired());
-        
+        Intent i = getIntent();
+        if(i != null){
+        	int position = i.getExtras().getInt("index");
+        	Footpon fp = footpons.get(position);
+        	storeName.setText(fp.getStoreName());
+            description.setText(fp.getDescription());
+            pointsRequired.setText("Points:" + fp.getPointsRequired());
+        }
 	}
 	
 }
