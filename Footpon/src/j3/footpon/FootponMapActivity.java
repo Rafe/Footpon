@@ -32,8 +32,8 @@ public class FootponMapActivity extends MapActivity {
         
         mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
-        footpons = FootponRepository.getFootponsInArea(1, 0, 0, 100);
-        
+        //footpons = FootponRepository.getFootponsInArea(1, 0, 0, 100);
+        footpons = FootponRepository.getFootponsInAreaServer(1, 0, 0, 100);
         List<Overlay> mapOverlays = mapView.getOverlays();
         Drawable drawable = this.getResources().getDrawable(R.drawable.icon);
         FootponItemizedOverlay footponOverlay = new FootponItemizedOverlay(drawable, this);

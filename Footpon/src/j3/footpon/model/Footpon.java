@@ -1,5 +1,8 @@
 package j3.footpon.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Footpon {
 	
 	private String storeName;
@@ -15,6 +18,15 @@ public class Footpon {
 		this.latitude = latitude;
 		this.longitude = longtitude;
 		this.pointsRequired = pointsRequired;
+	}
+	
+	public Footpon(JSONObject data) throws JSONException{
+		
+		this.storeName = data.getString("storeName");
+		this.description = data.getString("description");
+		this.latitude = data.getDouble("latitude");
+		this.longitude = data.getDouble("longitude");
+		this.pointsRequired = data.getInt("pointsRequired");
 	}
 	
 	//Getter and Setters...
