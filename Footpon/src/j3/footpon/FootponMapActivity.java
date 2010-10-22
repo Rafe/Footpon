@@ -9,7 +9,7 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,6 +19,7 @@ import android.view.MenuItem;
 public class FootponMapActivity extends MapActivity {
 
 	MapView mapView;
+	FootponMapActivity footponMapActivity = this;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,7 +64,8 @@ public class FootponMapActivity extends MapActivity {
 	    	//
 	    	return true;
 	    case R.id.list:
-	    	//send intent to list
+	    	Intent intent = new Intent(footponMapActivity,FootponListActivity.class);
+	    	startActivity(intent);
 	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
