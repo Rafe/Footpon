@@ -18,12 +18,9 @@ j3.footpon.model -- data model and data receiver
 j3.footpon.test -- testcase
 
 
-Needs for prototype 1:
+Needs for prototype 2
 
-1.complete 3 view: list, map and coupon detail
-2.refine mapView: use FrameLayout/RelativeLayout to set textView on map,
-  use MapoverlayItem to show coupon on map.
-3.integrate views, add menu eventhandler to send intent and 
-  switch between view
-4.get data from server(implement in model)
-
+1.complete pedometer
+2.unittest & refactor
+3.mapView add icon and refine
+4.display and get footpon
