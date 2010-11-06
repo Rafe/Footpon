@@ -17,14 +17,14 @@
     	android:layout_height="wrap_content" 
     	android:background="#EEE">
     	<TextView android:layout_width="match_parent"
-			android:layout_height="wrap_content" android:text="Points:"
+			android:layout_height="wrap_content" android:text="Saved:"
 			android:textStyle="bold"
 			android:textSize="24sp"
 			android:textColor="#222"
 			android:layout_weight="1"
 		></TextView>
 		<TextView android:id="@+id/points" android:layout_width="match_parent"
-			android:layout_height="wrap_content" android:text="37"
+			android:layout_height="wrap_content" android:text="37.50$"
 			android:textStyle="bold"
 			android:textSize="24sp"
 			android:textColor="#222"

@@ -33,29 +33,28 @@ public class FootponMapActivity extends MapActivity {
 	//place for LocationService
 	LocationManager locationManager;
 	LocationListener locationListener;
-	
+	FootponItemizedOverlay footponOverlay;
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        
-        
+        setContentView(R.layout.footpon_map);
         
         mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
+        
         footpons = FootponRepository.getFootponsInArea(1, 0, 0, 100);
-        //footpons = FootponRepository.getFootponsInAreaServer(1, 0, 0, 100);
+        
         List<Overlay> mapOverlays = mapView.getOverlays();
         Drawable drawable = this.getResources().getDrawable(R.drawable.icon);
-        FootponItemizedOverlay footponOverlay = new FootponItemizedOverlay(drawable, this);
-        
+        footponOverlay = new FootponItemizedOverlay(drawable, this);
         
         setMapItems(footponOverlay, drawable, footpons);
         
         mapOverlays.add(footponOverlay);
         
         MapController controller = mapView.getController();
-                setLocation(controller);
+        
+        setLocation(controller);
     }
 	
 	//setting current location and register location listener
@@ -68,9 +67,11 @@ public class FootponMapActivity extends MapActivity {
 			public void onLocationChanged(Location location) {
 				try{
 					GeoPoint currentPoint = new GeoPoint(
-							(int)location.getLatitude()*1000000,
-							(int)location.getLongitude()*1000000);
+							(int)(location.getLatitude()*1E6),
+							(int)(location.getLongitude()*1E6)
+							);
 					controller.setCenter(currentPoint);
+					setCurrentPositionItem(currentPoint);
 				}catch(Exception ex){
 					Log.e(LOCATION_SERVICE, ex.getLocalizedMessage());
 				}
@@ -97,13 +98,14 @@ public class FootponMapActivity extends MapActivity {
 			
 		};
 		
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0,
-				0, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100,
+				100, locationListener);
 		
 		/*GeoPoint poly = new GeoPoint(40757942,-73979478);
 
         controller.setCenter(poly);
-        controller.setZoom(15);*/
+        */
+		controller.setZoom(15);
 
 	}
 
@@ -143,7 +145,22 @@ public class FootponMapActivity extends MapActivity {
 	        oItem.setMarker(drawable);
 			overlay.addOverlay(oItem);
 		}
-		
+	}
+	
+	public void setCurrentPositionItem(GeoPoint point){
+        OverlayItem oItem = new OverlayItem(point,"CurrentPosition","CurrentPosition");
+        Drawable icon = this.getResources().getDrawable(R.drawable.icon); 
+        oItem.setMarker(icon);
+        footponOverlay.addOverlay(oItem);
+	}
+	
+	public void onStop() {
+		super.onStop();
+
+		// Stop receiving location notifications.
+		Log.i("Footpon", "stopping the listener");
+		locationManager.removeUpdates(locationListener);
+
 	}
 	
 }
