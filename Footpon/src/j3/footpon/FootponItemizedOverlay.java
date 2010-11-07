@@ -43,10 +43,12 @@ private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 	  Dialog dialog = new Dialog(mContext);
 	  dialog.setTitle(item.getTitle());
 	  dialog.setContentView(R.layout.footpon_dialog);
-	  Footpon fp = FootponRepository.getFootponsInArea(1, 1, 1, 1).get(index);
+	  //Footpon fp = FootponRepository.getFootponsInArea(1, 1, 1, 1).get(index);
+	  Footpon fp = FootponRepository.getFootponsInAreaServer(40.75916,-73.984491).get(index);
 	  
 	  TextView storeName = (TextView) dialog.findViewById(R.id.dialog_store_name);
-      TextView description = (TextView) dialog.findViewById(R.id.dialog_description);
+	  TextView hiddenDescription = (TextView) dialog.findViewById(R.id.dialog_hiddenDescription);
+      TextView realDescription = (TextView) dialog.findViewById(R.id.dialog_realDescription);
       TextView pointsRequired = (TextView) dialog.findViewById(R.id.dialog_pointsRequired);
       Button detailsButton = (Button) dialog.findViewById(R.id.dialog_show_details);
       
@@ -62,7 +64,8 @@ private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 		
       });
       storeName.setText(fp.getStoreName());
-      description.setText(fp.getDescription());
+      hiddenDescription.setText(fp.getHiddenDescription());
+      realDescription.setText(fp.getRealDescription());
       pointsRequired.setText("Points:" + fp.getPointsRequired());
 	  
       

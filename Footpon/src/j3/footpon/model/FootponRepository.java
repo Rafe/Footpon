@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
@@ -13,13 +14,17 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.OverlayItem;
 
 import android.util.Log;
 
 public class FootponRepository {
 
-	public static ArrayList<Footpon> getFootponsInArea(int UserId,int latitude,int longtitude,int range){
+/*	public static ArrayList<Footpon> getFootponsInArea(int UserId,int latitude,int longtitude,int range){
 		
 		ArrayList<Footpon> footpons = new ArrayList<Footpon>();
 		footpons.add(new Footpon("Nintendo World Store","10% NDS Game",40.757942,-73.979478,40));
@@ -29,41 +34,46 @@ public class FootponRepository {
 	
 		return footpons;
 		
-	}
+	}*/
 	
 	//temporary method, wait to move
-	public static ArrayList<Footpon> getFootponsInAreaServer(int userId,int latitude,int longtitude,int range){
+	//Code modified from http://www.helloandroid.com/tutorials/connecting-mysql-database.
+	public static ArrayList<Footpon> getFootponsInAreaServer(double currentLatitude, double currentLongitude){
 		
-		String result= null;
+		String result = "";
 		InputStream is = null;
 		String ServiceUrl = "http://pdc-amd01.poly.edu/~jli15/footpon/getArea.php";
 		
-		//setting parameters
-		ArrayList<NameValuePair> parameters = new ArrayList<NameValuePair>();
-		parameters.add(new BasicNameValuePair("UserId",String.valueOf(userId)));
-		parameters.add(new BasicNameValuePair("Latitude",String.valueOf(latitude)));
-		parameters.add(new BasicNameValuePair("Longitude",String.valueOf(longtitude)));
-		parameters.add(new BasicNameValuePair("Range",String.valueOf(range)));
-		
+		//the year data to send
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	
+		nameValuePairs.add(new BasicNameValuePair(Double.toString(currentLatitude), Double.toString(currentLongitude)));
+
 		ArrayList<Footpon> footpons = new ArrayList<Footpon>();
 		
 		//receive data to inputStream
-		try{
+		try
+		{
 			HttpClient httpclient = new DefaultHttpClient();
 			HttpPost httppost = new HttpPost(ServiceUrl);
 			
-			httppost.setEntity(new UrlEncodedFormEntity(parameters));
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 			
 			HttpResponse response = httpclient.execute(httppost);
-			is = response.getEntity().getContent();
 			
-			
-		}catch(Exception e){
-			Log.e("Conntection Error", "Conntection Error " + e.toString());
+			HttpEntity entity = response.getEntity();
+		
+			is = entity.getContent();
+		}
+		
+		catch(Exception e)
+		{
+			Log.e("log_tag", "Error in http connection "+e.toString());
 		}
 		
 		//convert response to string
-		try{
+		try
+		{
 			BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
 		
 			StringBuilder sb = new StringBuilder();
@@ -78,24 +88,45 @@ public class FootponRepository {
 			is.close();
 		
 			result=sb.toString();
-		}catch(Exception e){
-			Log.e("String convert Error","String convert Error in FootponRepository " + e.toString());
 		}
 		
-		try{
+		catch(Exception e)
+		{
+			Log.e("log_tag", "Error converting result "+e.toString());
+		}
+
+		//parse json data
+		try
+		{
 			JSONArray jArray = new JSONArray(result);
-			
+		
 			for(int i=0;i<jArray.length();i++)
 			{
-				JSONObject data = jArray.getJSONObject(i);
+				JSONObject json_data = jArray.getJSONObject(i);
 			
 				//Log.i("log_tag","Longitude: "+json_data.getDouble("longitude")+", Latitude: "+json_data.getDouble("latitude"));
-				footpons.add(new Footpon(data));
+				int longitude=(int) (json_data.getDouble("longitude")*1000000);
+				int latitude=(int) (json_data.getDouble("latitude")*1000000);
+				String storeName=json_data.getString("storeName");
+				String hiddenDescription=json_data.getString("hiddenDescription");
+				String realDescription=json_data.getString("realDescription");
+				int pointsRequired =(int) json_data.getInt("pointsRequired");
 				
+		        GeoPoint point = new GeoPoint(latitude, longitude);
+		        OverlayItem overlayitem = new OverlayItem(point, storeName, realDescription+".\nPoints Required:"+pointsRequired);
+		        
+		        footpons.add(new Footpon(json_data));
+		 
+		        //itemizedoverlay.addOverlay(overlayitem);
+		        //mapOverlays.add(itemizedoverlay);			
 			}
-		}catch(Exception e){
-			Log.e("JSON parse Error","JSON parse Error in FootponRepository " + e.toString());
 		}
+
+		catch(JSONException e)
+		{
+			Log.e("log_tag", "Error parsing data "+e.toString());
+		}
+
 		return footpons;
 	}
 	

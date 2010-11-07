@@ -6,15 +6,16 @@ import org.json.JSONObject;
 public class Footpon {
 	
 	private String storeName;
-	private String description;
+	private String hiddenDescription;
+	private String realDescription;
 	private double latitude;
 	private double longitude;
 	private int pointsRequired;
 	
-	public Footpon(String storeName,String description, double latitude,
-					double longtitude,int pointsRequired){
+	public Footpon(String storeName, String hiddenDescription, String realDescription, double latitude, double longtitude,int pointsRequired){
 		this.storeName = storeName;
-		this.description = description;
+		this.hiddenDescription = hiddenDescription;
+		this.realDescription = realDescription;
 		this.latitude = latitude;
 		this.longitude = longtitude;
 		this.pointsRequired = pointsRequired;
@@ -23,7 +24,8 @@ public class Footpon {
 	public Footpon(JSONObject data) throws JSONException{
 		
 		this.storeName = data.getString("storeName");
-		this.description = data.getString("description");
+		this.hiddenDescription = data.getString("hiddenDescription");
+		this.realDescription = data.getString("realDescription");
 		this.latitude = data.getDouble("latitude");
 		this.longitude = data.getDouble("longitude");
 		this.pointsRequired = data.getInt("pointsRequired");
@@ -38,12 +40,20 @@ public class Footpon {
 		this.storeName = storeName;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setHiddenDescription(String hiddenDescription) {
+		this.hiddenDescription = hiddenDescription;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getHiddenDescription() {
+		return hiddenDescription;
+	}	
+	
+	public void setRealDescription(String realDescription) {
+		this.realDescription = realDescription;
+	}
+
+	public String getRealDescription() {
+		return realDescription;
 	}
 
 	public void setLatitude(double latitude) {

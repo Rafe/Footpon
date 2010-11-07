@@ -42,7 +42,8 @@ public class FootponMapActivity extends MapActivity {
         mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
         
-        footpons = FootponRepository.getFootponsInArea(1, 0, 0, 100);
+        //footpons = FootponRepository.getFootponsInArea(1, 0, 0, 100);
+        footpons = FootponRepository.getFootponsInAreaServer(40.757942,-73.979478);
         
         List<Overlay> mapOverlays = mapView.getOverlays();
         Drawable drawable = this.getResources().getDrawable(R.drawable.mark);
@@ -141,7 +142,7 @@ public class FootponMapActivity extends MapActivity {
 		
 		for(Footpon f : footpons){
 			GeoPoint point = new GeoPoint((int)(f.getLatitude()* 1E6) ,(int)(f.getLongitude()* 1E6));
-	        OverlayItem oItem = new OverlayItem(point,f.getStoreName(),f.getDescription() +"\npoints: " + f.getPointsRequired());
+	        OverlayItem oItem = new OverlayItem(point,f.getStoreName(), f.getHiddenDescription() +"\npoints: " + f.getPointsRequired());
 	        oItem.setMarker(drawable);
 			overlay.addOverlay(oItem);
 		}
