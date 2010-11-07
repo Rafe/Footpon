@@ -42,7 +42,6 @@ public class FootponRepository {
 		
 		String result = "";
 		InputStream is = null;
-		String ServiceUrl = "http://pdc-amd01.poly.edu/~jli15/footpon/getArea.php";
 		
 		//the year data to send
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -51,48 +50,48 @@ public class FootponRepository {
 
 		ArrayList<Footpon> footpons = new ArrayList<Footpon>();
 		
-		//receive data to inputStream
+		//http post
 		try
 		{
 			HttpClient httpclient = new DefaultHttpClient();
-			HttpPost httppost = new HttpPost(ServiceUrl);
-			
+
+			HttpPost httppost = new HttpPost("http://pdc-amd01.poly.edu/~jli15/footpon/getArea.php");
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-			
+	
 			HttpResponse response = httpclient.execute(httppost);
-			
+	
 			HttpEntity entity = response.getEntity();
-		
+	
 			is = entity.getContent();
 		}
-		
-		catch(Exception e)
+
+		catch(Exception ee)
 		{
-			Log.e("log_tag", "Error in http connection "+e.toString());
+			Log.e("log_tag", "Error in http connection "+ee.toString());
 		}
-		
+
 		//convert response to string
 		try
 		{
 			BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
-		
+	
 			StringBuilder sb = new StringBuilder();
-		
+	
 			String line = null;
-		
+	
 			while ((line = reader.readLine()) != null)
 			{
 				sb.append(line + "\n");
 			}
-		
+	
 			is.close();
-		
+	
 			result=sb.toString();
 		}
-		
-		catch(Exception e)
+
+		catch(Exception eee)
 		{
-			Log.e("log_tag", "Error converting result "+e.toString());
+			Log.e("log_tag", "Error converting result "+eee.toString());
 		}
 
 		//parse json data
@@ -105,15 +104,15 @@ public class FootponRepository {
 				JSONObject json_data = jArray.getJSONObject(i);
 			
 				//Log.i("log_tag","Longitude: "+json_data.getDouble("longitude")+", Latitude: "+json_data.getDouble("latitude"));
-				int longitude=(int) (json_data.getDouble("longitude")*1000000);
-				int latitude=(int) (json_data.getDouble("latitude")*1000000);
-				String storeName=json_data.getString("storeName");
-				String hiddenDescription=json_data.getString("hiddenDescription");
-				String realDescription=json_data.getString("realDescription");
-				int pointsRequired =(int) json_data.getInt("pointsRequired");
+				//int longitude=(int) (json_data.getDouble("longitude")*1000000);
+				//int latitude=(int) (json_data.getDouble("latitude")*1000000);
+				//String storeName=json_data.getString("storeName");
+				//String hiddenDescription=json_data.getString("hiddenDescription");
+				//String realDescription=json_data.getString("realDescription");
+				//int pointsRequired =(int) json_data.getInt("pointsRequired");
 				
-		        GeoPoint point = new GeoPoint(latitude, longitude);
-		        OverlayItem overlayitem = new OverlayItem(point, storeName, realDescription+".\nPoints Required:"+pointsRequired);
+		        //GeoPoint point = new GeoPoint(latitude, longitude);
+		        //OverlayItem overlayitem = new OverlayItem(point, storeName, hiddenDescription+".\nPoints Required:"+pointsRequired);
 		        
 		        footpons.add(new Footpon(json_data));
 		 

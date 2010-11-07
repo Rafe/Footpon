@@ -32,12 +32,12 @@ public class FootponDetailsActivity extends Activity {
 		
 		TextView storeName = (TextView) findViewById(R.id.details_store_name);
         TextView hiddenDescription = (TextView) findViewById(R.id.details_hiddenDescription);
-        TextView realDescription = (TextView) findViewById(R.id.details_realDescription);
+        //TextView realDescription = (TextView) findViewById(R.id.details_realDescription);
         TextView pointsRequired = (TextView) findViewById(R.id.details_pointsRequired);
         
         storeName.setText(fp.getStoreName());
         hiddenDescription.setText(fp.getHiddenDescription());
-        realDescription.setText(fp.getRealDescription());
+        //realDescription.setText(fp.getRealDescription());
         pointsRequired.setText("Points:" + fp.getPointsRequired());
         
 	}

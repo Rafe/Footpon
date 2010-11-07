@@ -24,8 +24,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-public class FootponMapActivity extends MapActivity {
-
+public class FootponMapActivity extends MapActivity
+{
 	MapView mapView;
 	FootponMapActivity footponMapActivity = this;
 	ArrayList<Footpon> footpons;
@@ -59,21 +59,27 @@ public class FootponMapActivity extends MapActivity {
     }
 	
 	//setting current location and register location listener
-	private void setLocation(final MapController controller) {
-		
+	private void setLocation(final MapController controller) 
+	{
 		locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-		locationListener = new LocationListener() {
-
+		locationListener = new LocationListener() 
+		{
 			@Override
-			public void onLocationChanged(Location location) {
-				try{
+			public void onLocationChanged(Location location) 
+			{
+				try
+				{
 					GeoPoint currentPoint = new GeoPoint(
 							(int)(location.getLatitude()*1E6),
 							(int)(location.getLongitude()*1E6)
 							);
+					
 					controller.setCenter(currentPoint);
 					setCurrentPositionItem(currentPoint);
-				}catch(Exception ex){
+				}
+				
+				catch(Exception ex)
+				{
 					Log.e(LOCATION_SERVICE, ex.getLocalizedMessage());
 				}
 			}
@@ -85,22 +91,19 @@ public class FootponMapActivity extends MapActivity {
 			}
 
 			@Override
-			public void onProviderEnabled(String provider) {
-				// TODO Auto-generated method stub
-				
+			public void onProviderEnabled(String provider) 
+			{
+				// TODO Auto-generated method stub	
 			}
 
 			@Override
-			public void onStatusChanged(String provider, int status,
-					Bundle extras) {
-				// TODO Auto-generated method stub
-				
+			public void onStatusChanged(String provider, int status, Bundle extras) 
+			{
+				// TODO Auto-generated method stub	
 			}
-			
 		};
 		
-		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100,
-				100, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 100, 100, locationListener);
 		
 		/*GeoPoint poly = new GeoPoint(40757942,-73979478);
 
@@ -138,11 +141,12 @@ public class FootponMapActivity extends MapActivity {
 	    }
 	}
 	
-	public void setMapItems(FootponItemizedOverlay overlay,Drawable drawable,ArrayList<Footpon> footpons){
+	public void setMapItems(FootponItemizedOverlay overlay, Drawable drawable, ArrayList<Footpon> footpons){
 		
-		for(Footpon f : footpons){
-			GeoPoint point = new GeoPoint((int)(f.getLatitude()* 1E6) ,(int)(f.getLongitude()* 1E6));
-	        OverlayItem oItem = new OverlayItem(point,f.getStoreName(), f.getHiddenDescription() +"\npoints: " + f.getPointsRequired());
+		for(int i=0; i<footpons.size(); i++)
+		{
+			GeoPoint point = new GeoPoint((int)(footpons.get(i).getLatitude()* 1E6) ,(int)(footpons.get(i).getLongitude()* 1E6));
+	        OverlayItem oItem = new OverlayItem(point,footpons.get(i).getStoreName(), footpons.get(i).getHiddenDescription() +"\npoints: " + footpons.get(i).getPointsRequired());
 	        oItem.setMarker(drawable);
 			overlay.addOverlay(oItem);
 		}
