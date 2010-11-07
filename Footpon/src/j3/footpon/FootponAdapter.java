@@ -32,7 +32,7 @@ public class FootponAdapter extends ArrayAdapter<Footpon>{
         if (f != null) {
             TextView storeName = (TextView) v.findViewById(R.id.store_name);
             TextView hiddenDescription = (TextView) v.findViewById(R.id.hiddenDescription);
-            TextView realDescription = (TextView) v.findViewById(R.id.realDescription);
+            //TextView realDescription = (TextView) v.findViewById(R.id.realDescription);
             TextView lat = (TextView) v.findViewById(R.id.latitude);
             TextView lon = (TextView) v.findViewById(R.id.longitude);
             TextView points = (TextView) v.findViewById(R.id.points_required);
@@ -42,9 +42,9 @@ public class FootponAdapter extends ArrayAdapter<Footpon>{
             if(hiddenDescription != null){
                	hiddenDescription.setText(f.getHiddenDescription());
             }
-            if(realDescription != null){
-               	realDescription.setText(f.getRealDescription());
-            }
+            //if(realDescription != null){
+            //   	realDescription.setText(f.getRealDescription());
+            //}
             if(lat != null){
                	lat.setText("Lat:"+ f.getLatitude());
             }
