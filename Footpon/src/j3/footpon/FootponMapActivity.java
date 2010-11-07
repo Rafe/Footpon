@@ -45,7 +45,7 @@ public class FootponMapActivity extends MapActivity {
         footpons = FootponRepository.getFootponsInArea(1, 0, 0, 100);
         
         List<Overlay> mapOverlays = mapView.getOverlays();
-        Drawable drawable = this.getResources().getDrawable(R.drawable.icon);
+        Drawable drawable = this.getResources().getDrawable(R.drawable.mark);
         footponOverlay = new FootponItemizedOverlay(drawable, this);
         
         setMapItems(footponOverlay, drawable, footpons);
@@ -105,7 +105,7 @@ public class FootponMapActivity extends MapActivity {
 
         controller.setCenter(poly);
         */
-		controller.setZoom(15);
+		controller.setZoom(17);
 
 	}
 
