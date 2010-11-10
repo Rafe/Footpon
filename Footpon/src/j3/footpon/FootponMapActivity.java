@@ -2,7 +2,6 @@ package j3.footpon;
 
 import j3.footpon.model.FakeFootponService;
 import j3.footpon.model.Footpon;
-import j3.footpon.model.FootponRepository;
 import j3.footpon.model.FootponService;
 import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.IFootponService;
@@ -50,9 +49,7 @@ public class FootponMapActivity extends MapActivity
         mapView.setBuiltInZoomControls(true);
         
         service = FootponServiceFactory.getService();
-        //footpons = service.getFootponsInArea(40.757942,-73.979478);
-        
-		footpons = FootponRepository.getFootponsInAreaServer(40.75916,-73.984491);
+        footpons = service.getFootponsInArea(40.757942,-73.979478);
         
         List<Overlay> mapOverlays = mapView.getOverlays();
         Drawable drawable = this.getResources().getDrawable(R.drawable.mark);

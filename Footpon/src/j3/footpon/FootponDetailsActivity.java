@@ -1,7 +1,6 @@
 package j3.footpon;
 
 import j3.footpon.model.Footpon;
-import j3.footpon.model.FootponRepository;
 import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.IFootponService;
 
@@ -23,9 +22,7 @@ public class FootponDetailsActivity extends Activity {
         ArrayList<Footpon> footpons = new ArrayList<Footpon>();
         
         service = FootponServiceFactory.getService();
-        //footpons = service.getFootponsInArea(40.75916,-73.984491);
-        
-        footpons=FootponRepository.getFootponsInAreaServer(40.75916,-73.984491);
+        footpons = service.getFootponsInArea(40.75916,-73.984491);
         
         Intent i = getIntent();
         
