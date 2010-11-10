@@ -1,7 +1,8 @@
 package j3.footpon;
 
 import j3.footpon.model.Footpon;
-import j3.footpon.model.FootponRepository;
+import j3.footpon.model.FootponServiceFactory;
+import j3.footpon.model.IFootponService;
 
 import java.util.ArrayList;
 
@@ -12,13 +13,16 @@ import android.widget.TextView;
 
 public class FootponDetailsActivity extends Activity {
 	
+	IFootponService service;
+	
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.footpon_details);
         
         ArrayList<Footpon> footpons = new ArrayList<Footpon>();
-        //footpons = FootponRepository.getFootponsInArea(1, 0, 0, 100);
-        footpons = FootponRepository.getFootponsInAreaServer(40.75916,-73.984491);
+        
+        service = FootponServiceFactory.getService();
+        footpons = service.getFootponsInArea(40.75916,-73.984491);
         
         Intent i = getIntent();
         
