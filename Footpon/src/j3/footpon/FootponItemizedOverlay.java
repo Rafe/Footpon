@@ -35,7 +35,7 @@ public class FootponItemizedOverlay extends ItemizedOverlay
 	}
 
 	@Override
-	protected boolean onTap(int index) 
+	protected boolean onTap(final int index) 
 	{
 		OverlayItem item = mOverlays.get(index);
 	  
@@ -54,14 +54,14 @@ public class FootponItemizedOverlay extends ItemizedOverlay
 		//TextView realDescription = (TextView) dialog.findViewById(R.id.dialog_realDescription);
 		TextView pointsRequired = (TextView) dialog.findViewById(R.id.dialog_pointsRequired);
 		Button detailsButton = (Button) dialog.findViewById(R.id.dialog_show_details);
-      
+        
 		detailsButton.setOnClickListener(new Button.OnClickListener()
 		{
 			@Override
 			public void onClick(View v)
 			{
 				Intent i = new Intent(mContext,FootponDetailsActivity.class);
-				i.putExtra("index", 1);
+				i.putExtra("index", index);
 				mContext.startActivity(i);
 			}
 		}

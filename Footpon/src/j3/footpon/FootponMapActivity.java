@@ -9,7 +9,6 @@ import j3.footpon.pedometer.StepService;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
@@ -47,7 +46,9 @@ public class FootponMapActivity extends MapActivity implements SensorEventListen
 	
 	IFootponService service;
 	StepService stepService;
+	
 	float point;
+	
 	TextView pointView;
 	SensorManager sensorManager;
 	@Override
@@ -58,12 +59,11 @@ public class FootponMapActivity extends MapActivity implements SensorEventListen
         mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
         
-        //pointView = (TextView) findViewById(R.id.points);
+        pointView = (TextView) findViewById(R.id.points);
         
         service = FootponServiceFactory.getService();
         footpons = service.getFootponsInArea(40.757942,-73.979478);
         
-        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         stepService = new StepService();
         
         StepListener stepDisplayer = new StepListener(){
@@ -75,6 +75,7 @@ public class FootponMapActivity extends MapActivity implements SensorEventListen
 			}
         	
         };
+        
         startService(new Intent(FootponMapActivity.this,
                 StepService.class));
         stepService.registerListener(stepDisplayer);
@@ -144,7 +145,7 @@ public class FootponMapActivity extends MapActivity implements SensorEventListen
 		// Stop receiving location notifications.
 		Log.i("Footpon", "stopping the listener");
 		
-		locationManager.removeUpdates(locationListener);
+		//locationManager.removeUpdates(locationListener);
 
 	}
 

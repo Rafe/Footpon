@@ -33,7 +33,7 @@ public class StepDetector implements SensorEventListener {
     }
     
     public void addStepListener(StepListener listener) {
-        //mStepListeners.add(listener);
+        mStepListeners.add(listener);
     }
     
     @Override
