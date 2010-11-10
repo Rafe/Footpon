@@ -52,7 +52,7 @@ public class FootponItemizedOverlay extends ItemizedOverlay
 		TextView hiddenDescription = (TextView) dialog.findViewById(R.id.dialog_hiddenDescription);
 		TextView pointsRequired = (TextView) dialog.findViewById(R.id.dialog_pointsRequired);
 		Button detailsButton = (Button) dialog.findViewById(R.id.dialog_show_details);
-      
+        
 		detailsButton.setOnClickListener(new Button.OnClickListener()
 		{
 			@Override

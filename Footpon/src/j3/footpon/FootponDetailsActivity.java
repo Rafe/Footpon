@@ -19,7 +19,7 @@ public class FootponDetailsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.footpon_details);
         
-        ArrayList<Footpon> footpons = new ArrayList<Footpon>();
+        ArrayList<Footpon> footpons;
         
         service = FootponServiceFactory.getService();
         footpons = service.getFootponsInArea(40.75916,-73.984491);
