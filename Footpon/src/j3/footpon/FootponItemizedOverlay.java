@@ -1,6 +1,7 @@
 package j3.footpon;
 
 import j3.footpon.model.Footpon;
+import j3.footpon.model.FootponRepository;
 import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.IFootponService;
 
@@ -35,28 +36,28 @@ public class FootponItemizedOverlay extends ItemizedOverlay
 	}
 
 	@Override
-	protected boolean onTap(int index) 
+	protected boolean onTap(final int index) 
 	{
 		OverlayItem item = mOverlays.get(index);
 	  
 		//Toast t = Toast.makeText(mContext, item.getTitle() + " \n" + item.getSnippet() , Toast.LENGTH_LONG);
 		//t.show();
-<<<<<<< HEAD
+//<<<<<<< HEAD
 		Dialog dialog = new Dialog(mContext);
 		dialog.setTitle(item.getTitle());
 		dialog.setContentView(R.layout.footpon_dialog);
-		//Footpon fp = FootponRepository.getFootponsInArea(1, 1, 1, 1).get(index);
-		//This should not be hard coded.
+//		//Footpon fp = FootponRepository.getFootponsInArea(1, 1, 1, 1).get(index);
+//		//This should not be hard coded.
 		Footpon fp = FootponRepository.getFootponsInAreaServer(40.75916,-73.984491).get(index);
-=======
+//=======
 		
-		Dialog dialog = new Dialog(mContext);
-		dialog.setTitle(item.getTitle());
-		dialog.setContentView(R.layout.footpon_dialog);
+//		Dialog dialog = new Dialog(mContext);
+//		dialog.setTitle(item.getTitle());
+//		dialog.setContentView(R.layout.footpon_dialog);
 		
-		IFootponService service = FootponServiceFactory.getService();
-		Footpon fp = service.getFootponsInArea(40.75916,-73.984491).get(index);
->>>>>>> 11fbcc2f52b87cdb1ec0939137cd67e18044d97a
+//		IFootponService service = FootponServiceFactory.getService();
+//		Footpon fp = service.getFootponsInArea(40.75916,-73.984491).get(index);
+//>>>>>>> 11fbcc2f52b87cdb1ec0939137cd67e18044d97a
 	  
 		TextView storeName = (TextView) dialog.findViewById(R.id.dialog_store_name);
 		TextView hiddenDescription = (TextView) dialog.findViewById(R.id.dialog_hiddenDescription);
@@ -69,16 +70,16 @@ public class FootponItemizedOverlay extends ItemizedOverlay
 			@Override
 			public void onClick(View v)
 			{
-<<<<<<< HEAD
+//<<<<<<< HEAD
 				//This should not be hard coded.
-=======
->>>>>>> 11fbcc2f52b87cdb1ec0939137cd67e18044d97a
+//=======
+//>>>>>>> 11fbcc2f52b87cdb1ec0939137cd67e18044d97a
 				Intent i = new Intent(mContext,FootponDetailsActivity.class);
-				i.putExtra("index", 1);
+				i.putExtra("index", index);
 				mContext.startActivity(i);
 			}
 		}
-      );
+		);
 		
       storeName.setText(fp.getStoreName());
       hiddenDescription.setText(fp.getHiddenDescription());

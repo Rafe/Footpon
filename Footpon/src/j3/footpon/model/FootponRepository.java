@@ -38,15 +38,16 @@ public class FootponRepository {
 	
 	//temporary method, wait to move
 	//Code modified from http://www.helloandroid.com/tutorials/connecting-mysql-database.
-	public static ArrayList<Footpon> getFootponsInAreaServer(double currentLatitude, double currentLongitude){
-		
+	public static ArrayList<Footpon> getFootponsInAreaServer(double currentLatitude, double currentLongitude)
+	{
 		String result = "";
 		InputStream is = null;
 		
 		//the year data to send
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	
-		nameValuePairs.add(new BasicNameValuePair(Double.toString(currentLatitude), Double.toString(currentLongitude)));
+		nameValuePairs.add(new BasicNameValuePair("currentLatitude", Double.toString(currentLatitude)));
+		nameValuePairs.add(new BasicNameValuePair("currentLongitude", Double.toString(currentLongitude)));
 
 		ArrayList<Footpon> footpons = new ArrayList<Footpon>();
 		
