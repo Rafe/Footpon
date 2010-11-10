@@ -166,7 +166,7 @@ public class FootponMapActivity extends MapActivity
 
 		// Stop receiving location notifications.
 		Log.i("Footpon", "stopping the listener");
-		locationManager.removeUpdates(locationListener);
+		//locationManager.removeUpdates(locationListener);
 
 	}
 	
