@@ -25,15 +25,16 @@ import android.util.Log;
 public class FootponService implements IFootponService {
 
 	//Code modified from http://www.helloandroid.com/tutorials/connecting-mysql-database.
-	public ArrayList<Footpon> getFootponsInArea(double currentLatitude, double currentLongitude){
-		
+	public ArrayList<Footpon> getFootponsInAreaServer(double currentLatitude, double currentLongitude)
+	{
 		String result = "";
 		InputStream is = null;
 		
 		//the year data to send
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	
-		nameValuePairs.add(new BasicNameValuePair(Double.toString(currentLatitude), Double.toString(currentLongitude)));
+		nameValuePairs.add(new BasicNameValuePair("currentLatitude", Double.toString(currentLatitude)));
+		nameValuePairs.add(new BasicNameValuePair("currentLongitude", Double.toString(currentLongitude)));
 
 		ArrayList<Footpon> footpons = new ArrayList<Footpon>();
 		
@@ -52,9 +53,9 @@ public class FootponService implements IFootponService {
 			is = entity.getContent();
 		}
 
-		catch(Exception e)
+		catch(Exception ee)
 		{
-			Log.e("log_tag", "Error in http connection " + e.toString());
+			Log.e("log_tag", "Error in http connection "+ee.toString());
 		}
 
 		//convert response to string
@@ -76,9 +77,9 @@ public class FootponService implements IFootponService {
 			result=sb.toString();
 		}
 
-		catch(Exception e)
+		catch(Exception eee)
 		{
-			Log.e("log_tag", "Error converting result " + e.toString());
+			Log.e("log_tag", "Error converting result "+eee.toString());
 		}
 
 		//parse json data
@@ -90,17 +91,31 @@ public class FootponService implements IFootponService {
 			{
 				JSONObject json_data = jArray.getJSONObject(i);
 			
+				//Log.i("log_tag","Longitude: "+json_data.getDouble("longitude")+", Latitude: "+json_data.getDouble("latitude"));
+				//int longitude=(int) (json_data.getDouble("longitude")*1000000);
+				//int latitude=(int) (json_data.getDouble("latitude")*1000000);
+				//String storeName=json_data.getString("storeName");
+				//String hiddenDescription=json_data.getString("hiddenDescription");
+				//String realDescription=json_data.getString("realDescription");
+				//int pointsRequired =(int) json_data.getInt("pointsRequired");
+				
+		        //GeoPoint point = new GeoPoint(latitude, longitude);
+		        //OverlayItem overlayitem = new OverlayItem(point, storeName, hiddenDescription+".\nPoints Required:"+pointsRequired);
+		        
 		        footpons.add(new Footpon(json_data));
 		 
+		        //itemizedoverlay.addOverlay(overlayitem);
+		        //mapOverlays.add(itemizedoverlay);			
 			}
 		}
 
 		catch(JSONException e)
 		{
-			Log.e("log_tag", "Error parsing data " + e.toString());
+			Log.e("log_tag", "Error parsing data "+e.toString());
 		}
 
 		return footpons;
 	}
+	
 	
 }

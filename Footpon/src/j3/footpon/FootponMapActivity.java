@@ -62,7 +62,7 @@ public class FootponMapActivity extends MapActivity implements SensorEventListen
         pointView = (TextView) findViewById(R.id.points);
         
         service = FootponServiceFactory.getService();
-        footpons = service.getFootponsInArea(40.757942,-73.979478);
+        footpons = service.getFootponsInAreaServer(40.757942,-73.979478);
         
         stepService = new StepService();
         
