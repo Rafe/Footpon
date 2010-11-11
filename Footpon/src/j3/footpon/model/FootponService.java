@@ -24,9 +24,19 @@ import android.util.Log;
 
 public class FootponService implements IFootponService {
 
+	private static ArrayList<Footpon> _instance;
+	
 	//Code modified from http://www.helloandroid.com/tutorials/connecting-mysql-database.
+<<<<<<< HEAD
 	public ArrayList<Footpon> getFootponsInAreaServer(double currentLatitude, double currentLongitude)
 	{
+=======
+	public ArrayList<Footpon> getFootponsInArea(double currentLatitude, double currentLongitude){
+		
+		//return cached result in memory
+		if(_instance != null) return _instance;
+		
+>>>>>>> 19f83977ed013aada7209a8fd80e4e99eba4b2ab
 		String result = "";
 		InputStream is = null;
 		
@@ -113,7 +123,9 @@ public class FootponService implements IFootponService {
 		{
 			Log.e("log_tag", "Error parsing data "+e.toString());
 		}
-
+		
+		_instance = footpons;
+		
 		return footpons;
 	}
 	

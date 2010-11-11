@@ -17,29 +17,25 @@ import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.drawable.Drawable;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class FootponMapActivity extends MapActivity implements SensorEventListener
+public class FootponMapActivity extends MapActivity implements StepListener
 {
 	MapView mapView;
 	FootponMapActivity footponMapActivity = this;
 	ArrayList<Footpon> footpons;
-	
-	LocationManager locationManager;
-	LocationListener locationListener;
 	
 	FootponItemizedOverlay footponOverlay;
 	MyLocationOverlay myLocationOverlay;
@@ -50,7 +46,7 @@ public class FootponMapActivity extends MapActivity implements SensorEventListen
 	float point;
 	
 	TextView pointView;
-	SensorManager sensorManager;
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,35 +57,29 @@ public class FootponMapActivity extends MapActivity implements SensorEventListen
         
         pointView = (TextView) findViewById(R.id.points);
         
+<<<<<<< HEAD
         service = FootponServiceFactory.getService();
         footpons = service.getFootponsInAreaServer(40.757942,-73.979478);
+=======
+        myLocationOverlay = getLocationOverlay(); 
+        GeoPoint currentPosition = myLocationOverlay.getMyLocation();
+>>>>>>> 19f83977ed013aada7209a8fd80e4e99eba4b2ab
         
-        stepService = new StepService();
+        service = FootponServiceFactory.getService();
         
-        StepListener stepDisplayer = new StepListener(){
-
-			@Override
-			public void onStep() {
-				point = point + 0.25f;
-				pointView.setText(String.valueOf(point));
-			}
-        	
-        };
+        footpons = service.getFootponsInArea(47.123412,43.323232);
         
+        //start and bind service... 
+        //you have to control service by sending intent and set service connection for callback
         startService(new Intent(FootponMapActivity.this,
                 StepService.class));
-        stepService.registerListener(stepDisplayer);
+        bindStepService();
         
         Drawable drawable = this.getResources().getDrawable(R.drawable.mark);
         footponOverlay = new FootponItemizedOverlay(drawable, this);
         
         setMapItems(footponOverlay, drawable, footpons);
         
-        myLocationOverlay = new MyLocationOverlay(this, mapView);
-        myLocationOverlay.runOnFirstFix(new Runnable() { public void run() {
-            mapView.getController().animateTo(myLocationOverlay.getMyLocation());
-        }});
-        myLocationOverlay.enableMyLocation();
         
         List<Overlay> mapOverlays = mapView.getOverlays();
         mapOverlays.add(footponOverlay);
@@ -99,6 +89,15 @@ public class FootponMapActivity extends MapActivity implements SensorEventListen
         controller.setZoom(17);
         
     }
+
+	private MyLocationOverlay getLocationOverlay() {
+		MyLocationOverlay overlay = new MyLocationOverlay(this, mapView);
+		overlay.runOnFirstFix(new Runnable() { public void run() {
+            mapView.getController().animateTo(myLocationOverlay.getMyLocation());
+        }});
+		overlay.enableMyLocation();
+		return overlay;
+	}
 
 	@Override
 	protected boolean isRouteDisplayed() {
@@ -148,17 +147,36 @@ public class FootponMapActivity extends MapActivity implements SensorEventListen
 		//locationManager.removeUpdates(locationListener);
 
 	}
+	
+	private void bindStepService() {
+		Log.d(SENSOR_SERVICE, "Start binding service...");
+		bindService(new Intent(FootponMapActivity.this, 
+                StepService.class), connection, Context.BIND_AUTO_CREATE);
+    }
+	
+	private ServiceConnection connection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            stepService = ((StepService.StepBinder) service).getService();
+            stepService.registerListener(FootponMapActivity.this);
+            
+        }
 
+        public void onServiceDisconnected(ComponentName className) {
+        	stepService = null;
+        }
+    };
+    
 	@Override
-	public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		// TODO Auto-generated method stub
-		
+    protected void onResume() {
+        super.onResume();
 	}
-
+	
 	@Override
-	public void onSensorChanged(SensorEvent event) {
-		// TODO Auto-generated method stub
-		
+	public void onStep() {
+		point = point + 0.25f;
+		pointView.setText(String.valueOf(point));
+		Log.d(SENSOR_SERVICE, "My one small step is a huge step for human...");
 	}
     
+	
 }

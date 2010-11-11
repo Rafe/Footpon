@@ -24,7 +24,7 @@
 			android:layout_weight="1"
 		></TextView>
 		<TextView android:id="@+id/points" android:layout_width="match_parent"
-			android:layout_height="wrap_content" android:text="37.50"
+			android:layout_height="wrap_content" android:text="0.00"
 			android:textStyle="bold"
 			android:textSize="24sp"
 			android:textColor="#222"
