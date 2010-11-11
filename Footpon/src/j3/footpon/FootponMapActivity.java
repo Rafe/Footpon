@@ -3,6 +3,7 @@ package j3.footpon;
 import j3.footpon.model.Footpon;
 import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.IFootponService;
+import j3.footpon.pedometer.StepDisplayer;
 import j3.footpon.pedometer.StepListener;
 import j3.footpon.pedometer.StepService;
 
@@ -31,7 +32,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FootponMapActivity extends MapActivity implements StepListener
+public class FootponMapActivity extends MapActivity implements StepDisplayer
 {
 	MapView mapView;
 	FootponMapActivity footponMapActivity = this;
@@ -64,7 +65,6 @@ public class FootponMapActivity extends MapActivity implements StepListener
         service = FootponServiceFactory.getService();
         footpons = service.getFootponsInArea(0,0);
 
-        
         //start and bind service... 
         //you have to control service by sending intent and set service connection for callback
         startService(new Intent(FootponMapActivity.this,
@@ -176,7 +176,7 @@ public class FootponMapActivity extends MapActivity implements StepListener
 	private ServiceConnection connection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             stepService = ((StepService.StepBinder) service).getService();
-            stepService.registerListener(FootponMapActivity.this);
+            stepService.setStepDisplayer(FootponMapActivity.this);
             
         }
 
@@ -184,12 +184,13 @@ public class FootponMapActivity extends MapActivity implements StepListener
         	stepService = null;
         }
     };
-	
+
 	@Override
-	public void onStep() {
-		point = point + 0.25f;
+	public void passValue(int steps, float points) {
+		
+		point = points;
+		
 		pointView.setText(String.valueOf(point));
 	}
-    
 	
 }

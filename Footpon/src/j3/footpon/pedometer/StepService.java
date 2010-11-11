@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Binder;
@@ -17,13 +18,19 @@ import android.os.PowerManager.WakeLock;
 import android.util.Log;
 import android.widget.Toast;
 
-public class StepService extends Service{
+public class StepService extends Service implements StepListener{
+	
+	int steps;
+	float points;
+	
+	private SharedPreferences state;
+    private SharedPreferences.Editor stateEditor;
 	
 	StepDetector stepDetector;
 	SensorManager sensorManager;
 	StepBinder binder = new StepBinder();
+	StepDisplayer stepDisplayer;
 	
-	private int step = 0;
 	private WakeLock wakeLock;
 	private NotificationManager notificationManager;
 	
@@ -47,16 +54,21 @@ public class StepService extends Service{
         wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "StepService");
         wakeLock.acquire();
         
+        state = getSharedPreferences("state", 0);
+        points = state.getFloat("points", 0);
+        steps = state.getInt("steps", 0);
+        
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         showNotification();
         
         Log.d(SENSOR_SERVICE, "Created StepService...");
         stepDetector = new StepDetector();
+        stepDetector.addStepListener(this);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         Sensor sensor = sensorManager.getDefaultSensor(sensorManager.SENSOR_ACCELEROMETER);
         sensorManager.registerListener(stepDetector,sensor,sensorManager.SENSOR_DELAY_FASTEST);
-    
-	}
+        
+	}	
 	
 	public void registerListener(StepListener listener){
 		if(stepDetector != null){
@@ -69,6 +81,11 @@ public class StepService extends Service{
 		sensorManager.unregisterListener(stepDetector);
 		
 		wakeLock.release();
+		
+		stateEditor = state.edit();
+	    stateEditor.putInt("steps", steps);
+	    stateEditor.putFloat("points", points);
+	    stateEditor.commit();
 		
 		notificationManager.cancel(R.string.app_name);
 	}
@@ -96,5 +113,19 @@ public class StepService extends Service{
 
         notificationManager.notify(R.string.app_name, notification);
     }
+    
+    public void setStepDisplayer(StepDisplayer displayer){
+    	stepDisplayer = displayer;
+    	displayer.passValue(steps, points);
+    }
+    
+	@Override
+	public void onStep() {
+		points += 0.25f;
+		steps += 1;
+		if(stepDisplayer != null){
+			stepDisplayer.passValue(steps, points);
+		}
+	}
 
 }

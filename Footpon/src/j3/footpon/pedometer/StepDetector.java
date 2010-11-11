@@ -7,6 +7,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
+// port from http://code.google.com/p/pedometer/
 public class StepDetector implements SensorEventListener {
 	
 	private int     mLimit = 30;
