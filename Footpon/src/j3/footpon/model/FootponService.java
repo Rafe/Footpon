@@ -33,10 +33,13 @@ public class FootponService implements IFootponService {
 =======
 	public ArrayList<Footpon> getFootponsInArea(double currentLatitude, double currentLongitude){
 		
+<<<<<<< HEAD
 		//return cached result in memory
 		if(_instance != null) return _instance;
 		
 >>>>>>> 19f83977ed013aada7209a8fd80e4e99eba4b2ab
+=======
+>>>>>>> f6bfb804a9b78921cb103150e6d955eebb5e95bf
 		String result = "";
 		InputStream is = null;
 		
@@ -127,6 +130,15 @@ public class FootponService implements IFootponService {
 		_instance = footpons;
 		
 		return footpons;
+	}
+
+	@Override
+	public ArrayList<Footpon> getInstance() {
+		if(_instance != null){ 
+			return _instance;
+		}else{ 
+			return null;
+		}
 	}
 	
 	

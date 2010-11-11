@@ -14,15 +14,16 @@ public class Footpon {
 	private double longitude;
 	private int pointsRequired;
 	
-	public Footpon(String storeName, long code, String category, String hiddenDescription, String realDescription, double latitude, double longtitude,int pointsRequired){
+	public Footpon(String storeName, String category, String hiddenDescription, String realDescription, double latitude, double longtitude,int pointsRequired,long code){
 		this.storeName = storeName;
-		this.code=code;
 		this.category=category;
 		this.hiddenDescription = hiddenDescription;
 		this.realDescription = realDescription;
 		this.latitude = latitude;
 		this.longitude = longtitude;
 		this.pointsRequired = pointsRequired;
+		this.code=code;
+
 	}
 	
 	public Footpon(JSONObject data) throws JSONException{
@@ -32,9 +33,11 @@ public class Footpon {
 		this.category = data.getString("category");
 		this.hiddenDescription = data.getString("hiddenDescription");
 		this.realDescription = data.getString("realDescription");
+		this.category = data.getString("category");
 		this.latitude = data.getDouble("latitude");
 		this.longitude = data.getDouble("longitude");
 		this.pointsRequired = data.getInt("pointsRequired");
+		this.code = data.getLong("code");
 	}
 	
 	//Getter and Setters...
