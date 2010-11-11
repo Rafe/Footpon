@@ -29,9 +29,6 @@ public class FootponService implements IFootponService {
 	//Code modified from http://www.helloandroid.com/tutorials/connecting-mysql-database.
 	public ArrayList<Footpon> getFootponsInArea(double currentLatitude, double currentLongitude){
 		
-		//return cached result in memory
-		if(_instance != null) return _instance;
-		
 		String result = "";
 		InputStream is = null;
 		
@@ -108,6 +105,15 @@ public class FootponService implements IFootponService {
 		_instance = footpons;
 		
 		return footpons;
+	}
+
+	@Override
+	public ArrayList<Footpon> getInstance() {
+		if(_instance != null){ 
+			return _instance;
+		}else{ 
+			return null;
+		}
 	}
 	
 }

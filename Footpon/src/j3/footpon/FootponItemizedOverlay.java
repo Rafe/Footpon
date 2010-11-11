@@ -46,7 +46,7 @@ public class FootponItemizedOverlay extends ItemizedOverlay
 		dialog.setContentView(R.layout.footpon_dialog);
 		
 		IFootponService service = FootponServiceFactory.getService();
-		Footpon fp = service.getFootponsInArea(40.75916,-73.984491).get(index);
+		Footpon fp = service.getInstance().get(index);
 	  
 		TextView storeName = (TextView) dialog.findViewById(R.id.dialog_store_name);
 		TextView hiddenDescription = (TextView) dialog.findViewById(R.id.dialog_hiddenDescription);

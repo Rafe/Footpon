@@ -22,7 +22,7 @@ public class FootponDetailsActivity extends Activity {
         ArrayList<Footpon> footpons;
         
         service = FootponServiceFactory.getService();
-        footpons = service.getFootponsInArea(40.75916,-73.984491);
+        footpons = service.getInstance();
         
         Intent i = getIntent();
         

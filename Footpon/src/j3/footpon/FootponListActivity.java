@@ -28,7 +28,7 @@ public class FootponListActivity extends Activity {
 			setContentView(R.layout.footpon_list);
 			
 			service = FootponServiceFactory.getService();
-			footpons = service.getFootponsInArea(40.75916, -73.984491);
+			footpons = service.getInstance();
 			
 			listView = (ListView) findViewById(R.id.footponlist);
 			listView.setTextFilterEnabled(true);

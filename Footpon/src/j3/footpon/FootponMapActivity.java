@@ -36,9 +36,10 @@ public class FootponMapActivity extends MapActivity implements StepListener
 	MapView mapView;
 	FootponMapActivity footponMapActivity = this;
 	ArrayList<Footpon> footpons;
-	
+	FootponMapActivity context = this;
 	FootponItemizedOverlay footponOverlay;
 	MyLocationOverlay myLocationOverlay;
+	List<Overlay> mapOverlays;
 	
 	IFootponService service;
 	StepService stepService;
@@ -52,17 +53,16 @@ public class FootponMapActivity extends MapActivity implements StepListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.footpon_map);
         
+        context = this;
+        
         mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
         
         pointView = (TextView) findViewById(R.id.points);
         
         myLocationOverlay = getLocationOverlay(); 
-        GeoPoint currentPosition = myLocationOverlay.getMyLocation();
-        
         service = FootponServiceFactory.getService();
         
-        footpons = service.getFootponsInArea(47.123412,43.323232);
         
         //start and bind service... 
         //you have to control service by sending intent and set service connection for callback
@@ -70,15 +70,6 @@ public class FootponMapActivity extends MapActivity implements StepListener
                 StepService.class));
         bindStepService();
         
-        Drawable drawable = this.getResources().getDrawable(R.drawable.mark);
-        footponOverlay = new FootponItemizedOverlay(drawable, this);
-        
-        setMapItems(footponOverlay, drawable, footpons);
-        
-        
-        List<Overlay> mapOverlays = mapView.getOverlays();
-        mapOverlays.add(footponOverlay);
-        mapOverlays.add(myLocationOverlay);
         
         MapController controller = mapView.getController();
         controller.setZoom(17);
@@ -87,8 +78,27 @@ public class FootponMapActivity extends MapActivity implements StepListener
 
 	private MyLocationOverlay getLocationOverlay() {
 		MyLocationOverlay overlay = new MyLocationOverlay(this, mapView);
+		
+		//handle footpons and map after received first position data
 		overlay.runOnFirstFix(new Runnable() { public void run() {
             mapView.getController().animateTo(myLocationOverlay.getMyLocation());
+            GeoPoint currentPosition = myLocationOverlay.getMyLocation();
+            Log.d(LOCATION_SERVICE, "current position:" +
+            		currentPosition.getLatitudeE6()+" " +
+            		currentPosition.getLongitudeE6());
+            
+            footpons = service.getFootponsInArea(currentPosition.getLatitudeE6(),
+            									 currentPosition.getLongitudeE6());
+            
+            Drawable drawable = context.getResources().getDrawable(R.drawable.mark);
+            footponOverlay = new FootponItemizedOverlay(drawable, context);
+
+            setMapItems(footponOverlay, drawable, footpons);
+            mapOverlays = mapView.getOverlays();
+            
+            mapOverlays.add(footponOverlay);
+            mapOverlays.add(myLocationOverlay);
+            
         }});
 		overlay.enableMyLocation();
 		return overlay;
@@ -126,8 +136,12 @@ public class FootponMapActivity extends MapActivity implements StepListener
 		
 		for(int i=0; i<footpons.size(); i++)
 		{
-			GeoPoint point = new GeoPoint((int)(footpons.get(i).getLatitude()* 1E6) ,(int)(footpons.get(i).getLongitude()* 1E6));
-	        OverlayItem oItem = new OverlayItem(point,footpons.get(i).getStoreName(), footpons.get(i).getHiddenDescription() +"\npoints: " + footpons.get(i).getPointsRequired());
+			Footpon fp = footpons.get(i);
+			GeoPoint point = new GeoPoint((int)(fp.getLatitude()* 1E6) ,(int)(fp.getLongitude()* 1E6));
+	        OverlayItem oItem = new OverlayItem(point,fp.getStoreName(), 
+	        		fp.getHiddenDescription() +"\npoints: " + 
+	        		fp.getPointsRequired());
+	        //TODO: change this to catagory icon
 	        oItem.setMarker(drawable);
 			overlay.addOverlay(oItem);
 		}
