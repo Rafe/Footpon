@@ -1,13 +1,12 @@
 package j3.footpon.pedometer;
 
-import java.util.List;
-
 import android.app.Service;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 public class StepService extends Service{
@@ -17,7 +16,7 @@ public class StepService extends Service{
 	StepBinder binder = new StepBinder();
 	
 	public class StepBinder extends Binder {
-        StepService getService() {
+        public StepService getService() {
             return StepService.this;
         }
     }
@@ -31,23 +30,23 @@ public class StepService extends Service{
 	@Override
     public void onCreate() {
         super.onCreate();
-        
+        Log.d(SENSOR_SERVICE, "Created StepService...");
         stepDetector = new StepDetector();
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        List<Sensor> sensorList = sensorManager.getSensorList(
-        		sensorManager.SENSOR_ACCELEROMETER | 
-        		SensorManager.SENSOR_MAGNETIC_FIELD | 
-                SensorManager.SENSOR_ORIENTATION);
-        for (Sensor s : sensorList){
-        	sensorManager.registerListener(stepDetector,s,sensorManager.SENSOR_DELAY_FASTEST);
-        }
-        
+        Sensor sensor = sensorManager.getDefaultSensor(sensorManager.SENSOR_ACCELEROMETER);
+        sensorManager.registerListener(stepDetector,sensor,sensorManager.SENSOR_DELAY_FASTEST);
+      
 	}
 	
 	public void registerListener(StepListener listener){
 		if(stepDetector != null){
 			stepDetector.addStepListener(listener);
 		}
+	}
+	
+	@Override
+	public void onDestroy(){
+		sensorManager.unregisterListener(stepDetector);
 	}
 	
 	@Override
