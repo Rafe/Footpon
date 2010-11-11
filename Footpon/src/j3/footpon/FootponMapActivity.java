@@ -3,6 +3,7 @@ package j3.footpon;
 import j3.footpon.model.Footpon;
 import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.IFootponService;
+import j3.footpon.pedometer.StepDisplayer;
 import j3.footpon.pedometer.StepListener;
 import j3.footpon.pedometer.StepService;
 
@@ -31,7 +32,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class FootponMapActivity extends MapActivity implements StepListener
+public class FootponMapActivity extends MapActivity implements StepDisplayer
 {
 	MapView mapView;
 	FootponMapActivity footponMapActivity = this;
@@ -72,9 +73,8 @@ public class FootponMapActivity extends MapActivity implements StepListener
 =======
 >>>>>>> f6bfb804a9b78921cb103150e6d955eebb5e95bf
         service = FootponServiceFactory.getService();
-        footpons = service.getFootponsInArea(0,0);
+        //footpons = service.getFootponsInArea(0,0);
 
-        
         //start and bind service... 
         //you have to control service by sending intent and set service connection for callback
         startService(new Intent(FootponMapActivity.this,
@@ -102,14 +102,14 @@ public class FootponMapActivity extends MapActivity implements StepListener
             									 currentPosition.getLongitudeE6());
             
             Drawable drawable = context.getResources().getDrawable(R.drawable.mark);
-            footponOverlay = new FootponItemizedOverlay(drawable, context);
-
-            setMapItems(footponOverlay, drawable, footpons);
             mapOverlays = mapView.getOverlays();
-            
-            mapOverlays.add(footponOverlay);
             mapOverlays.add(myLocationOverlay);
             
+            if(footpons.size() > 0){
+            	footponOverlay = new FootponItemizedOverlay(drawable, context);
+            	setMapItems(footponOverlay, drawable, footpons);
+            	mapOverlays.add(footponOverlay);
+            }
         }});
 		overlay.enableMyLocation();
 		return overlay;
@@ -145,9 +145,8 @@ public class FootponMapActivity extends MapActivity implements StepListener
 	
 	public void setMapItems(FootponItemizedOverlay overlay, Drawable drawable, ArrayList<Footpon> footpons){
 		
-		for(int i=0; i<footpons.size(); i++)
+		for(Footpon fp:footpons)
 		{
-			Footpon fp = footpons.get(i);
 			GeoPoint point = new GeoPoint((int)(fp.getLatitude()* 1E6) ,(int)(fp.getLongitude()* 1E6));
 	        OverlayItem oItem = new OverlayItem(point,fp.getStoreName(), 
 	        		fp.getHiddenDescription() +"\npoints: " + 
@@ -186,20 +185,20 @@ public class FootponMapActivity extends MapActivity implements StepListener
 	private ServiceConnection connection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             stepService = ((StepService.StepBinder) service).getService();
-            stepService.registerListener(FootponMapActivity.this);
-            
+            stepService.setStepDisplayer(FootponMapActivity.this);
         }
 
         public void onServiceDisconnected(ComponentName className) {
         	stepService = null;
         }
     };
-	
+
 	@Override
-	public void onStep() {
-		point = point + 0.25f;
+	public void passValue(int steps, float points) {
+		
+		point = points;
+		
 		pointView.setText(String.valueOf(point));
 	}
-    
 	
 }
