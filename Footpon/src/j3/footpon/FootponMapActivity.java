@@ -62,7 +62,8 @@ public class FootponMapActivity extends MapActivity implements StepListener
         
         myLocationOverlay = getLocationOverlay(); 
         service = FootponServiceFactory.getService();
-        
+        footpons = service.getFootponsInArea(0,0);
+
         
         //start and bind service... 
         //you have to control service by sending intent and set service connection for callback
@@ -149,18 +150,27 @@ public class FootponMapActivity extends MapActivity implements StepListener
 	
 	public void onStop() {
 		super.onStop();
-		
+		unbindStepService();
 		// Stop receiving location notifications.
 		Log.i("Footpon", "stopping the listener");
 		
-		//locationManager.removeUpdates(locationListener);
 
+	}
+	
+	@Override
+    protected void onResume() {
+        super.onResume();
+        bindStepService();
 	}
 	
 	private void bindStepService() {
 		Log.d(SENSOR_SERVICE, "Start binding service...");
 		bindService(new Intent(FootponMapActivity.this, 
                 StepService.class), connection, Context.BIND_AUTO_CREATE);
+    }
+	
+	private void unbindStepService() {
+        unbindService(connection);
     }
 	
 	private ServiceConnection connection = new ServiceConnection() {
@@ -174,17 +184,11 @@ public class FootponMapActivity extends MapActivity implements StepListener
         	stepService = null;
         }
     };
-    
-	@Override
-    protected void onResume() {
-        super.onResume();
-	}
 	
 	@Override
 	public void onStep() {
 		point = point + 0.25f;
 		pointView.setText(String.valueOf(point));
-		Log.d(SENSOR_SERVICE, "My one small step is a huge step for human...");
 	}
     
 	
