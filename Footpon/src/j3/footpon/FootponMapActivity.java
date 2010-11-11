@@ -63,7 +63,7 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
         
         myLocationOverlay = getLocationOverlay(); 
         service = FootponServiceFactory.getService();
-        footpons = service.getFootponsInArea(0,0);
+        //footpons = service.getFootponsInArea(0,0);
 
         //start and bind service... 
         //you have to control service by sending intent and set service connection for callback
@@ -92,14 +92,14 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
             									 currentPosition.getLongitudeE6());
             
             Drawable drawable = context.getResources().getDrawable(R.drawable.mark);
-            footponOverlay = new FootponItemizedOverlay(drawable, context);
-
-            setMapItems(footponOverlay, drawable, footpons);
             mapOverlays = mapView.getOverlays();
-            
-            mapOverlays.add(footponOverlay);
             mapOverlays.add(myLocationOverlay);
             
+            if(footpons.size() > 0){
+            	footponOverlay = new FootponItemizedOverlay(drawable, context);
+            	setMapItems(footponOverlay, drawable, footpons);
+            	mapOverlays.add(footponOverlay);
+            }
         }});
 		overlay.enableMyLocation();
 		return overlay;
@@ -135,9 +135,8 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	
 	public void setMapItems(FootponItemizedOverlay overlay, Drawable drawable, ArrayList<Footpon> footpons){
 		
-		for(int i=0; i<footpons.size(); i++)
+		for(Footpon fp:footpons)
 		{
-			Footpon fp = footpons.get(i);
 			GeoPoint point = new GeoPoint((int)(fp.getLatitude()* 1E6) ,(int)(fp.getLongitude()* 1E6));
 	        OverlayItem oItem = new OverlayItem(point,fp.getStoreName(), 
 	        		fp.getHiddenDescription() +"\npoints: " + 
@@ -177,7 +176,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
         public void onServiceConnected(ComponentName className, IBinder service) {
             stepService = ((StepService.StepBinder) service).getService();
             stepService.setStepDisplayer(FootponMapActivity.this);
-            
         }
 
         public void onServiceDisconnected(ComponentName className) {
