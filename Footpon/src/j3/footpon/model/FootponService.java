@@ -26,20 +26,10 @@ public class FootponService implements IFootponService {
 
 	private static ArrayList<Footpon> _instance;
 	
-	//Code modified from http://www.helloandroid.com/tutorials/connecting-mysql-database.
-//<<<<<<< HEAD
-	public ArrayList<Footpon> getFootponsInAreaServer(double currentLatitude, double currentLongitude)
+	public ArrayList<Footpon> getFootponsInArea(double currentLatitude, double currentLongitude)
 	{
-//=======
-//	public ArrayList<Footpon> getFootponsInArea(double currentLatitude, double currentLongitude){
-		
-//<<<<<<< HEAD
-		//return cached result in memory
 		if(_instance != null) return _instance;
 		
-//>>>>>>> 19f83977ed013aada7209a8fd80e4e99eba4b2ab
-//=======
-//>>>>>>> f6bfb804a9b78921cb103150e6d955eebb5e95bf
 		String result = "";
 		InputStream is = null;
 		
@@ -104,21 +94,8 @@ public class FootponService implements IFootponService {
 			{
 				JSONObject json_data = jArray.getJSONObject(i);
 			
-				//Log.i("log_tag","Longitude: "+json_data.getDouble("longitude")+", Latitude: "+json_data.getDouble("latitude"));
-				//int longitude=(int) (json_data.getDouble("longitude")*1000000);
-				//int latitude=(int) (json_data.getDouble("latitude")*1000000);
-				//String storeName=json_data.getString("storeName");
-				//String hiddenDescription=json_data.getString("hiddenDescription");
-				//String realDescription=json_data.getString("realDescription");
-				//int pointsRequired =(int) json_data.getInt("pointsRequired");
-				
-		        //GeoPoint point = new GeoPoint(latitude, longitude);
-		        //OverlayItem overlayitem = new OverlayItem(point, storeName, hiddenDescription+".\nPoints Required:"+pointsRequired);
-		        
 		        footpons.add(new Footpon(json_data));
 		 
-		        //itemizedoverlay.addOverlay(overlayitem);
-		        //mapOverlays.add(itemizedoverlay);			
 			}
 		}
 
@@ -140,13 +117,5 @@ public class FootponService implements IFootponService {
 			return null;
 		}
 	}
-
-	@Override
-	public ArrayList<Footpon> getFootponsInArea(double longtitude,
-			double latitude) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	
 }

@@ -118,7 +118,7 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
             		currentPosition.getLatitudeE6()+" " +
             		currentPosition.getLongitudeE6());
             
-            footpons = service.getFootponsInAreaServer(currentPosition.getLatitudeE6(),
+            footpons = service.getFootponsInArea(currentPosition.getLatitudeE6(),
             									 currentPosition.getLongitudeE6());
             
             Drawable drawable = context.getResources().getDrawable(R.drawable.mark);
@@ -152,12 +152,12 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	    // Handle item selection
 	    switch (item.getItemId()) {
 	    case R.id.search:
-	    	Intent intent1 = new Intent(footponMapActivity, CouponRedeemActivity.class);
-	    	startActivity(intent1);
+	    	startActivity(
+	    			new Intent(footponMapActivity, CouponRedeemActivity.class));
 	    	return true;
 	    case R.id.list:
-	    	Intent intent2 = new Intent(footponMapActivity, StoreListActivity.class);
-	    	startActivity(intent2);
+	    	startActivity(
+	    			new Intent(footponMapActivity, StoreListActivity.class));
 	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
@@ -181,7 +181,7 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	        }else{
 	        	oItem.setMarker(drawable);
 	        }
-	//		overlay.addOverlay(oItem);
+			overlay.addOverlay(oItem);
 		}
 	}
 	
