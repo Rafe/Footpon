@@ -66,11 +66,12 @@ public class FootponMapActivity extends MapActivity {
 	    // Handle item selection
 	    switch (item.getItemId()) {
 	    case R.id.search:
-	    	//
+	    	Intent intent1 = new Intent(footponMapActivity, CouponRedeemActivity.class);
+	    	startActivity(intent1);
 	    	return true;
 	    case R.id.list:
-	    	Intent intent = new Intent(footponMapActivity,FootponListActivity.class);
-	    	startActivity(intent);
+	    	Intent intent2 = new Intent(footponMapActivity, StoreListActivity.class);
+	    	startActivity(intent2);
 	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
@@ -85,7 +86,5 @@ public class FootponMapActivity extends MapActivity {
 	        oItem.setMarker(drawable);
 			overlay.addOverlay(oItem);
 		}
-		
 	}
-	
 }

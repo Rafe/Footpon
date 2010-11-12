@@ -54,10 +54,7 @@ private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 
 		@Override
 		public void onClick(View v) {
-			
-			Intent i = new Intent(mContext,FootponDetailsActivity.class);
-			i.putExtra("index", 1);
-			mContext.startActivity(i);
+			//
 		}
 		
       });

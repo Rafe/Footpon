@@ -24,6 +24,21 @@
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+        <activity android:name=".Coupon"
+        		  android:label="@string/app_name">
+        </activity>
+        <activity android:name=".CouponRedeemActivity"
+        		  android:label="@string/app_name">
+        </activity>
+        <activity android:name=".StoreListActivity"
+        		  android:label="@string/app_name">
+        </activity>
+        <activity android:name=".Login"
+        		  android:label="@string/app_name">
+        </activity>
+        <activity android:name=".Register"
+        		  android:label="@string/app_name">
+        </activity>
 		<uses-library android:name="com.google.android.maps" />
     </application>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />

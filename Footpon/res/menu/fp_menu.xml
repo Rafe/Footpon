@@ -4,5 +4,5 @@
   <item android:id="@+id/search"
   		android:title="Search Nearby"/>
   <item android:id="@+id/list"
-  		android:title="Footpon List"/>
+  		android:title="My coupons"/>
 </menu>
