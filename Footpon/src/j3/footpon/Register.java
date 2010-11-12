@@ -196,7 +196,6 @@ public class Register extends Activity {
 						}
 					}
 				}
-					}
 
 				catch(JSONException e)
 				{
