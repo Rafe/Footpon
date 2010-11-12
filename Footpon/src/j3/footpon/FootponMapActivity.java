@@ -70,7 +70,17 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
         pointView = (TextSwitcher) findViewById(R.id.points);
         setAnimation(pointView);
         
+<<<<<<< HEAD
+        service = FootponServiceFactory.getService();
+        footpons = service.getFootponsInAreaServer(40.757942,-73.979478);
+=======
         myLocationOverlay = getLocationOverlay(); 
+<<<<<<< HEAD
+        GeoPoint currentPosition = myLocationOverlay.getMyLocation();
+>>>>>>> 19f83977ed013aada7209a8fd80e4e99eba4b2ab
+        
+=======
+>>>>>>> f6bfb804a9b78921cb103150e6d955eebb5e95bf
         service = FootponServiceFactory.getService();
         //footpons = service.getFootponsInArea(0,0);
 

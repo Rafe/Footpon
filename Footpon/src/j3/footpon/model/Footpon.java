@@ -38,6 +38,8 @@ public class Footpon {
 	public Footpon(JSONObject data) throws JSONException{
 		
 		this.storeName = data.getString("storeName");
+		this.code = data.getLong("code");
+		this.category = data.getString("category");
 		this.hiddenDescription = data.getString("hiddenDescription");
 		this.realDescription = data.getString("realDescription");
 		this.category = data.getString("category");
