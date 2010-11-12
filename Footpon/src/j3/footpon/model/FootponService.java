@@ -32,8 +32,7 @@ public class FootponService implements IFootponService {
 		
 		String result = "";
 		InputStream is = null;
-		
-		//the year data to send
+
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	
 		nameValuePairs.add(new BasicNameValuePair("currentLatitude", Double.toString(currentLatitude/1000000)));
