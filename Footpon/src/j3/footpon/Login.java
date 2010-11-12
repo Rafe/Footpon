@@ -1,8 +1,25 @@
 package j3.footpon;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -36,6 +53,8 @@ public class Login extends Activity {
 
 	private boolean isNetError;
 	private ProgressDialog proDialog;
+	
+	private User currentUser=null;
 
 	Handler loginHandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -200,19 +219,102 @@ public class Login extends Activity {
 		share = null;
 	}
 
-	class LoginFailureHandler implements Runnable {
+	class LoginFailureHandler implements Runnable 
+	{
 		@Override
-		public void run() {
+		public void run() 
+		{
 			userName = view_userName.getText().toString();
 			password = view_password.getText().toString();
-			
-			// change the server ip here
-			String validateURL="http://pdc-amd01.poly.edu/~jli15/footpon/home.php/LoginValidate?userName="
-				+ userName + "&password=" + password;
-			boolean loginState = validateLocalLogin(userName, password, validateURL);
-			Log.d(this.toString(), "Login");
 
-			if (loginState) {
+			//Code modified from http://www.helloandroid.com/tutorials/connecting-mysql-database.
+			String result = "";
+			String username="";
+			InputStream is = null;
+
+			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+				
+			nameValuePairs.add(new BasicNameValuePair("username", userName));
+			nameValuePairs.add(new BasicNameValuePair("password", password));
+
+			//http post
+			try
+			{
+				HttpClient httpclient = new DefaultHttpClient();
+
+				HttpPost httppost = new HttpPost("http://pdc-amd01.poly.edu/~jli15/footpon/getUser.php");
+				httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+				
+				HttpResponse response = httpclient.execute(httppost);
+				
+				HttpEntity entity = response.getEntity();
+				
+				is = entity.getContent();
+			}
+
+			catch(Exception ee)
+			{
+				Log.e("log_tag", "Error in http connection "+ee.toString());
+			}
+
+			//convert response to string
+			try
+			{
+				BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
+				
+				StringBuilder sb = new StringBuilder();
+				
+				String line = null;
+				
+				while ((line = reader.readLine()) != null)
+				{
+					sb.append(line + "\n");
+				}
+				
+				is.close();
+				
+				result=sb.toString();
+			}
+
+			catch(Exception eee)
+			{
+				Log.e("log_tag", "Error converting result "+eee.toString());
+			}
+
+			//parse json data
+			try
+			{
+				JSONArray jArray = new JSONArray(result);
+					
+				for(int i=0;i<jArray.length();i++)
+				{
+					JSONObject json_data = jArray.getJSONObject(i);
+					
+					currentUser=new User(json_data.getString("username"), json_data.getString("firstName"), json_data.getString("lastName"), json_data.getLong("points"));
+					
+					//Log.i("log_tag","Longitude: "+json_data.getDouble("longitude")+", Latitude: "+json_data.getDouble("latitude"));
+					//int longitude=(int) (json_data.getDouble("longitude")*1000000);
+					//int latitude=(int) (json_data.getDouble("latitude")*1000000);
+					//String storeName=json_data.getString("storeName");
+					//String hiddenDescription=json_data.getString("hiddenDescription");
+					//String realDescription=json_data.getString("realDescription");
+					//int pointsRequired =(int) json_data.getInt("pointsRequired");
+						
+				    //GeoPoint point = new GeoPoint(latitude, longitude);
+				    //OverlayItem overlayitem = new OverlayItem(point, storeName, hiddenDescription+".\nPoints Required:"+pointsRequired);
+					
+				    //itemizedoverlay.addOverlay(overlayitem);
+				    //mapOverlays.add(itemizedoverlay);
+				}
+			}
+
+			catch(JSONException e)
+			{
+				Log.e("log_tag", "Error parsing data "+e.toString());
+			}
+		
+			if(currentUser!=null)
+			{
 				// login success
 				Intent intent = new Intent();
 				intent.setClass(Login.this, Coupon.class);
@@ -221,7 +323,10 @@ public class Login extends Activity {
 				intent.putExtras(bundle);
 				startActivity(intent);
 				proDialog.dismiss();
-			} else {
+			} 
+			
+			else 
+			{
 				// login failed
 				Message message = new Message();
 				Bundle bundle = new Bundle();
