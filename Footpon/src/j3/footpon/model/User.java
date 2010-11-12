@@ -1,4 +1,4 @@
-package j3.footpon;
+package j3.footpon.model;
 
 public class User 
 {

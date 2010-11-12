@@ -25,96 +25,89 @@ import android.util.Log;
 public class FootponService implements IFootponService {
 
 	private static ArrayList<Footpon> _instance;
-	
-	public ArrayList<Footpon> getFootponsInArea(double currentLatitude, double currentLongitude)
-	{
-		if(_instance != null) return _instance;
-		
+
+	public ArrayList<Footpon> getFootponsInArea(double currentLatitude,
+			double currentLongitude) {
 		String result = "";
 		InputStream is = null;
 
+		// the year data to send
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-	
-		nameValuePairs.add(new BasicNameValuePair("currentLatitude", Double.toString(currentLatitude/1000000)));
-		nameValuePairs.add(new BasicNameValuePair("currentLongitude", Double.toString(currentLongitude/1000000)));
+
+		nameValuePairs.add(new BasicNameValuePair("currentLatitude", Double
+				.toString(currentLatitude)));
+		nameValuePairs.add(new BasicNameValuePair("currentLongitude", Double
+				.toString(currentLongitude)));
 
 		ArrayList<Footpon> footpons = new ArrayList<Footpon>();
-		
-		//http post
-		try
-		{
+
+		// http post
+		try {
 			HttpClient httpclient = new DefaultHttpClient();
 
-			HttpPost httppost = new HttpPost("http://pdc-amd01.poly.edu/~jli15/footpon/getArea.php");
+			HttpPost httppost = new HttpPost(
+					"http://pdc-amd01.poly.edu/~jli15/footpon/getArea.php");
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-	
+
 			HttpResponse response = httpclient.execute(httppost);
-	
+
 			HttpEntity entity = response.getEntity();
-	
+
 			is = entity.getContent();
 		}
 
-		catch(Exception ee)
-		{
-			Log.e("log_tag", "Error in http connection "+ee.toString());
+		catch (Exception e) {
+			Log.e("log_tag", "Error in http connection " + e.toString());
 		}
 
-		//convert response to string
-		try
-		{
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
-	
+		// convert response to string
+		try {
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					is, "iso-8859-1"), 8);
+
 			StringBuilder sb = new StringBuilder();
-	
+
 			String line = null;
-	
-			while ((line = reader.readLine()) != null)
-			{
+
+			while ((line = reader.readLine()) != null) {
 				sb.append(line + "\n");
 			}
-	
+
 			is.close();
-	
-			result=sb.toString();
+
+			result = sb.toString();
 		}
 
-		catch(Exception eee)
-		{
-			Log.e("log_tag", "Error converting result "+eee.toString());
+		catch (Exception e) {
+			Log.e("log_tag", "Error converting result " + e.toString());
 		}
 
-		//parse json data
-		try
-		{
+		// parse json data
+		try {
 			JSONArray jArray = new JSONArray(result);
-		
-			for(int i=0;i<jArray.length();i++)
-			{
+
+			for (int i = 0; i < jArray.length(); i++) {
 				JSONObject json_data = jArray.getJSONObject(i);
-			
-		        footpons.add(new Footpon(json_data));
-		 
+
+				footpons.add(new Footpon(json_data));
+
 			}
 		}
 
-		catch(JSONException e)
-		{
-			Log.e("log_tag", "Error parsing data "+e.toString());
+		catch (JSONException e) {
+			Log.e("log_tag", "Error parsing data " + e.toString());
 		}
-		
-		_instance = footpons;
-		
+
 		return footpons;
 	}
 
 	@Override
 	public ArrayList<Footpon> getInstance() {
-		if(_instance != null){ 
+		if (_instance != null) {
 			return _instance;
-		}else{ 
+		} else {
 			return null;
 		}
 	}
-	
+
 }

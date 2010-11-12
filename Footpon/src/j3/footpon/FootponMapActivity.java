@@ -54,8 +54,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	
 	float point;
 	
-	
-	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,8 +158,7 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	    			new Intent(footponMapActivity, StoreListActivity.class));
 	    	return true;
 	    case R.id.login:
-	    	Intent intent3 = new Intent(footponMapActivity, Login.class);
-	    	startActivity(intent3);
+	    	startActivity(new Intent(footponMapActivity, Login.class));
 	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
