@@ -4,7 +4,6 @@ import j3.footpon.model.Footpon;
 import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.IFootponService;
 import j3.footpon.pedometer.StepDisplayer;
-import j3.footpon.pedometer.StepListener;
 import j3.footpon.pedometer.StepService;
 
 import java.util.ArrayList;
@@ -22,19 +21,28 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 public class FootponMapActivity extends MapActivity implements StepDisplayer
 {
 	MapView mapView;
+	TextSwitcher pointView;
+	
 	FootponMapActivity footponMapActivity = this;
 	ArrayList<Footpon> footpons;
 	FootponMapActivity context = this;
@@ -47,7 +55,7 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	
 	float point;
 	
-	TextView pointView;
+	
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +67,8 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
         mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
         
-        pointView = (TextView) findViewById(R.id.points);
+        pointView = (TextSwitcher) findViewById(R.id.points);
+        setAnimation(pointView);
         
         myLocationOverlay = getLocationOverlay(); 
         service = FootponServiceFactory.getService();
@@ -76,6 +85,28 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
         controller.setZoom(17);
         
     }
+
+	private void setAnimation(TextSwitcher switcher) {
+		Animation in = AnimationUtils.loadAnimation(this,
+                android.R.anim.fade_in);
+        Animation out = AnimationUtils.loadAnimation(this,
+                android.R.anim.fade_out);
+        switcher.setInAnimation(in);
+        switcher.setOutAnimation(out);
+        
+        switcher.setFactory(new ViewSwitcher.ViewFactory(){
+
+			@Override
+			public View makeView() {
+				TextView t = new TextView(context);
+		        t.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+		        t.setTextSize(26);
+		        t.setTextColor(Color.BLACK);
+		        return t;
+			}
+        });
+        
+	}
 
 	private MyLocationOverlay getLocationOverlay() {
 		MyLocationOverlay overlay = new MyLocationOverlay(this, mapView);

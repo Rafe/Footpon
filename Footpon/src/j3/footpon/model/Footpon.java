@@ -1,5 +1,7 @@
 package j3.footpon.model;
 
+import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,6 +15,13 @@ public class Footpon {
 	private double latitude;
 	private double longitude;
 	private int pointsRequired;
+	private Date startDate;
+	private Date endDate;
+	
+	public static final String CATAGORY_VIDEO_GAME="Video Game";
+	public static final String CATAGORY_FOOD="Food";
+	public static final String CATAGORY_TOYS="Toys";
+	public static final String CATAGORY_OUTDOOR="Outdoor";
 	
 	public Footpon(String storeName, String category, String hiddenDescription, String realDescription, double latitude, double longtitude,int pointsRequired,long code){
 		this.storeName = storeName;
@@ -101,6 +110,22 @@ public class Footpon {
 
 	public int getPointsRequired() {
 		return pointsRequired;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
 	}
 	
 	

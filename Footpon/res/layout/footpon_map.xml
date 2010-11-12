@@ -23,12 +23,12 @@
 			android:textColor="#222"
 			android:layout_weight="1"
 		></TextView>
-		<TextView android:id="@+id/points" android:layout_width="match_parent"
+		<TextSwitcher android:id="@+id/points" android:layout_width="match_parent"
 			android:layout_height="wrap_content" android:text="0.00"
 			android:textStyle="bold"
-			android:textSize="24sp"
+			android:textSize="26sp"
 			android:textColor="#222"
 			android:layout_weight="2"
-		></TextView>
+		/>
 	</LinearLayout>
 </RelativeLayout>
