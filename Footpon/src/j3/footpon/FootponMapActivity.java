@@ -70,17 +70,7 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
         pointView = (TextSwitcher) findViewById(R.id.points);
         setAnimation(pointView);
         
-<<<<<<< HEAD
-        service = FootponServiceFactory.getService();
-        footpons = service.getFootponsInAreaServer(40.757942,-73.979478);
-=======
         myLocationOverlay = getLocationOverlay(); 
-<<<<<<< HEAD
-        GeoPoint currentPosition = myLocationOverlay.getMyLocation();
->>>>>>> 19f83977ed013aada7209a8fd80e4e99eba4b2ab
-        
-=======
->>>>>>> f6bfb804a9b78921cb103150e6d955eebb5e95bf
         service = FootponServiceFactory.getService();
         //footpons = service.getFootponsInArea(0,0);
 
@@ -183,7 +173,14 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	        		fp.getHiddenDescription() +"\npoints: " + 
 	        		fp.getPointsRequired());
 	        //TODO: change this to catagory icon
-	        oItem.setMarker(drawable);
+	        if(fp.getCategory() == Footpon.CATAGORY_FOOD){
+	        	Drawable image = context.getResources().getDrawable(R.drawable.icon_food);
+	        	image.setBounds(-image.getIntrinsicWidth() /2, -image.getIntrinsicHeight(),
+	        					image.getIntrinsicWidth()/2, 0);
+	        	oItem.setMarker(image);
+	        }else{
+	        	oItem.setMarker(drawable);
+	        }
 			overlay.addOverlay(oItem);
 		}
 	}

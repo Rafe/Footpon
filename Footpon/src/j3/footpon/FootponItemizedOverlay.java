@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 
-public class FootponItemizedOverlay extends ItemizedOverlay 
+public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem>
 {
 	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 	
@@ -46,11 +46,7 @@ public class FootponItemizedOverlay extends ItemizedOverlay
 		dialog.setContentView(R.layout.footpon_dialog);
 		
 		IFootponService service = FootponServiceFactory.getService();
-<<<<<<< HEAD
-		Footpon fp = service.getFootponsInAreaServer(40.75916,-73.984491).get(index);
-=======
 		Footpon fp = service.getInstance().get(index);
->>>>>>> f6bfb804a9b78921cb103150e6d955eebb5e95bf
 	  
 		TextView storeName = (TextView) dialog.findViewById(R.id.dialog_store_name);
 		TextView hiddenDescription = (TextView) dialog.findViewById(R.id.dialog_hiddenDescription);
