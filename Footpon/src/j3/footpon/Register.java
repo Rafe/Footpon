@@ -1,5 +1,6 @@
 package j3.footpon;
 
+import j3.footpon.model.Footpon;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -40,6 +41,7 @@ public class Register extends Activity {
 	private Button view_clearAll;
 	protected TextView view_firstName;
 	protected TextView view_lastName;
+
 	private ProgressDialog proDialog;
 	private boolean isNetError;
 	
@@ -162,33 +164,35 @@ public class Register extends Activity {
 						JSONObject json_data = jArray.getJSONObject(i);
 						
 						String success=json_data.getString("success");
-						Bundle bundle;
+						
 						if(success.equalsIgnoreCase("true"))
 						{
-							//Register success
-							Intent intent = new Intent();
-							intent.setClass(Register.this, Coupon.class);
-							bundle = new Bundle();
-							bundle.putString("MAP_USERNAME", userName);
-							intent.putExtras(bundle);
-							startActivity(intent);
-							proDialog.dismiss();
-						if(success=="true")
-						{
-							//finish this
-						}
+							if(success=="true")
+							{
+								//Register success
+								Intent intent = new Intent();
+								intent.setClass(Register.this, Coupon.class);
+								Bundle bundle = new Bundle();
+								bundle.putString("MAP_USERNAME", userName);
+								intent.putExtras(bundle);
+								startActivity(intent);
+								proDialog.dismiss();
+
+								//finish this
+							}
 						
-						else
-						{
-							//Register failed
-							Message message = new Message();
-							bundle = new Bundle();
-							bundle.putBoolean("isNetError ", isNetError);
-							message.setData(bundle);
-							registerHandler.sendMessage(message);
+							else
+							{
+								//Register failed
+								Message message = new Message();
+								Bundle bundle = new Bundle();
+								bundle.putBoolean("isNetError ", isNetError);
+								message.setData(bundle);
+								registerHandler.sendMessage(message);
 							
-							//finish this
-							clearForm();
+								//finish this
+								clearForm();
+							}
 						}
 					}
 				}

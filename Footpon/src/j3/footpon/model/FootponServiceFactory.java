@@ -7,7 +7,7 @@ public class FootponServiceFactory {
 	public static IFootponService getService(){
 		
 		if(_service == null){
-			_service = new FootponService();
+			_service = new FakeFootponService();
 		}
 		return _service;
 	} 
