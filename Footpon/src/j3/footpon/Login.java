@@ -1,5 +1,10 @@
 package j3.footpon;
 
+<<<<<<< HEAD
+=======
+import j3.footpon.model.Footpon;
+
+>>>>>>> c8dd9c1376720105138e9fd2086101600ed4536d
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.InputStream;
@@ -290,7 +295,11 @@ public class Login extends Activity {
 				{
 					JSONObject json_data = jArray.getJSONObject(i);
 					
+<<<<<<< HEAD
 					currentUser=new User(json_data.getString("username"), json_data.getString("firstName"), json_data.getString("lastName"), json_data.getLong("points"));
+=======
+					username=json_data.getString("username");
+>>>>>>> c8dd9c1376720105138e9fd2086101600ed4536d
 					
 					//Log.i("log_tag","Longitude: "+json_data.getDouble("longitude")+", Latitude: "+json_data.getDouble("latitude"));
 					//int longitude=(int) (json_data.getDouble("longitude")*1000000);
@@ -313,7 +322,11 @@ public class Login extends Activity {
 				Log.e("log_tag", "Error parsing data "+e.toString());
 			}
 		
+<<<<<<< HEAD
 			if(currentUser!=null)
+=======
+			if (username!="")
+>>>>>>> c8dd9c1376720105138e9fd2086101600ed4536d
 			{
 				// login success
 				Intent intent = new Intent();

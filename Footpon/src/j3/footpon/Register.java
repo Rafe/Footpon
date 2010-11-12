@@ -44,6 +44,7 @@ public class Register extends Activity {
 	private Button view_clearAll;
 	protected TextView view_firstName;
 	protected TextView view_lastName;
+<<<<<<< HEAD
 	private ProgressDialog proDialog;
 	private boolean isNetError;
 	
@@ -65,6 +66,9 @@ public class Register extends Activity {
 		}
 	};
 	
+=======
+
+>>>>>>> c8dd9c1376720105138e9fd2086101600ed4536d
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -167,6 +171,7 @@ public class Register extends Activity {
 						
 						String success=json_data.getString("success");
 						
+<<<<<<< HEAD
 						if(success.equalsIgnoreCase("true"))
 						{
 							//Register success
@@ -177,10 +182,16 @@ public class Register extends Activity {
 							intent.putExtras(bundle);
 							startActivity(intent);
 							proDialog.dismiss();
+=======
+						if(success=="true")
+						{
+							//finish this
+>>>>>>> c8dd9c1376720105138e9fd2086101600ed4536d
 						}
 						
 						else
 						{
+<<<<<<< HEAD
 							//Register failed
 							Message message = new Message();
 							Bundle bundle = new Bundle();
@@ -188,6 +199,9 @@ public class Register extends Activity {
 							message.setData(bundle);
 							registerHandler.sendMessage(message);
 							
+=======
+							//finish this
+>>>>>>> c8dd9c1376720105138e9fd2086101600ed4536d
 							clearForm();
 						}
 					}
