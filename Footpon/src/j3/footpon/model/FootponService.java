@@ -27,27 +27,27 @@ public class FootponService implements IFootponService {
 	private static ArrayList<Footpon> _instance;
 	
 	//Code modified from http://www.helloandroid.com/tutorials/connecting-mysql-database.
-<<<<<<< HEAD
+//<<<<<<< HEAD
 	public ArrayList<Footpon> getFootponsInAreaServer(double currentLatitude, double currentLongitude)
 	{
-=======
-	public ArrayList<Footpon> getFootponsInArea(double currentLatitude, double currentLongitude){
+//=======
+//	public ArrayList<Footpon> getFootponsInArea(double currentLatitude, double currentLongitude){
 		
-<<<<<<< HEAD
+//<<<<<<< HEAD
 		//return cached result in memory
 		if(_instance != null) return _instance;
 		
->>>>>>> 19f83977ed013aada7209a8fd80e4e99eba4b2ab
-=======
->>>>>>> f6bfb804a9b78921cb103150e6d955eebb5e95bf
+//>>>>>>> 19f83977ed013aada7209a8fd80e4e99eba4b2ab
+//=======
+//>>>>>>> f6bfb804a9b78921cb103150e6d955eebb5e95bf
 		String result = "";
 		InputStream is = null;
 		
 		//the year data to send
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	
-		nameValuePairs.add(new BasicNameValuePair("currentLatitude", Double.toString(currentLatitude)));
-		nameValuePairs.add(new BasicNameValuePair("currentLongitude", Double.toString(currentLongitude)));
+		nameValuePairs.add(new BasicNameValuePair("currentLatitude", Double.toString(currentLatitude/1000000)));
+		nameValuePairs.add(new BasicNameValuePair("currentLongitude", Double.toString(currentLongitude/1000000)));
 
 		ArrayList<Footpon> footpons = new ArrayList<Footpon>();
 		
@@ -139,6 +139,13 @@ public class FootponService implements IFootponService {
 		}else{ 
 			return null;
 		}
+	}
+
+	@Override
+	public ArrayList<Footpon> getFootponsInArea(double longtitude,
+			double latitude) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
