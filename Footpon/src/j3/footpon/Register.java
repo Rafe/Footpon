@@ -44,7 +44,7 @@ public class Register extends Activity {
 	private Button view_clearAll;
 	protected TextView view_firstName;
 	protected TextView view_lastName;
-<<<<<<< HEAD
+
 	private ProgressDialog proDialog;
 	private boolean isNetError;
 	
@@ -66,9 +66,6 @@ public class Register extends Activity {
 		}
 	};
 	
-=======
-
->>>>>>> c8dd9c1376720105138e9fd2086101600ed4536d
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -171,38 +168,34 @@ public class Register extends Activity {
 						
 						String success=json_data.getString("success");
 						
-<<<<<<< HEAD
 						if(success.equalsIgnoreCase("true"))
 						{
-							//Register success
-							Intent intent = new Intent();
-							intent.setClass(Register.this, Coupon.class);
-							Bundle bundle = new Bundle();
-							bundle.putString("MAP_USERNAME", userName);
-							intent.putExtras(bundle);
-							startActivity(intent);
-							proDialog.dismiss();
-=======
-						if(success=="true")
-						{
-							//finish this
->>>>>>> c8dd9c1376720105138e9fd2086101600ed4536d
-						}
+							if(success=="true")
+							{
+								//Register success
+								Intent intent = new Intent();
+								intent.setClass(Register.this, Coupon.class);
+								Bundle bundle = new Bundle();
+								bundle.putString("MAP_USERNAME", userName);
+								intent.putExtras(bundle);
+								startActivity(intent);
+								proDialog.dismiss();
+
+								//finish this
+							}
 						
-						else
-						{
-<<<<<<< HEAD
-							//Register failed
-							Message message = new Message();
-							Bundle bundle = new Bundle();
-							bundle.putBoolean("isNetError ", isNetError);
-							message.setData(bundle);
-							registerHandler.sendMessage(message);
+							else
+							{
+								//Register failed
+								Message message = new Message();
+								Bundle bundle = new Bundle();
+								bundle.putBoolean("isNetError ", isNetError);
+								message.setData(bundle);
+								registerHandler.sendMessage(message);
 							
-=======
-							//finish this
->>>>>>> c8dd9c1376720105138e9fd2086101600ed4536d
-							clearForm();
+								//finish this
+								clearForm();
+							}
 						}
 					}
 				}
