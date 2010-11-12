@@ -17,75 +17,70 @@ import android.widget.TextView;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 
-public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem>
-{
+public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
-	
-	public FootponItemizedOverlay(Drawable defaultMarker) 
-	{
-		  super(boundCenterBottom(defaultMarker));
+
+	public FootponItemizedOverlay(Drawable defaultMarker) {
+		super(boundCenterBottom(defaultMarker));
 	}
 
 	Context mContext;
-	
-	public FootponItemizedOverlay(Drawable defaultMarker, Context context) 
-	{
-		  super(boundCenterBottom(defaultMarker));
-		  mContext = context;
+
+	public FootponItemizedOverlay(Drawable defaultMarker, Context context) {
+		super(boundCenterBottom(defaultMarker));
+		mContext = context;
 	}
 
 	@Override
-	protected boolean onTap(final int index) 
-	{
+	protected boolean onTap(final int index) {
 		OverlayItem item = mOverlays.get(index);
-	  
-		//Toast t = Toast.makeText(mContext, item.getTitle() + " \n" + item.getSnippet() , Toast.LENGTH_LONG);
-		//t.show();
+
+		// Toast t = Toast.makeText(mContext, item.getTitle() + " \n" +
+		// item.getSnippet() , Toast.LENGTH_LONG);
+		// t.show();
 		Dialog dialog = new Dialog(mContext);
 		dialog.setTitle(item.getTitle());
 		dialog.setContentView(R.layout.footpon_dialog);
-		
+
 		IFootponService service = FootponServiceFactory.getService();
 		Footpon fp = service.getInstance().get(index);
-	  
-		TextView storeName = (TextView) dialog.findViewById(R.id.dialog_store_name);
-		TextView hiddenDescription = (TextView) dialog.findViewById(R.id.dialog_hiddenDescription);
-		TextView pointsRequired = (TextView) dialog.findViewById(R.id.dialog_pointsRequired);
-		Button detailsButton = (Button) dialog.findViewById(R.id.dialog_show_details);
-        
-		detailsButton.setOnClickListener(new Button.OnClickListener()
-		{
+
+		TextView description = (TextView) dialog
+				.findViewById(R.id.dialog_realDescription);
+		TextView pointsRequired = (TextView) dialog
+				.findViewById(R.id.dialog_pointsRequired);
+		Button detailsButton = (Button) dialog
+				.findViewById(R.id.dialog_show_details);
+
+		detailsButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
-			public void onClick(View v)
-			{
+			public void onClick(View v) {
 				Intent i = new Intent(mContext, Coupon.class);
 				i.putExtra("index", index);
 				mContext.startActivity(i);
 			}
-		}
-		);
-		
-      storeName.setText(fp.getStoreName());
-      hiddenDescription.setText(fp.getHiddenDescription());
-      pointsRequired.setText("Points:" + fp.getPointsRequired());
-      
-	  dialog.show();
-	  
-	  return true;
+		});
+
+		description.setText(fp.getRealDescription());
+		pointsRequired.setText("Points:" + fp.getPointsRequired());
+
+		dialog.show();
+
+		return true;
 	}
-	
+
 	public void addOverlay(OverlayItem overlay) {
-	    mOverlays.add(overlay);
-	    populate();
+		mOverlays.add(overlay);
+		populate();
 	}
-	
+
 	@Override
 	protected OverlayItem createItem(int i) {
-	  return mOverlays.get(i);
+		return mOverlays.get(i);
 	}
 
 	@Override
 	public int size() {
-	  return mOverlays.size();
+		return mOverlays.size();
 	}
 }

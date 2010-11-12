@@ -69,7 +69,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
         
         myLocationOverlay = getLocationOverlay(); 
         service = FootponServiceFactory.getService();
-        //footpons = service.getFootponsInArea(0,0);
 
         //start and bind service... 
         //you have to control service by sending intent and set service connection for callback
@@ -155,7 +154,7 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	    	return true;
 	    case R.id.list:
 	    	startActivity(
-	    			new Intent(footponMapActivity, StoreListActivity.class));
+	    			new Intent(footponMapActivity, FootponListActivity.class));
 	    	return true;
 	    case R.id.login:
 	    	startActivity(new Intent(footponMapActivity, Login.class));
@@ -192,7 +191,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 		// Stop receiving location notifications.
 		Log.i("Footpon", "stopping the listener");
 		
-
 	}
 	
 	@Override
