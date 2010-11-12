@@ -22,32 +22,32 @@ import com.google.android.maps.OverlayItem;
 
 import android.util.Log;
 
-public class FootponRepository {
+public class FootponService implements IFootponService {
 
-/*	public static ArrayList<Footpon> getFootponsInArea(int UserId,int latitude,int longtitude,int range){
-		
-		ArrayList<Footpon> footpons = new ArrayList<Footpon>();
-		footpons.add(new Footpon("Nintendo World Store","10% NDS Game",40.757942,-73.979478,40));
-		footpons.add(new Footpon("Wendy's","Free small soda",40.758198,-73.981414,20));
-		footpons.add(new Footpon("Toys R Us","Buy one LEGO set, get second LEGO set half off",40.757210,-73.985679,90));
-		footpons.add(new Footpon("Midtown Bikes","Buy one tire, get the second free",40.761493,-73.990115,50));		
+	private static ArrayList<Footpon> _instance;
 	
-		return footpons;
-		
-	}*/
-	
-	//temporary method, wait to move
 	//Code modified from http://www.helloandroid.com/tutorials/connecting-mysql-database.
-	public static ArrayList<Footpon> getFootponsInAreaServer(double currentLatitude, double currentLongitude)
+//<<<<<<< HEAD
+	public ArrayList<Footpon> getFootponsInAreaServer(double currentLatitude, double currentLongitude)
 	{
+//=======
+//	public ArrayList<Footpon> getFootponsInArea(double currentLatitude, double currentLongitude){
+		
+//<<<<<<< HEAD
+		//return cached result in memory
+		if(_instance != null) return _instance;
+		
+//>>>>>>> 19f83977ed013aada7209a8fd80e4e99eba4b2ab
+//=======
+//>>>>>>> f6bfb804a9b78921cb103150e6d955eebb5e95bf
 		String result = "";
 		InputStream is = null;
 		
 		//the year data to send
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 	
-		nameValuePairs.add(new BasicNameValuePair("currentLatitude", Double.toString(currentLatitude)));
-		nameValuePairs.add(new BasicNameValuePair("currentLongitude", Double.toString(currentLongitude)));
+		nameValuePairs.add(new BasicNameValuePair("currentLatitude", Double.toString(currentLatitude/1000000)));
+		nameValuePairs.add(new BasicNameValuePair("currentLongitude", Double.toString(currentLongitude/1000000)));
 
 		ArrayList<Footpon> footpons = new ArrayList<Footpon>();
 		
@@ -126,8 +126,27 @@ public class FootponRepository {
 		{
 			Log.e("log_tag", "Error parsing data "+e.toString());
 		}
-
+		
+		_instance = footpons;
+		
 		return footpons;
 	}
+
+	@Override
+	public ArrayList<Footpon> getInstance() {
+		if(_instance != null){ 
+			return _instance;
+		}else{ 
+			return null;
+		}
+	}
+
+	@Override
+	public ArrayList<Footpon> getFootponsInArea(double longtitude,
+			double latitude) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	
 }

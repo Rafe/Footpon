@@ -1,32 +1,52 @@
 package j3.footpon.model;
 
+import java.util.Date;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Footpon {
 	
 	private String storeName;
-	private String description;
+	private long code;
+	private String category;
+	private String hiddenDescription;
+	private String realDescription;
 	private double latitude;
 	private double longitude;
 	private int pointsRequired;
+	private Date startDate;
+	private Date endDate;
 	
-	public Footpon(String storeName,String description, double latitude,
-					double longtitude,int pointsRequired){
+	public static final String CATAGORY_VIDEO_GAME="Video Game";
+	public static final String CATAGORY_FOOD="Food";
+	public static final String CATAGORY_TOYS="Toys";
+	public static final String CATAGORY_OUTDOOR="Outdoor";
+	
+	public Footpon(String storeName, String category, String hiddenDescription, String realDescription, double latitude, double longtitude,int pointsRequired,long code){
 		this.storeName = storeName;
-		this.description = description;
+		this.category=category;
+		this.hiddenDescription = hiddenDescription;
+		this.realDescription = realDescription;
 		this.latitude = latitude;
 		this.longitude = longtitude;
 		this.pointsRequired = pointsRequired;
+		this.code=code;
+
 	}
 	
 	public Footpon(JSONObject data) throws JSONException{
 		
 		this.storeName = data.getString("storeName");
-		this.description = data.getString("description");
+		this.code = data.getLong("code");
+		this.category = data.getString("category");
+		this.hiddenDescription = data.getString("hiddenDescription");
+		this.realDescription = data.getString("realDescription");
+		this.category = data.getString("category");
 		this.latitude = data.getDouble("latitude");
 		this.longitude = data.getDouble("longitude");
 		this.pointsRequired = data.getInt("pointsRequired");
+		this.code = data.getLong("code");
 	}
 	
 	//Getter and Setters...
@@ -38,14 +58,38 @@ public class Footpon {
 		this.storeName = storeName;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setCode(long code) {
+		this.code = code;
 	}
 
-	public String getDescription() {
-		return description;
+	public long getCode() {
+		return code;
+	}	
+	
+	public void setCategory(String category) {
+		this.category = category;
 	}
 
+	public String getCategory() {
+		return category;
+	}
+	
+	public void setHiddenDescription(String hiddenDescription) {
+		this.hiddenDescription = hiddenDescription;
+	}
+
+	public String getHiddenDescription() {
+		return hiddenDescription;
+	}	
+	
+	public void setRealDescription(String realDescription) {
+		this.realDescription = realDescription;
+	}
+
+	public String getRealDescription() {
+		return realDescription;
+	}
+	
 	public void setLatitude(double latitude) {
 		this.latitude = latitude;
 	}
@@ -68,6 +112,22 @@ public class Footpon {
 
 	public int getPointsRequired() {
 		return pointsRequired;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
 	}
 	
 	
