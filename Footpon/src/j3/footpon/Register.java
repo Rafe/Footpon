@@ -1,6 +1,5 @@
 package j3.footpon;
 
-import j3.footpon.model.Footpon;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -196,7 +195,7 @@ public class Register extends Activity {
 						}
 					}
 				}
-					}
+					
 
 				catch(JSONException e)
 				{

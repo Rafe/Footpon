@@ -17,9 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.OverlayItem;
-
 import android.util.Log;
 
 public class FootponService implements IFootponService {
