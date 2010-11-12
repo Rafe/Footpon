@@ -56,7 +56,7 @@ public class Register extends Activity {
 						Toast.LENGTH_SHORT).show();
 			}
 			else {
-				Toast.makeText(Register.this, "Wrong username or password!",
+				Toast.makeText(Register.this, "Username not available or password!",
 						Toast.LENGTH_SHORT).show();
 			}
 		}
@@ -166,36 +166,32 @@ public class Register extends Activity {
 						
 						if(success.equalsIgnoreCase("true"))
 						{
-							if(success=="true")
-							{
-								//Register success
-								Intent intent = new Intent();
-								intent.setClass(Register.this, Coupon.class);
-								Bundle bundle = new Bundle();
-								bundle.putString("MAP_USERNAME", userName);
-								intent.putExtras(bundle);
-								startActivity(intent);
-								proDialog.dismiss();
+							//Register success
+							Intent intent = new Intent();
+							intent.setClass(Register.this, Coupon.class);
+							Bundle bundle = new Bundle();
+							bundle.putString("MAP_USERNAME", userName);
+							intent.putExtras(bundle);
+							startActivity(intent);
+							proDialog.dismiss();
 
-								//finish this
-							}
+							//finish this
+						}
 						
-							else
-							{
-								//Register failed
-								Message message = new Message();
-								Bundle bundle = new Bundle();
-								bundle.putBoolean("isNetError ", isNetError);
-								message.setData(bundle);
-								registerHandler.sendMessage(message);
+						else
+						{
+							//Register failed
+							Message message = new Message();
+							Bundle bundle = new Bundle();
+							bundle.putBoolean("isNetError ", isNetError);
+							message.setData(bundle);
+							registerHandler.sendMessage(message);
 							
-								//finish this
-								clearForm();
-							}
+							//finish this
+							clearForm();
 						}
 					}
 				}
-					
 
 				catch(JSONException e)
 				{
