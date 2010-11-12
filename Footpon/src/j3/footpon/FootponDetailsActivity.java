@@ -33,7 +33,7 @@ public class FootponDetailsActivity extends Activity {
         	Footpon fp = footpons.get(position);
         	storeName.setText(fp.getStoreName());
             description.setText(fp.getRealDescription());
-            pointsRequired.setText("Points:" + fp.getPointsRequired());
+            pointsRequired.setText(fp.getPointsRequired()+" Points");
             
             if(i.getExtras().getBoolean("isRedeemed") == false){
             	button.setText("Redeem Now!");
