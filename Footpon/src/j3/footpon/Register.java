@@ -1,7 +1,5 @@
 package j3.footpon;
 
-import j3.footpon.model.Footpon;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -19,8 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.bool;
-import android.R.string;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -44,7 +40,6 @@ public class Register extends Activity {
 	private Button view_clearAll;
 	protected TextView view_firstName;
 	protected TextView view_lastName;
-<<<<<<< HEAD
 	private ProgressDialog proDialog;
 	private boolean isNetError;
 	
@@ -65,10 +60,7 @@ public class Register extends Activity {
 			}
 		}
 	};
-	
-=======
 
->>>>>>> c8dd9c1376720105138e9fd2086101600ed4536d
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -170,8 +162,7 @@ public class Register extends Activity {
 						JSONObject json_data = jArray.getJSONObject(i);
 						
 						String success=json_data.getString("success");
-						
-<<<<<<< HEAD
+
 						if(success.equalsIgnoreCase("true"))
 						{
 							//Register success
@@ -182,16 +173,15 @@ public class Register extends Activity {
 							intent.putExtras(bundle);
 							startActivity(intent);
 							proDialog.dismiss();
-=======
+						}
+						
 						if(success=="true")
 						{
 							//finish this
->>>>>>> c8dd9c1376720105138e9fd2086101600ed4536d
 						}
-						
+					
 						else
 						{
-<<<<<<< HEAD
 							//Register failed
 							Message message = new Message();
 							Bundle bundle = new Bundle();
@@ -199,9 +189,7 @@ public class Register extends Activity {
 							message.setData(bundle);
 							registerHandler.sendMessage(message);
 							
-=======
 							//finish this
->>>>>>> c8dd9c1376720105138e9fd2086101600ed4536d
 							clearForm();
 						}
 					}
