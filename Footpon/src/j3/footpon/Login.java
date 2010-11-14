@@ -1,7 +1,6 @@
 package j3.footpon;
 
 import j3.footpon.model.User;
-import j3.footpon.model.Footpon;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;

@@ -172,17 +172,28 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	        OverlayItem oItem = new OverlayItem(point,fp.getStoreName(), 
 	        		fp.getHiddenDescription() +"\npoints: " + 
 	        		fp.getPointsRequired());
-	        //TODO: change this to catagory icon
+	        Drawable image;
+	        //TODO: move this if-else nest to IconManager.getIcon(fp.getCategory());
 	        if(fp.getCategory() == Footpon.CATAGORY_FOOD){
-	        	Drawable image = context.getResources().getDrawable(R.drawable.icon_food);
-	        	image.setBounds(-image.getIntrinsicWidth() /2, -image.getIntrinsicHeight(),
-	        					image.getIntrinsicWidth()/2, 0);
-	        	oItem.setMarker(image);
+	        	image = context.getResources().getDrawable(R.drawable.icon_food);
+	        }else if(fp.getCategory() == Footpon.CATAGORY_OUTDOOR){
+	        	image = context.getResources().getDrawable(R.drawable.icon_outdoor);
+	        }else if(fp.getCategory() == Footpon.CATAGORY_TOYS){
+	        	image = context.getResources().getDrawable(R.drawable.icon_toys);
+	        }else if(fp.getCategory() == Footpon.CATAGORY_VIDEO_GAME){
+	        	image = context.getResources().getDrawable(R.drawable.icon_games);
 	        }else{
-	        	oItem.setMarker(drawable);
+	        	image = drawable;
 	        }
+	        boundCenterButtom(image);
+	        oItem.setMarker(image);
 			overlay.addOverlay(oItem);
 		}
+	}
+	//TODO: move to IconManager.BoundCenterButtom
+	private void boundCenterButtom(Drawable image) {
+		image.setBounds(-image.getIntrinsicWidth() /2, -image.getIntrinsicHeight(),
+						image.getIntrinsicWidth()/2, 0);
 	}
 	
 	public void onStop() {

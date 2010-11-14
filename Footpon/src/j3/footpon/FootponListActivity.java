@@ -39,8 +39,9 @@ public class FootponListActivity extends Activity {
 		public void onItemClick(AdapterView<?> parent, View view,
 	            int position, long id) {
 	    	
-	    	Intent i = new Intent(footponListActivity,CouponRedeemActivity.class);
+	    	Intent i = new Intent(footponListActivity,FootponDetailsActivity.class);
 	    	i.putExtra("index",position);
+	    	i.putExtra("isRedeemed", false);
 	    	startActivity(i);
 	    }
 	};

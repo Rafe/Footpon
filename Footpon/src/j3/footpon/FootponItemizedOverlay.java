@@ -55,8 +55,9 @@ public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 		detailsButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(mContext, Coupon.class);
+				Intent i = new Intent(mContext, FootponDetailsActivity.class);
 				i.putExtra("index", index);
+				i.putExtra("isRedeemed", true);
 				mContext.startActivity(i);
 			}
 		});
