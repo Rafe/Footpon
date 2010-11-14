@@ -115,8 +115,8 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
             		currentPosition.getLatitudeE6()+" " +
             		currentPosition.getLongitudeE6());
             
-            footpons = service.getFootponsInArea(currentPosition.getLatitudeE6(),
-            									 currentPosition.getLongitudeE6());
+            footpons = service.getFootponsInArea((double)currentPosition.getLatitudeE6()/1000000,
+            									 (double)currentPosition.getLongitudeE6()/1000000);
             
             Drawable drawable = context.getResources().getDrawable(R.drawable.mark);
             mapOverlays = mapView.getOverlays();
