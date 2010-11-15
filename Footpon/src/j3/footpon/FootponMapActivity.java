@@ -72,8 +72,7 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 
         //start and bind service... 
         //you have to control service by sending intent and set service connection for callback
-        startService(new Intent(FootponMapActivity.this,
-                StepService.class));
+        startService(new Intent(FootponMapActivity.this, StepService.class));
         bindStepService();
         
         
@@ -196,14 +195,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 						image.getIntrinsicWidth()/2, 0);
 	}
 	
-	public void onStop() {
-		super.onStop();
-		unbindStepService();
-		// Stop receiving location notifications.
-		Log.i("Footpon", "stopping the listener");
-		
-	}
-	
 	@Override
     protected void onResume() {
         super.onResume();
@@ -238,4 +229,22 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 		
 		pointView.setText(String.valueOf(point));
 	}
+	
+	@Override
+    public void onPause() 
+    {
+		myLocationOverlay.disableMyLocation();
+		super.onStop();
+    }
+	
+	@Override
+    public void onStop() 
+    {
+		myLocationOverlay.disableMyLocation();
+    	super.onStop();
+    	
+		unbindStepService();
+		// Stop receiving location notifications.
+		Log.i("Footpon", "stopping the listener");
+    }
 }
