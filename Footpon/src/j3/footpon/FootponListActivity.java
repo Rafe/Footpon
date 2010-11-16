@@ -27,12 +27,15 @@ public class FootponListActivity extends Activity {
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.footpon_list);
 			
+			
 			footpons = FootponServiceFactory.getService().getInstance();
 			
-			listView = (ListView) findViewById(R.id.footponlist);
-			listView.setTextFilterEnabled(true);
-			listView.setAdapter(new FootponAdapter(this, R.layout.footpon_listitem, footpons));
-			listView.setOnItemClickListener(detailsListener);
+			if(footpons != null){
+				listView = (ListView) findViewById(R.id.footponlist);
+				listView.setTextFilterEnabled(true);
+				listView.setAdapter(new FootponAdapter(this, R.layout.footpon_listitem, footpons));
+				listView.setOnItemClickListener(detailsListener);
+			}
 	}
 	
 	public OnItemClickListener detailsListener = new OnItemClickListener() {
