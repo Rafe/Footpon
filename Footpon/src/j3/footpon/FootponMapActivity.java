@@ -54,8 +54,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	
 	float point;
 	
-	
-	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +69,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
         
         myLocationOverlay = getLocationOverlay(); 
         service = FootponServiceFactory.getService();
-        //footpons = service.getFootponsInArea(0,0);
 
         //start and bind service... 
         //you have to control service by sending intent and set service connection for callback
@@ -118,8 +115,8 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
             		currentPosition.getLatitudeE6()+" " +
             		currentPosition.getLongitudeE6());
             
-            footpons = service.getFootponsInAreaServer(currentPosition.getLatitudeE6(),
-            									 currentPosition.getLongitudeE6());
+            footpons = service.getFootponsInArea((double)currentPosition.getLatitudeE6()/1000000,
+            									 (double)currentPosition.getLongitudeE6()/1000000);
             
             Drawable drawable = context.getResources().getDrawable(R.drawable.mark);
             mapOverlays = mapView.getOverlays();
@@ -152,17 +149,16 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	    // Handle item selection
 	    switch (item.getItemId()) {
 	    case R.id.search:
-	    	Intent intent1 = new Intent(footponMapActivity, CouponRedeemActivity.class);
-	    	startActivity(intent1);
+	    	startActivity(
+	    			new Intent(footponMapActivity, CouponRedeemActivity.class));
 	    	return true;
 	    case R.id.list:
-	    	Intent intent2 = new Intent(footponMapActivity, StoreListActivity.class);
-	    	startActivity(intent2);
+	    	startActivity(
+	    			new Intent(footponMapActivity, FootponListActivity.class));
 	    	return true;
-	    case R.id.login:
-	    	Intent intent3 = new Intent(footponMapActivity, Login.class);
-	    	startActivity(intent3);
-	    	return true;
+//	    case R.id.login:
+//	    	startActivity(new Intent(footponMapActivity, Login.class));
+//	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
@@ -176,17 +172,28 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	        OverlayItem oItem = new OverlayItem(point,fp.getStoreName(), 
 	        		fp.getHiddenDescription() +"\npoints: " + 
 	        		fp.getPointsRequired());
-	        //TODO: change this to catagory icon
+	        Drawable image;
+	        //TODO: move this if-else nest to IconManager.getIcon(fp.getCategory());
 	        if(fp.getCategory() == Footpon.CATAGORY_FOOD){
-	        	Drawable image = context.getResources().getDrawable(R.drawable.icon_food);
-	        	image.setBounds(-image.getIntrinsicWidth() /2, -image.getIntrinsicHeight(),
-	        					image.getIntrinsicWidth()/2, 0);
-	        	oItem.setMarker(image);
+	        	image = context.getResources().getDrawable(R.drawable.icon_food);
+	        }else if(fp.getCategory() == Footpon.CATAGORY_OUTDOOR){
+	        	image = context.getResources().getDrawable(R.drawable.icon_outdoor);
+	        }else if(fp.getCategory() == Footpon.CATAGORY_TOYS){
+	        	image = context.getResources().getDrawable(R.drawable.icon_toys);
+	        }else if(fp.getCategory() == Footpon.CATAGORY_VIDEO_GAME){
+	        	image = context.getResources().getDrawable(R.drawable.icon_games);
 	        }else{
-	        	oItem.setMarker(drawable);
+	        	image = drawable;
 	        }
-	//		overlay.addOverlay(oItem);
+	        boundCenterButtom(image);
+	        oItem.setMarker(image);
+			overlay.addOverlay(oItem);
 		}
+	}
+	//TODO: move to IconManager.BoundCenterButtom
+	private void boundCenterButtom(Drawable image) {
+		image.setBounds(-image.getIntrinsicWidth() /2, -image.getIntrinsicHeight(),
+						image.getIntrinsicWidth()/2, 0);
 	}
 	
 	public void onStop() {
@@ -195,7 +202,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 		// Stop receiving location notifications.
 		Log.i("Footpon", "stopping the listener");
 		
-
 	}
 	
 	@Override

@@ -15,8 +15,8 @@ public class CouponRedeemActivity extends Activity {
         button.setText("Redeem Now!");
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-            	Intent intent1 = new Intent(CouponRedeemActivity.this, Login.class);
-    	    	startActivity(intent1);
+    	    	startActivity(
+    	    			new Intent(CouponRedeemActivity.this, Login.class));
             }
         });
     }

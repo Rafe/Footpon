@@ -1,8 +1,7 @@
 package j3.footpon.test;
 
 import com.google.android.maps.MapView;
-
-import j3.footpon.FootponMapActivity;
+import j3.footpon.*;
 import android.test.ActivityInstrumentationTestCase2;
 
 public class FootponMapActivityTest extends

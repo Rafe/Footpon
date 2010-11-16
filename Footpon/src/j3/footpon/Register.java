@@ -40,6 +40,7 @@ public class Register extends Activity {
 	private Button view_clearAll;
 	protected TextView view_firstName;
 	protected TextView view_lastName;
+
 	private ProgressDialog proDialog;
 	private boolean isNetError;
 	
@@ -55,12 +56,12 @@ public class Register extends Activity {
 						Toast.LENGTH_SHORT).show();
 			}
 			else {
-				Toast.makeText(Register.this, "Wrong username or password!",
+				Toast.makeText(Register.this, "Username not available or password!",
 						Toast.LENGTH_SHORT).show();
 			}
 		}
 	};
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -162,7 +163,7 @@ public class Register extends Activity {
 						JSONObject json_data = jArray.getJSONObject(i);
 						
 						String success=json_data.getString("success");
-
+						
 						if(success.equalsIgnoreCase("true"))
 						{
 							//Register success
@@ -173,13 +174,10 @@ public class Register extends Activity {
 							intent.putExtras(bundle);
 							startActivity(intent);
 							proDialog.dismiss();
-						}
-						
-						if(success=="true")
-						{
+
 							//finish this
 						}
-					
+						
 						else
 						{
 							//Register failed

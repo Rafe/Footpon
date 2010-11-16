@@ -20,12 +20,4 @@ public class FakeFootponService implements IFootponService {
 	public ArrayList<Footpon> getInstance() {
 			return getFootponsInArea(0,0);
 	}
-
-	@Override
-	public ArrayList<Footpon> getFootponsInAreaServer(double longtitude,
-			double latitude) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
