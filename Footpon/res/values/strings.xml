@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Footpon</string>
-<<<<<<< HEAD
     <string name="api_key">0chbON-cRAc7XYaSWJIWFCq9WvKczdqpa-oF4CA</string>
-=======
-    <string name="api_key">0ABi_d6fZRDNtRYUI9O_8V-n1D_N2d09fYJgHYA</string>
->>>>>>> f459e0cf6cff20e3370b2a8b6181636ef62ff457
     <string name="suggest_userName">Username cannot be empty</string>
 	<string name="suggest_passwordNotEmpty">Password cannot be empty</string>
 	<string name="suggest_passwordNotSame">Password failed to match</string>
