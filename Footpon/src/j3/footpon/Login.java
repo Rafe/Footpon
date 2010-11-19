@@ -168,10 +168,6 @@ public class Login extends Activity {
 					+ view_userName.getText().toString());
 			share.edit().putString(SHARE_USERNAME,
 					view_userName.getText().toString()).commit();
-			
-			// need modify here. This line should be added in Register.java
-			share.edit().putString(SHARE_FIRSTNAME,
-					"Tang").commit();
 		}
 		if (savePassword) {
 			share.edit().putString(SHARE_PASSWORD,

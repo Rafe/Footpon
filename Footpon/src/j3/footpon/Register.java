@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -40,6 +41,11 @@ public class Register extends Activity {
 	private Button view_clearAll;
 	protected TextView view_firstName;
 	protected TextView view_lastName;
+	
+	private final String SHARE_LOGIN_TAG = "LOGIN_TAG";
+	private String SHARE_USERNAME = "FOOTPON_USERNAME";
+	private String SHARE_PASSWORD = "FOOTPON_PASSWORD";
+	private String SHARE_FIRSTNAME = "FOOTPON_FIRSTNAME";
 
 	private ProgressDialog proDialog;
 	private boolean isNetError;
@@ -167,6 +173,12 @@ public class Register extends Activity {
 						if(success.equalsIgnoreCase("true"))
 						{
 							//Register success
+							SharedPreferences share = getSharedPreferences(SHARE_LOGIN_TAG, 0);
+							share.edit().putString(SHARE_USERNAME, userName).commit();
+							share.edit().putString(SHARE_PASSWORD, password).commit();
+							share.edit().putString(SHARE_FIRSTNAME, firstName).commit();
+							share = null;
+							
 							Intent intent = new Intent();
 							intent.setClass(Register.this, Coupon.class);
 							Bundle bundle = new Bundle();
