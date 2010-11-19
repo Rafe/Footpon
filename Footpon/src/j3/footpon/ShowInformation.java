@@ -68,7 +68,7 @@ public class ShowInformation extends Activity {
 	private boolean isNetError;
 	private ProgressDialog proDialog;
 	
-	private User currentUser=null;
+	//private User currentUser=null;
 
 	Handler loginHandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -346,23 +346,56 @@ public class ShowInformation extends Activity {
 			try
 			{
 				JSONArray jArray = new JSONArray(result);
+				
+				int i=0;
+				JSONObject json_data = jArray.getJSONObject(i);
+				
+				String username=json_data.getString("username");
+				String firstName=json_data.getString("firstName");
+				String lastName=json_data.getString("lastName");
+				Long points=json_data.getLong("points");
+
+	    		//Writing to file code modified from http://groups.google.com/group/android-beginners/browse_thread/thread/b8fd909e33eab7c1
+    			File root=Environment.getExternalStorageDirectory();
+    			
+    			if(root.canWrite())
+    			{
+    				File file=new File(root, "user.txt");
+    				FileWriter writer=new FileWriter(file, true);
+    				BufferedWriter out=new BufferedWriter(writer);
+    				
+    				out.write("Username: ");
+    				out.write(username);
+    				out.write("\n");
+    				out.write("First Name: ");
+    				out.write(firstName);
+    				out.write("\n");
+    				out.write("Last Name: ");
+    				out.write(lastName);
+    				out.write("\n");
+    				out.write("Previously Stored Points: ");
+    				out.write(Long.toString(points));
+    				out.write("\n\n");
+    				out.write("Coupons ID Redeemed:");
+    				out.write("\n");
+    				out.close();
+    			}
+				
+				for(i=0;i<jArray.length();i++)
+				{
+					json_data = jArray.getJSONObject(i);
 					
-				//for(int i=0;i<jArray.length();i++)
-				//{
-					int i=0;
-					JSONObject json_data = jArray.getJSONObject(i);
+					//String username=json_data.getString("username");
+					//String firstName=json_data.getString("firstName");
+					//String lastName=json_data.getString("lastName");
+					//Long points=json_data.getLong("points");
+					Long id=json_data.getLong("id");
 					
-					String username=json_data.getString("username");
-					String firstName=json_data.getString("firstName");
-					String lastName=json_data.getString("lastName");
-					Long points=json_data.getLong("points");
+					//currentUser=new User(username, firstName, lastName, points);
 					
-					currentUser=new User(username, firstName, lastName, points);
-					
-		    		//Writing to file code modified from http://groups.google.com/group/android-beginners/browse_thread/thread/b8fd909e33eab7c1
 		    		try 
 					{
-		    			File root=Environment.getExternalStorageDirectory();
+///		    			File root=Environment.getExternalStorageDirectory();
 		    			
 		    			if(root.canWrite())
 		    			{
@@ -370,17 +403,17 @@ public class ShowInformation extends Activity {
 		    				FileWriter writer=new FileWriter(file, true);
 		    				BufferedWriter out=new BufferedWriter(writer);
 		    				
-		    				out.write("Username: ");
-		    				out.write(username);
-		    				out.write("\n");
-		    				out.write("First Name: ");
-		    				out.write(firstName);
-		    				out.write("\n");
-		    				out.write("Last Name: ");
-		    				out.write(lastName);
-		    				out.write("\n");
-		    				out.write("Previously Stored Points: ");
-		    				out.write(Long.toString(points));
+		    				//out.write("Username: ");
+		    				//out.write(username);
+		    				//out.write("\n");
+		    				//out.write("First Name: ");
+		    				//out.write(firstName);
+		    				//out.write("\n");
+		    				//out.write("Last Name: ");
+		    				//out.write(lastName);
+		    				//out.write("\n");
+		    				//out.write("Previously Stored Points: ");
+		    				out.write(Long.toString(id));
 		    				out.write("\n");
 		    				out.close();
 		    			}
@@ -405,15 +438,21 @@ public class ShowInformation extends Activity {
 					
 				    //itemizedoverlay.addOverlay(overlayitem);
 				    //mapOverlays.add(itemizedoverlay);
-				//}
+				}
 			}
 
 			catch(JSONException e)
 			{
 				Log.e("log_tag", "Error parsing data "+e.toString());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		
-			if(currentUser!=null)
+			File sdcard=Environment.getExternalStorageDirectory();
+			File file=new File(sdcard, "user.txt");
+
+			if(file.exists())
 			{
 /*				// login success
 				Intent intent = new Intent();
@@ -424,9 +463,13 @@ public class ShowInformation extends Activity {
 				startActivity(intent);
 				proDialog.dismiss();*/
 				
-				Intent intent=new Intent();
-				intent.setClass(ShowInformation.this, ShowInformation.class);
-				startActivity(intent);
+				//Intent intent=new Intent();
+				//intent.setClass(ShowInformation.this, ShowInformation.class);
+				//startActivity(intent);
+//				Toast.makeText(ShowInformation.this, "Login successful",
+//						Toast.LENGTH_LONG).show();
+				
+				finish();
 			}
 			 
 			
@@ -447,9 +490,10 @@ public class ShowInformation extends Activity {
 		@Override
 		public void onClick(View v) 
 		{
-			Intent intent=new Intent();
-			intent.setClass(ShowInformation.this, FootponMapActivity.class);
-			startActivity(intent);
+			//Intent intent=new Intent();
+			//intent.setClass(ShowInformation.this, FootponMapActivity.class);
+			//startActivity(intent);
+			finish();
 		}
 	};
 	

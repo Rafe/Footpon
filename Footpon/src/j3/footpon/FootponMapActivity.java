@@ -6,6 +6,7 @@ import j3.footpon.model.IFootponService;
 import j3.footpon.pedometer.StepDisplayer;
 import j3.footpon.pedometer.StepService;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Gravity;

@@ -6,5 +6,5 @@
   <item android:id="@+id/list"
   		android:title="My Coupons"/>
   <item android:id="@+id/showInformation"
-  		android:title="User Information"/>
+  		android:title="Login/Show Information"/>
 </menu>
