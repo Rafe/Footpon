@@ -10,6 +10,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONObject;
+
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapController;
@@ -17,6 +19,8 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
+//import com.google.maps.HelloItemizedOverlay;
+//import com.google.maps.R;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -49,7 +53,7 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	FootponMapActivity context = this;
 	FootponItemizedOverlay footponOverlay;
 	MyLocationOverlay myLocationOverlay;
-	List<Overlay> mapOverlays;
+	//List<Overlay> mapOverlays;
 	
 	IFootponService service;
 	StepService stepService;
@@ -115,19 +119,53 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
             Log.d(LOCATION_SERVICE, "current position:" +
             		currentPosition.getLatitudeE6()+" " +
             		currentPosition.getLongitudeE6());
-            
+			
+        	footpons=new ArrayList<Footpon>();
             footpons = service.getFootponsInArea((double)currentPosition.getLatitudeE6()/1000000,
             									 (double)currentPosition.getLongitudeE6()/1000000);
             
-            Drawable drawable = context.getResources().getDrawable(R.drawable.mark);
-            mapOverlays = mapView.getOverlays();
-            mapOverlays.add(myLocationOverlay);
+            //Drawable drawable = context.getResources().getDrawable(R.drawable.mark);
+            //mapOverlays = mapView.getOverlays();
+            //mapOverlays.add(myLocationOverlay);
             
-            if(footpons.size() > 0){
+            /*if(footpons.size() > 0){
             	footponOverlay = new FootponItemizedOverlay(drawable, context);
             	setMapItems(footponOverlay, drawable, footpons);
             	mapOverlays.add(footponOverlay);
-            }
+            }*/
+                       
+            List<Overlay> mapOverlays = mapView.getOverlays();
+            //Drawable drawable = context.getResources().getDrawable(R.drawable.mark);
+            //FootponItemizedOverlay itemizedoverlay = new FootponItemizedOverlay(drawable, context);
+                      
+			for(int i=0;i<footpons.size();i++)
+			{
+	            Drawable drawable; //= context.getResources().getDrawable(R.drawable.mark);
+				
+
+		        if(footpons.get(i).getCategory().equals(Footpon.CATEGORY_FOOD)){
+		        	drawable = context.getResources().getDrawable(R.drawable.icon_food);
+		        }else if(footpons.get(i).getCategory().equals(Footpon.CATEGORY_OUTDOOR)){
+		        	drawable = context.getResources().getDrawable(R.drawable.icon_outdoor);
+		        }else if(footpons.get(i).getCategory().equals(Footpon.CATEGORY_TOYS)){
+		        	drawable = context.getResources().getDrawable(R.drawable.icon_toys);
+		        }else if(footpons.get(i).getCategory().equals(Footpon.CATEGORY_VIDEO_GAME)){
+		        	drawable = context.getResources().getDrawable(R.drawable.icon_games);
+		        }else{
+		        	drawable = context.getResources().getDrawable(R.drawable.mark);
+		        }
+		        
+	            FootponItemizedOverlay itemizedoverlay = new FootponItemizedOverlay(drawable, context);
+
+				
+		        GeoPoint point = new GeoPoint((int)(footpons.get(i).getLatitude()*1000000), (int)(footpons.get(i).getLongitude()*1000000));
+		        OverlayItem overlayitem = new OverlayItem(point, footpons.get(i).getStoreName(), footpons.get(i).getHiddenDescription()+".\nPoints Required:"+footpons.get(i).getPointsRequired());
+		 
+		        itemizedoverlay.addOverlay(overlayitem);
+		        mapOverlays.add(itemizedoverlay);			
+			}
+            
+            
         }});
 		overlay.enableMyLocation();
 		return overlay;
@@ -175,13 +213,13 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	        		fp.getPointsRequired());
 	        Drawable image;
 	        //TODO: move this if-else nest to IconManager.getIcon(fp.getCategory());
-	        if(fp.getCategory() == Footpon.CATAGORY_FOOD){
+	        if(fp.getCategory() == Footpon.CATEGORY_FOOD){
 	        	image = context.getResources().getDrawable(R.drawable.icon_food);
-	        }else if(fp.getCategory() == Footpon.CATAGORY_OUTDOOR){
+	        }else if(fp.getCategory() == Footpon.CATEGORY_OUTDOOR){
 	        	image = context.getResources().getDrawable(R.drawable.icon_outdoor);
-	        }else if(fp.getCategory() == Footpon.CATAGORY_TOYS){
+	        }else if(fp.getCategory() == Footpon.CATEGORY_TOYS){
 	        	image = context.getResources().getDrawable(R.drawable.icon_toys);
-	        }else if(fp.getCategory() == Footpon.CATAGORY_VIDEO_GAME){
+	        }else if(fp.getCategory() == Footpon.CATEGORY_VIDEO_GAME){
 	        	image = context.getResources().getDrawable(R.drawable.icon_games);
 	        }else{
 	        	image = drawable;

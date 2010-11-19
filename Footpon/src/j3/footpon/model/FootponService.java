@@ -23,6 +23,7 @@ public class FootponService implements IFootponService {
 
 	private static ArrayList<Footpon> _instance;
 
+	@Override
 	public ArrayList<Footpon> getFootponsInArea(double currentLatitude,
 			double currentLongitude) {
 		String result = "";

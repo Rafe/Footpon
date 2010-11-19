@@ -6,6 +6,7 @@ import j3.footpon.model.IFootponService;
 
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +18,7 @@ import android.widget.TextView;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 
-public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
+public class FootponItemizedOverlay extends ItemizedOverlay {
 	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 
 	public FootponItemizedOverlay(Drawable defaultMarker) {
@@ -31,7 +32,7 @@ public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 		mContext = context;
 	}
 
-	@Override
+/*	@Override
 	protected boolean onTap(final int index) {
 		OverlayItem item = mOverlays.get(index);
 
@@ -68,7 +69,19 @@ public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 		dialog.show();
 
 		return true;
+	}*/
+	
+	
+	@Override
+	protected boolean onTap(int index) {
+	  OverlayItem item = mOverlays.get(index);
+	  AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+	  dialog.setTitle(item.getTitle());
+	  dialog.setMessage(item.getSnippet());
+	  dialog.show();
+	  return true;
 	}
+	
 
 	public void addOverlay(OverlayItem overlay) {
 		mOverlays.add(overlay);

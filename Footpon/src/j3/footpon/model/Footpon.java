@@ -18,10 +18,10 @@ public class Footpon {
 	private Date startDate;
 	private Date endDate;
 	
-	public static final String CATAGORY_VIDEO_GAME="Video Game";
-	public static final String CATAGORY_FOOD="Food";
-	public static final String CATAGORY_TOYS="Toys";
-	public static final String CATAGORY_OUTDOOR="Outdoor";
+	public static final String CATEGORY_VIDEO_GAME="Video Game";
+	public static final String CATEGORY_FOOD="Food";
+	public static final String CATEGORY_TOYS="Toys";
+	public static final String CATEGORY_OUTDOOR="Outdoor";
 	
 	public Footpon(String storeName, String category, String hiddenDescription, String realDescription, double latitude, double longtitude,int pointsRequired,long code){
 		this.storeName = storeName;
