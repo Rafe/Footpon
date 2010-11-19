@@ -36,14 +36,14 @@ public class FootponAdapter extends ArrayAdapter<Footpon>{
             if (storeName != null) {
              	storeName.setText(f.getStoreName());                            
             }
-            if(description != null){
+            if (description != null) {
                	description.setText(f.getRealDescription());
             }
-            if(points != null){
+            if (points != null) {
                	points.setText(String.valueOf(f.getPointsRequired()));
             }
         }
         
         return v;
-}
+	}
 }

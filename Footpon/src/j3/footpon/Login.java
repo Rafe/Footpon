@@ -49,9 +49,10 @@ public class Login extends Activity {
 	private Button view_loginSubmit;
 	private Button view_loginRegister;
 	
-	private final String SHARE_LOGIN_TAG = "MAP_SHARE_LOGIN_TAG";
-	private String SHARE_LOGIN_USERNAME = "MAP_LOGIN_USERNAME";
-	private String SHARE_LOGIN_PASSWORD = "MAP_LOGIN_PASSWORD";
+	private final String SHARE_LOGIN_TAG = "LOGIN_TAG";
+	private String SHARE_USERNAME = "FOOTPON_USERNAME";
+	private String SHARE_PASSWORD = "FOOTPON_PASSWORD";
+	private String SHARE_FIRSTNAME = "FOOTPON_FIRSTNAME";
 
 	private boolean isNetError;
 	private ProgressDialog proDialog;
@@ -97,8 +98,8 @@ public class Login extends Activity {
 
 	private void initView(boolean isRememberMe) {
 		SharedPreferences share = getSharedPreferences(SHARE_LOGIN_TAG, 0);
-		String userName = share.getString(SHARE_LOGIN_USERNAME, "");
-		String password = share.getString(SHARE_LOGIN_PASSWORD, "");
+		String userName = share.getString(SHARE_USERNAME, "");
+		String password = share.getString(SHARE_PASSWORD, "");
 		Log.d(this.toString(), "userName=" + userName + " password=" + password);
 		if (!"".equals(userName)) {
 			view_userName.setText(userName);
@@ -111,7 +112,7 @@ public class Login extends Activity {
 		share = null;
 	}
 
-	private boolean validateLocalLogin(String userName, String password,
+	/*private boolean validateLocalLogin(String userName, String password,
 			String validateUrl) {
 		boolean loginState = false;
 		HttpURLConnection conn = null;
@@ -158,18 +159,22 @@ public class Login extends Activity {
 			clearSharePassword();
 		}
 		return loginState;
-	}
+	}*/
 
 	private void saveSharePreferences(boolean saveUserName, boolean savePassword) {
 		SharedPreferences share = getSharedPreferences(SHARE_LOGIN_TAG, 0);
 		if (saveUserName) {
 			Log.d(this.toString(), "saveUserName="
 					+ view_userName.getText().toString());
-			share.edit().putString(SHARE_LOGIN_USERNAME,
+			share.edit().putString(SHARE_USERNAME,
 					view_userName.getText().toString()).commit();
+			
+			// need modify here. This line should be added in Register.java
+			share.edit().putString(SHARE_FIRSTNAME,
+					"Tang").commit();
 		}
 		if (savePassword) {
-			share.edit().putString(SHARE_LOGIN_PASSWORD,
+			share.edit().putString(SHARE_PASSWORD,
 					view_password.getText().toString()).commit();
 		}
 		share = null;
@@ -200,7 +205,7 @@ public class Login extends Activity {
 		}
 	};
 	
-	private OnClickListener registerLstener = new OnClickListener() {
+	private OnClickListener registerListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
 			Intent intent = new Intent();
@@ -211,13 +216,13 @@ public class Login extends Activity {
 
 	private void setListener() {
 		view_loginSubmit.setOnClickListener(submitListener);
-		view_loginRegister.setOnClickListener(registerLstener);
+		view_loginRegister.setOnClickListener(registerListener);
 		view_rememberMe.setOnCheckedChangeListener(rememberMeListener);
 	}
 
 	private void clearSharePassword() {
 		SharedPreferences share = getSharedPreferences(SHARE_LOGIN_TAG, 0);
-		share.edit().putString(SHARE_LOGIN_PASSWORD, "").commit();
+		share.edit().putString(SHARE_PASSWORD, "").commit();
 		share = null;
 	}
 
@@ -231,7 +236,7 @@ public class Login extends Activity {
 
 			//Code modified from http://www.helloandroid.com/tutorials/connecting-mysql-database.
 			String result = "";
-			String username="";
+		//	String username="";
 			InputStream is = null;
 
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -318,6 +323,15 @@ public class Login extends Activity {
 			if(currentUser!=null)
 			{
 				// login success
+				if (isRememberMe()) {
+					saveSharePreferences(true, true);
+				} else {
+					saveSharePreferences(true, false);
+				}
+				if (!view_rememberMe.isChecked()) {
+					clearSharePassword();
+				}
+				
 				Intent intent = new Intent();
 				intent.setClass(Login.this, Coupon.class);
 				Bundle bundle = new Bundle();
