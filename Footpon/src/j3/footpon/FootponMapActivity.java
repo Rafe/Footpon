@@ -155,9 +155,9 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	    	startActivity(
 	    			new Intent(footponMapActivity, FootponListActivity.class));
 	    	return true;
-//	    case R.id.showInformation:
-//	    	startActivity(new Intent(footponMapActivity, ShowInformation.class));
-//	    	return true;
+	    case R.id.showInformation:
+	    	startActivity(new Intent(footponMapActivity, ShowInformation.class));
+	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
