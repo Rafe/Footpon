@@ -5,9 +5,11 @@ import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.IFootponService;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -283,11 +285,20 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 
 							String success=json_data.getString("success");
 
+			    			if(sdcard.canWrite())
+			    			{
+			    				FileWriter writer=new FileWriter(file, true);
+			    				BufferedWriter out=new BufferedWriter(writer);
+			    				
+			    				out.append(Long.toString(footpon.getID()));
+			    				out.close();
+			    			}
+							
 							if(success.equalsIgnoreCase("true"))
 							{
 								Intent i = new Intent(mContext, FootponDetailsActivity.class);
 								i.putExtra("latitude", footpon.getLatitude());
-								i.putExtra("longitiude", footpon.getLongitude());
+								i.putExtra("longitude", footpon.getLongitude());
 								i.putExtra("isRedeemed", true);
 								mContext.startActivity(i);
 							}
