@@ -5,6 +5,10 @@ import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.IFootponService;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -27,6 +31,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -38,9 +43,8 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.OverlayItem;
 
 public class FootponItemizedOverlay extends ItemizedOverlay {
+	Footpon footpon = null;
 	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
-	private MapView map=null;
-
 	public FootponItemizedOverlay(Drawable defaultMarker) {
 		super(boundCenterBottom(defaultMarker));
 	}
@@ -101,7 +105,6 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 	  dialog.show();
 	  return true;*/
 	  	  
-		Footpon footpon = null;
 		
 		  OverlayItem item=getItem(index);
 		  GeoPoint point=item.getPoint();
@@ -186,8 +189,7 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 				//String realDescription=json_data.getString("realDescription");
 				//int pointsRequired =(int) json_data.getInt("pointsRequired");
 //				double latitude, double longtitude,int pointsRequired,long code){
-				footpon=new Footpon(json_data.getString("storeName"), json_data.getString("category"), json_data.getString("hiddenDescription"), json_data.getString("realDescription"), (json_data.getDouble("latitude")*1000000), (json_data.getDouble("longitude")*1000000), (int) json_data.getInt("pointsRequired"), (long) json_data.getInt("code"));
-
+				footpon=new Footpon(json_data.getLong("id"), json_data.getString("storeName"), json_data.getString("category"), json_data.getString("hiddenDescription"), json_data.getString("realDescription"), (json_data.getDouble("latitude")*1000000), (json_data.getDouble("longitude")*1000000), (int) json_data.getInt("pointsRequired"), (long) json_data.getInt("code"));
 			//}
 		}
 
@@ -209,10 +211,114 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 		detailsButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(mContext, FootponDetailsActivity.class);
-				i.putExtra("index", index);
-				i.putExtra("isRedeemed", true);
-				mContext.startActivity(i);
+				File sdcard=Environment.getExternalStorageDirectory();
+				File file=new File(sdcard, "user.txt");
+
+				if(file.exists())
+				{
+					String text=new String();
+					
+					try
+					{
+						BufferedReader reader=new BufferedReader(new FileReader(file));
+						String line;
+						
+						line=reader.readLine();
+						String[] temp=line.split(" ");
+						text=temp[1];
+						
+						String result = "";
+						InputStream is = null;
+
+						// the year data to send
+						ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+						nameValuePairs.add(new BasicNameValuePair("username", text));
+						nameValuePairs.add(new BasicNameValuePair("id", Long.toString(footpon.getID())));
+
+						// http post
+						try {
+							HttpClient httpclient = new DefaultHttpClient();
+
+							HttpPost httppost = new HttpPost("http://pdc-amd01.poly.edu/~jli15/footpon/redeemCoupon.php");
+							httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+							HttpResponse response = httpclient.execute(httppost);
+
+							HttpEntity entity = response.getEntity();
+
+							is = entity.getContent();
+						}
+
+						catch (Exception e) {
+							Log.e("log_tag", "Error in http connection " + e.toString());
+						}
+
+						// convert response to string
+						try {
+							reader = new BufferedReader(new InputStreamReader(
+									is, "iso-8859-1"), 8);
+
+							StringBuilder sb = new StringBuilder();
+
+							line = null;
+
+							while ((line = reader.readLine()) != null) {
+								sb.append(line + "\n");
+							}
+
+							is.close();
+
+							result = sb.toString();
+						}
+
+						catch (Exception e) {
+							Log.e("log_tag", "Error converting result " + e.toString());
+						}
+
+						// parse json data
+						try
+						{
+							JSONArray jArray = new JSONArray(result);
+							JSONObject json_data = jArray.getJSONObject(0);
+
+							String success=json_data.getString("success");
+
+							if(success.equalsIgnoreCase("true"))
+							{
+								Intent i = new Intent(mContext, FootponDetailsActivity.class);
+								i.putExtra("latitude", footpon.getLatitude());
+								i.putExtra("longitiude", footpon.getLongitude());
+								i.putExtra("isRedeemed", true);
+								mContext.startActivity(i);
+							}
+							
+							else
+							{
+							}
+						}
+
+						catch (JSONException e) {
+							Log.e("log_tag", "Error parsing data " + e.toString());
+						}
+					}
+
+					catch (FileNotFoundException e)
+					{
+						text="File not found.\n";
+					} 
+					
+					catch (IOException e) 
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				
+				else
+				{
+					Intent i = new Intent(mContext, ShowInformation.class);
+					mContext.startActivity(i);
+				}
 			}
 		});
 

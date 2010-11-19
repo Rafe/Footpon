@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 public class Footpon {
 	
+	private long id;
 	private String storeName;
 	private long code;
 	private String category;
@@ -23,7 +24,8 @@ public class Footpon {
 	public static final String CATEGORY_TOYS="Toys";
 	public static final String CATEGORY_OUTDOOR="Outdoor";
 	
-	public Footpon(String storeName, String category, String hiddenDescription, String realDescription, double latitude, double longtitude,int pointsRequired,long code){
+	public Footpon(long id, String storeName, String category, String hiddenDescription, String realDescription, double latitude, double longtitude,int pointsRequired,long code){
+		this.id=id;
 		this.storeName = storeName;
 		this.category=category;
 		this.hiddenDescription = hiddenDescription;
@@ -35,8 +37,9 @@ public class Footpon {
 
 	}
 	
-	public Footpon(JSONObject data) throws JSONException{
-		
+	public Footpon(JSONObject data) throws JSONException
+	{
+		this.id = data.getLong("id");
 		this.storeName = data.getString("storeName");
 		this.code = data.getLong("code");
 		this.category = data.getString("category");
@@ -50,7 +53,18 @@ public class Footpon {
 	}
 	
 	//Getter and Setters...
-	public String getStoreName(){
+	public long getID()
+	{
+		return id;
+	}
+	
+	public void setID(long id)
+	{
+		this.id = id;
+	}
+	
+	public String getStoreName()
+	{
 		return storeName;
 	}
 	

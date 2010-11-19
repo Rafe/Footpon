@@ -23,7 +23,7 @@
   	
   	<Button 
   		android:id="@+id/dialog_show_details"
-  		android:text="Show Details"
+  		android:text="Redeem"
   		android:padding="12dip" 
   		android:layout_width="wrap_content"
   		android:layout_height="wrap_content"
