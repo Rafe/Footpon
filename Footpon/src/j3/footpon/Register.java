@@ -179,14 +179,15 @@ public class Register extends Activity {
 							share.edit().putString(SHARE_FIRSTNAME, firstName).commit();
 							share = null;
 							
-							Intent intent = new Intent();
-							intent.setClass(Register.this, Coupon.class);
-							Bundle bundle = new Bundle();
-							bundle.putString("MAP_USERNAME", userName);
-							intent.putExtras(bundle);
-							startActivity(intent);
-							proDialog.dismiss();
-
+							//Intent intent = new Intent();
+							//intent.setClass(Register.this, Coupon.class);
+							//Bundle bundle = new Bundle();
+							//bundle.putString("MAP_USERNAME", userName);
+							//intent.putExtras(bundle);
+							//startActivity(intent);
+							//proDialog.dismiss();
+							
+							finish();
 							//finish this
 						}
 						

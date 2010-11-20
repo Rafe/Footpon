@@ -1,11 +1,20 @@
 package j3.footpon;
 
 import j3.footpon.model.User;
+import j3.footpon.R;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -27,6 +36,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
@@ -277,6 +287,7 @@ public class Login extends Activity {
 				is.close();
 				
 				result=sb.toString();
+				Log.e("log_tag", "result: "+result);
 			}
 
 			catch(Exception eee)
@@ -288,26 +299,84 @@ public class Login extends Activity {
 			try
 			{
 				JSONArray jArray = new JSONArray(result);
-					
-				for(int i=0;i<jArray.length();i++)
+
+				int i=0;
+				JSONObject json_data = jArray.getJSONObject(i);
+				
+				String username=json_data.getString("username");
+				String firstName=json_data.getString("firstName");
+				String lastName=json_data.getString("lastName");
+				Long points=json_data.getLong("points");
+
+	    		//Writing to file code modified from http://groups.google.com/group/android-beginners/browse_thread/thread/b8fd909e33eab7c1
+    			File root=Environment.getExternalStorageDirectory();
+    			
+    			if(root.canWrite())
+    			{
+    				File file=new File(root, "user.txt");
+    				FileWriter writer=new FileWriter(file, true);
+    				BufferedWriter out=new BufferedWriter(writer);
+    				
+    				out.write("Username: ");
+    				out.write(username);
+    				out.write("\n");
+    				out.write("First Name: ");
+    				out.write(firstName);
+    				out.write("\n");
+    				out.write("Last Name: ");
+    				out.write(lastName);
+    				out.write("\n");
+    				out.write("Previously Stored Points: ");
+    				out.write(Long.toString(points));
+    				out.write("\n\n");
+    				out.write("Coupons ID Redeemed:");
+    				out.write("\n");
+    				out.close();
+    			}
+				
+				for(i=0;i<jArray.length();i++)
 				{
-					JSONObject json_data = jArray.getJSONObject(i);
+					json_data = jArray.getJSONObject(i);
 					
-					currentUser=new User(json_data.getString("username"), json_data.getString("firstName"), json_data.getString("lastName"), json_data.getLong("points"));
+					//String username=json_data.getString("username");
+					//String firstName=json_data.getString("firstName");
+					//String lastName=json_data.getString("lastName");
+					//Long points=json_data.getLong("points");
+					Long id=json_data.getLong("id");
 					
-					//Log.i("log_tag","Longitude: "+json_data.getDouble("longitude")+", Latitude: "+json_data.getDouble("latitude"));
-					//int longitude=(int) (json_data.getDouble("longitude")*1000000);
-					//int latitude=(int) (json_data.getDouble("latitude")*1000000);
-					//String storeName=json_data.getString("storeName");
-					//String hiddenDescription=json_data.getString("hiddenDescription");
-					//String realDescription=json_data.getString("realDescription");
-					//int pointsRequired =(int) json_data.getInt("pointsRequired");
-						
-				    //GeoPoint point = new GeoPoint(latitude, longitude);
-				    //OverlayItem overlayitem = new OverlayItem(point, storeName, hiddenDescription+".\nPoints Required:"+pointsRequired);
+					//currentUser=new User(username, firstName, lastName, points);
 					
-				    //itemizedoverlay.addOverlay(overlayitem);
-				    //mapOverlays.add(itemizedoverlay);
+		    		try 
+					{
+///		    			File root=Environment.getExternalStorageDirectory();
+		    			
+		    			if(root.canWrite())
+		    			{
+		    				File file=new File(root, "user.txt");
+		    				FileWriter writer=new FileWriter(file, true);
+		    				BufferedWriter out=new BufferedWriter(writer);
+		    				
+		    				//out.write("Username: ");
+		    				//out.write(username);
+		    				//out.write("\n");
+		    				//out.write("First Name: ");
+		    				//out.write(firstName);
+		    				//out.write("\n");
+		    				//out.write("Last Name: ");
+		    				//out.write(lastName);
+		    				//out.write("\n");
+		    				//out.write("Previously Stored Points: ");
+		    				out.write(Long.toString(id));
+		    				out.write("\n");
+		    				out.close();
+		    			}
+					}
+					
+					catch (IOException e) 
+					{
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 
@@ -315,8 +384,15 @@ public class Login extends Activity {
 			{
 				Log.e("log_tag", "Error parsing data "+e.toString());
 			}
+			catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		
-			if(currentUser!=null)
+			File sdcard=Environment.getExternalStorageDirectory();
+			File file=new File(sdcard, "user.txt");
+
+			if(file.exists())
 			{
 				// login success
 				if (isRememberMe()) {
@@ -329,10 +405,7 @@ public class Login extends Activity {
 				}
 				
 				Intent intent = new Intent();
-				intent.setClass(Login.this, Coupon.class);
-				Bundle bundle = new Bundle();
-				bundle.putString("MAP_USERNAME", userName);
-				intent.putExtras(bundle);
+				intent.setClass(Login.this, ShowInformation.class);
 				startActivity(intent);
 				proDialog.dismiss();
 			} 
