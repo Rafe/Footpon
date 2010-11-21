@@ -191,7 +191,18 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 				//String realDescription=json_data.getString("realDescription");
 				//int pointsRequired =(int) json_data.getInt("pointsRequired");
 //				double latitude, double longtitude,int pointsRequired,long code){
-				footpon=new Footpon(json_data.getLong("id"), json_data.getString("storeName"), json_data.getString("category"), json_data.getString("hiddenDescription"), json_data.getString("realDescription"), (json_data.getDouble("latitude")*1000000), (json_data.getDouble("longitude")*1000000), (int) json_data.getInt("pointsRequired"), (long) json_data.getInt("code"));
+				footpon = new Footpon(json_data.getLong("id"), 
+						json_data.getString("storeName"), 
+						json_data.getString("category"), 
+						json_data.getString("hiddenDescription"), 
+						json_data.getString("realDescription"), 
+						json_data.getString("startDate"), 
+						json_data.getString("endDate"), 
+						(json_data.getDouble("latitude")*1000000), 
+						(json_data.getDouble("longitude")*1000000), 
+						json_data.getLong("pointsRequired"), 
+						json_data.getLong("code")
+						);
 			//}
 		}
 

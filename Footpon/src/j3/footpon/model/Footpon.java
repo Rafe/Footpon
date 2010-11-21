@@ -1,7 +1,5 @@
 package j3.footpon.model;
 
-import java.util.Date;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,21 +13,25 @@ public class Footpon {
 	private String realDescription;
 	private double latitude;
 	private double longitude;
-	private int pointsRequired;
-	private Date startDate;
-	private Date endDate;
+	private long pointsRequired;
+	private String startDate;
+	private String endDate;
 	
 	public static final String CATEGORY_VIDEO_GAME="Video Game";
 	public static final String CATEGORY_FOOD="Food";
 	public static final String CATEGORY_TOYS="Toys";
 	public static final String CATEGORY_OUTDOOR="Outdoor";
 	
-	public Footpon(long id, String storeName, String category, String hiddenDescription, String realDescription, double latitude, double longtitude,int pointsRequired,long code){
+	public Footpon(long id, String storeName, String category, String hiddenDescription, 
+			String realDescription, String startDate, String endDate, double latitude, 
+			double longtitude, long pointsRequired, long code){
 		this.id=id;
 		this.storeName = storeName;
 		this.category=category;
 		this.hiddenDescription = hiddenDescription;
 		this.realDescription = realDescription;
+		this.startDate = startDate;
+		this.endDate = endDate;
 		this.latitude = latitude;
 		this.longitude = longtitude;
 		this.pointsRequired = pointsRequired;
@@ -46,9 +48,11 @@ public class Footpon {
 		this.hiddenDescription = data.getString("hiddenDescription");
 		this.realDescription = data.getString("realDescription");
 		this.category = data.getString("category");
+		this.startDate = data.getString("startDate");
+		this.endDate = data.getString("endDate");
 		this.latitude = data.getDouble("latitude");
 		this.longitude = data.getDouble("longitude");
-		this.pointsRequired = data.getInt("pointsRequired");
+		this.pointsRequired = data.getLong("pointsRequired");
 		this.code = data.getLong("code");
 	}
 	
@@ -120,27 +124,27 @@ public class Footpon {
 		return longitude;
 	}
 
-	public void setPointsRequired(int _requirePoints) {
+	public void setPointsRequired(long _requirePoints) {
 		this.pointsRequired = _requirePoints;
 	}
 
-	public int getPointsRequired() {
+	public long getPointsRequired() {
 		return pointsRequired;
 	}
 
-	public void setStartDate(Date startDate) {
+	public void setStartDate(String startDate) {
 		this.startDate = startDate;
 	}
 
-	public Date getStartDate() {
+	public String getStartDate() {
 		return startDate;
 	}
 
-	public void setEndDate(Date endDate) {
+	public void setEndDate(String endDate) {
 		this.endDate = endDate;
 	}
 
-	public Date getEndDate() {
+	public String getEndDate() {
 		return endDate;
 	}
 	
