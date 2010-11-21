@@ -13,5 +13,7 @@ public interface IFootponService {
 	public boolean redeemFootpon(int userId,int footponId);
 	public boolean useFootpon(int userId,int footponId);
 	public boolean sync(int point);
+	public Footpon getFootponById(long id);
+	public Footpon getFootponByLocation(double longtitude,double latitude);
 	
 }

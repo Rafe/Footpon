@@ -6,11 +6,8 @@ import j3.footpon.model.IFootponService;
 import j3.footpon.pedometer.StepDisplayer;
 import j3.footpon.pedometer.StepService;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.json.JSONObject;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -19,9 +16,6 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
-//import com.google.maps.HelloItemizedOverlay;
-//import com.google.maps.R;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -29,7 +23,6 @@ import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Gravity;
@@ -48,12 +41,10 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	MapView mapView;
 	TextSwitcher pointView;
 	
-	FootponMapActivity footponMapActivity = this;
 	ArrayList<Footpon> footpons;
 	FootponMapActivity context = this;
 	FootponItemizedOverlay footponOverlay;
 	MyLocationOverlay myLocationOverlay;
-	//List<Overlay> mapOverlays;
 	
 	IFootponService service;
 	StepService stepService;
@@ -86,7 +77,8 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
         controller.setZoom(17);
         
     }
-
+	
+	// set animation for Point changes : not necessary
 	private void setAnimation(TextSwitcher switcher) {
 		Animation in = AnimationUtils.loadAnimation(this,
                 android.R.anim.fade_in);
@@ -106,7 +98,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 		        return t;
 			}
         });
-        
 	}
 
 	private MyLocationOverlay getLocationOverlay() {
@@ -124,49 +115,19 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
             footpons = service.getFootponsInArea((double)currentPosition.getLatitudeE6()/1000000,
             									 (double)currentPosition.getLongitudeE6()/1000000);
             
-            //Drawable drawable = context.getResources().getDrawable(R.drawable.mark);
-            //mapOverlays = mapView.getOverlays();
-            //mapOverlays.add(myLocationOverlay);
+            List<Overlay> mapOverlays = mapView.getOverlays();
+            Drawable drawable = context.getResources().getDrawable(R.drawable.mark);
+            mapOverlays = mapView.getOverlays();
+            mapOverlays.add(myLocationOverlay);
             
-            /*if(footpons.size() > 0){
+            if(footpons.size() > 0){
             	footponOverlay = new FootponItemizedOverlay(drawable, context);
             	setMapItems(footponOverlay, drawable, footpons);
             	mapOverlays.add(footponOverlay);
-            }*/
-                       
-            List<Overlay> mapOverlays = mapView.getOverlays();
-            //Drawable drawable = context.getResources().getDrawable(R.drawable.mark);
-            //FootponItemizedOverlay itemizedoverlay = new FootponItemizedOverlay(drawable, context);
-                      
-			for(int i=0;i<footpons.size();i++)
-			{
-	            Drawable drawable; //= context.getResources().getDrawable(R.drawable.mark);
-				
-
-		        if(footpons.get(i).getCategory().equals(Footpon.CATEGORY_FOOD)){
-		        	drawable = context.getResources().getDrawable(R.drawable.icon_food);
-		        }else if(footpons.get(i).getCategory().equals(Footpon.CATEGORY_OUTDOOR)){
-		        	drawable = context.getResources().getDrawable(R.drawable.icon_outdoor);
-		        }else if(footpons.get(i).getCategory().equals(Footpon.CATEGORY_TOYS)){
-		        	drawable = context.getResources().getDrawable(R.drawable.icon_toys);
-		        }else if(footpons.get(i).getCategory().equals(Footpon.CATEGORY_VIDEO_GAME)){
-		        	drawable = context.getResources().getDrawable(R.drawable.icon_games);
-		        }else{
-		        	drawable = context.getResources().getDrawable(R.drawable.mark);
-		        }
-		        
-	            FootponItemizedOverlay itemizedoverlay = new FootponItemizedOverlay(drawable, context);
-
-				
-		        GeoPoint point = new GeoPoint((int)(footpons.get(i).getLatitude()*1000000), (int)(footpons.get(i).getLongitude()*1000000));
-		        OverlayItem overlayitem = new OverlayItem(point, footpons.get(i).getStoreName(), footpons.get(i).getHiddenDescription()+".\nPoints Required:"+footpons.get(i).getPointsRequired());
-		 
-		        itemizedoverlay.addOverlay(overlayitem);
-		        mapOverlays.add(itemizedoverlay);			
-			}
-            
-            
+            }
+			
         }});
+		
 		overlay.enableMyLocation();
 		return overlay;
 	}
@@ -188,21 +149,21 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	    // Handle item selection
 	    switch (item.getItemId()) {
 	    case R.id.search:
-	    	startActivity(
-	    			new Intent(footponMapActivity, CouponRedeemActivity.class));
+	    	
 	    	return true;
 	    case R.id.list:
 	    	startActivity(
-	    			new Intent(footponMapActivity, FootponListActivity.class));
+	    			new Intent(context, FootponListActivity.class));
 	    	return true;
 	    case R.id.showInformation:
-	    	startActivity(new Intent(footponMapActivity, ShowInformation.class));
+	    	startActivity(new Intent(context, ShowInformation.class));
 	    	return true;
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
 	
+	//pass footponList and overlay and default drawable icon, set MapItem on map
 	public void setMapItems(FootponItemizedOverlay overlay, Drawable drawable, ArrayList<Footpon> footpons){
 		
 		for(Footpon fp:footpons)
@@ -213,13 +174,13 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	        		fp.getPointsRequired());
 	        Drawable image;
 	        //TODO: move this if-else nest to IconManager.getIcon(fp.getCategory());
-	        if(fp.getCategory() == Footpon.CATEGORY_FOOD){
+	        if(fp.getCategory().equals(Footpon.CATEGORY_FOOD)){
 	        	image = context.getResources().getDrawable(R.drawable.icon_food);
-	        }else if(fp.getCategory() == Footpon.CATEGORY_OUTDOOR){
+	        }else if(fp.getCategory().equals(Footpon.CATEGORY_OUTDOOR)){
 	        	image = context.getResources().getDrawable(R.drawable.icon_outdoor);
-	        }else if(fp.getCategory() == Footpon.CATEGORY_TOYS){
+	        }else if(fp.getCategory().equals(Footpon.CATEGORY_TOYS)){
 	        	image = context.getResources().getDrawable(R.drawable.icon_toys);
-	        }else if(fp.getCategory() == Footpon.CATEGORY_VIDEO_GAME){
+	        }else if(fp.getCategory().equals(Footpon.CATEGORY_VIDEO_GAME)){
 	        	image = context.getResources().getDrawable(R.drawable.icon_games);
 	        }else{
 	        	image = drawable;
@@ -229,6 +190,7 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 			overlay.addOverlay(oItem);
 		}
 	}
+	
 	//TODO: move to IconManager.BoundCenterButtom
 	private void boundCenterButtom(Drawable image) {
 		image.setBounds(-image.getIntrinsicWidth() /2, -image.getIntrinsicHeight(),
@@ -247,10 +209,13 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
                 StepService.class), connection, Context.BIND_AUTO_CREATE);
     }
 	
+	//unbind step service, called when application stop
 	private void unbindStepService() {
         unbindService(connection);
     }
 	
+	//the connection that access the step service
+	//TODO: get steps data from connection?
 	private ServiceConnection connection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             stepService = ((StepService.StepBinder) service).getService();
@@ -261,7 +226,8 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
         	stepService = null;
         }
     };
-
+    
+    //
 	@Override
 	public void passValue(int steps, float points) {
 		

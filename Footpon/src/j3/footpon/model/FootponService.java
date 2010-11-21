@@ -170,17 +170,7 @@ public class FootponService implements IFootponService {
 						JSONArray jArray = new JSONArray(result);
 						JSONObject json_data = jArray.getJSONObject(0);
 						
-						long id=json_data.getLong("id");
-						String storeName=json_data.getString("storeName");
-						String hiddenDesc =json_data.getString("hiddenDescription");
-						String realDesc=json_data.getString("realDescription");
-						String category=json_data.getString("category");
-						String startDate = json_data.getString("startDate");
-						String endDate = json_data.getString("endDate");
-						long pointsReq =json_data.getLong("pointsRequired");
-						footpons.add(new Footpon(id, storeName, category, hiddenDesc, 
-								realDesc, startDate, endDate, 40.757942, -73.979478, 
-								pointsReq, 1234l));		
+						footpons.add(new Footpon(json_data));		
 					}
 					catch(JSONException e)
 					{
@@ -206,7 +196,10 @@ public class FootponService implements IFootponService {
 	
 	@Override
 	public ArrayList<Footpon> getInstance() {
-		_instance = getFootponsInArea(0,0);
+		
+		if(_instance == null){
+			_instance = getFootponsInArea(0,0);
+		}
 		return _instance;
 	}
 	
@@ -219,6 +212,132 @@ public class FootponService implements IFootponService {
 	}
 	public boolean sync(int point){
 		return false;
+	}
+
+	@Override
+	public Footpon getFootponById(long id) {
+		Footpon footpon = null;
+		InputStream is = null;
+		String result = "";
+
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("id", "" + id));
+
+		// http post
+		try {
+			HttpClient httpclient = new DefaultHttpClient();
+			HttpPost httppost = new HttpPost(
+					"http://pdc-amd01.poly.edu/~jli15/footpon/getCoupon.php");
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			HttpResponse response = httpclient.execute(httppost);
+			HttpEntity entity = response.getEntity();
+			is = entity.getContent();
+		} catch (Exception ee) {
+			Log.e("log_tag", "Error in http connection " + ee.toString());
+		}
+
+		// convert response to string
+		try {
+			BufferedReader readerCp = new BufferedReader(new InputStreamReader(
+					is, "iso-8859-1"), 8);
+
+			StringBuilder sb = new StringBuilder();
+			String line = null;
+
+			while ((line = readerCp.readLine()) != null) {
+				sb.append(line + "\n");
+			}
+
+			is.close();
+			result = sb.toString();
+		} catch (Exception e) {
+			Log.e("log_tag", "Error converting result " + e.toString());
+		}
+
+		// parse json data
+		try {
+			JSONArray jArray = new JSONArray(result);
+			JSONObject json_data = jArray.getJSONObject(0);
+
+			footpon = new Footpon(json_data);
+
+		} catch (JSONException e) {
+			Log.e("log_tag", "Error parsing data " + e.toString());
+		}
+
+		return footpon;
+	}
+
+	@Override
+	public Footpon getFootponByLocation(double longtitude, double latitude) {
+		String result = "";
+		InputStream is = null;
+		Footpon footpon = null;
+		
+		// the year data to send
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+
+		nameValuePairs.add(new BasicNameValuePair("currentLatitude", Double
+				.toString(latitude / 1000000)));
+		nameValuePairs
+				.add(new BasicNameValuePair("currentLongitude",
+						Double.toString(longtitude / 1000000)));
+
+		// http post
+		try {
+			HttpClient httpclient = new DefaultHttpClient();
+
+			HttpPost httppost = new HttpPost("http://pdc-amd01.poly.edu/~jli15/footpon/getSingle.php");
+			
+			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+			HttpResponse response = httpclient.execute(httppost);
+
+			HttpEntity entity = response.getEntity();
+
+			is = entity.getContent();
+		}
+
+		catch (Exception e) {
+			Log.e("log_tag", "Error in http connection " + e.toString());
+		}
+
+		// convert response to string
+		try {
+			BufferedReader reader = new BufferedReader(
+					new InputStreamReader(is, "iso-8859-1"), 8);
+
+			StringBuilder sb = new StringBuilder();
+
+			String line = null;
+
+			while ((line = reader.readLine()) != null) {
+				sb.append(line + "\n");
+			}
+
+			is.close();
+
+			result = sb.toString();
+		}
+
+		catch (Exception e) {
+			Log.e("log_tag", "Error converting result " + e.toString());
+		}
+
+		// parse json data
+		try {
+			JSONArray jArray = new JSONArray(result);
+
+			JSONObject json_data = jArray.getJSONObject(0);
+
+			footpon = new Footpon(json_data);
+		}
+
+		catch (JSONException e) {
+			Log.e("log_tag", "Error parsing data " + e.toString());
+		}
+		
+		return footpon;
 	}
 
 }
