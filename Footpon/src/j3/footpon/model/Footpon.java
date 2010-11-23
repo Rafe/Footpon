@@ -13,7 +13,7 @@ public class Footpon {
 	private String realDescription;
 	private double latitude;
 	private double longitude;
-	private long pointsRequired;
+	private long stepsRequired;
 	private String startDate;
 	private String endDate;
 	
@@ -24,7 +24,7 @@ public class Footpon {
 	
 	public Footpon(long id, String storeName, String category, String hiddenDescription, 
 			String realDescription, String startDate, String endDate, double latitude, 
-			double longtitude, long pointsRequired, long code){
+			double longtitude, long stepsRequired, long code){
 		this.id=id;
 		this.storeName = storeName;
 		this.category=category;
@@ -34,7 +34,7 @@ public class Footpon {
 		this.endDate = endDate;
 		this.latitude = latitude;
 		this.longitude = longtitude;
-		this.pointsRequired = pointsRequired;
+		this.stepsRequired = stepsRequired;
 		this.code=code;
 
 	}
@@ -52,7 +52,7 @@ public class Footpon {
 		this.endDate = data.getString("endDate");
 		this.latitude = data.getDouble("latitude");
 		this.longitude = data.getDouble("longitude");
-		this.pointsRequired = data.getLong("pointsRequired");
+		this.stepsRequired = data.getLong("stepsRequired");
 		this.code = data.getLong("code");
 	}
 	
@@ -124,12 +124,12 @@ public class Footpon {
 		return longitude;
 	}
 
-	public void setPointsRequired(long _requirePoints) {
-		this.pointsRequired = _requirePoints;
+	public void setStepsRequired(long _requireSteps) {
+		this.stepsRequired = _requireSteps;
 	}
 
-	public long getPointsRequired() {
-		return pointsRequired;
+	public long getStepsRequired() {
+		return stepsRequired;
 	}
 
 	public void setStartDate(String startDate) {

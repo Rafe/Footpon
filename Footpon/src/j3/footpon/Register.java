@@ -113,7 +113,7 @@ public class Register extends Activity {
 				nameValuePairs.add(new BasicNameValuePair("firstName", firstName));
 				nameValuePairs.add(new BasicNameValuePair("lastName", lastName));
 				nameValuePairs.add(new BasicNameValuePair("password", password));
-				nameValuePairs.add(new BasicNameValuePair("points", Integer.toString(0)));
+				nameValuePairs.add(new BasicNameValuePair("steps", Integer.toString(0)));
 
 				//http post
 				try

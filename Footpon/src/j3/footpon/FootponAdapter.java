@@ -32,15 +32,15 @@ public class FootponAdapter extends ArrayAdapter<Footpon>{
         if (f != null) {
             TextView storeName = (TextView) v.findViewById(R.id.store_name);
             TextView description = (TextView) v.findViewById(R.id.realDescription);
-            TextView points = (TextView) v.findViewById(R.id.points_required);
+            TextView steps = (TextView) v.findViewById(R.id.steps_required);
             if (storeName != null) {
              	storeName.setText(f.getStoreName());                            
             }
             if (description != null) {
                	description.setText(f.getRealDescription());
             }
-            if (points != null) {
-               	points.setText(String.valueOf(f.getPointsRequired()));
+            if (steps != null) {
+               	steps.setText(String.valueOf(f.getStepsRequired()));
             }
         }
         

@@ -137,8 +137,8 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 
 		TextView description = (TextView) dialog
 				.findViewById(R.id.dialog_realDescription);
-		TextView pointsRequired = (TextView) dialog
-				.findViewById(R.id.dialog_pointsRequired);
+		TextView stepsRequired = (TextView) dialog
+				.findViewById(R.id.dialog_stepsRequired);
 		Button detailsButton = (Button) dialog
 				.findViewById(R.id.dialog_show_details);
 
@@ -163,7 +163,7 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 						String result = "";
 						InputStream is = null;
 
-						// the year data to send
+						//Data to send.
 						ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 						nameValuePairs.add(new BasicNameValuePair("username",
 								text));
@@ -227,6 +227,7 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 								BufferedWriter out = new BufferedWriter(writer);
 
 								out.append(Long.toString(footpon.getID()));
+								out.append("\n\n");
 								out.close();
 							}
 
@@ -267,7 +268,7 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 		});
 
 		description.setText(footpon.getHiddenDescription());
-		pointsRequired.setText("Points:" + footpon.getPointsRequired());
+		stepsRequired.setText("Steps:" + footpon.getStepsRequired());
 
 		dialog.show();
 

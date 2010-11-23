@@ -5,14 +5,14 @@ public class User
 	private String username;
 	private String firstName;
 	private String lastName;
-	private long points;
+	private long steps;
 	
-	public User(String username, String firstName, String lastName, long points)
+	public User(String username, String firstName, String lastName, long steps)
 	{
 		this.username=username;
 		this.firstName=firstName;
 		this.lastName=firstName;
-		this.points=points;
+		this.steps=steps;
 	}
 	
 	public String getUsername()
@@ -45,13 +45,13 @@ public class User
 		this.lastName=lastName;
 	}
 	
-	public long getPoints()
+	public long getSteps()
 	{
-		return points;
+		return steps;
 	}
 	
-	public void setPoints(long points)
+	public void setSteps(long steps)
 	{
-		this.points=points;
+		this.steps=steps;
 	}
 }

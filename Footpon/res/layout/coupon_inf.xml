@@ -9,7 +9,7 @@
     <RelativeLayout 
     	android:layout_width="fill_parent"    
     	android:layout_height="fill_parent" 
-    	android:layout_above="@+id/points">
+    	android:layout_above="@+id/steps">
 		<ImageView   
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
 		<TextView
 	    	android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Points required:   "
+			android:text="Steps required:   "
 			android:layout_marginTop="20px"
 			android:textSize="18px"
 			android:textColor="#2F4F4F"  
@@ -68,7 +68,7 @@
 		    android:textSize="20px"
 		    android:text="100"
 		    android:textColor="#00FF00"
-		    android:id="@+id/requiredPoints"
+		    android:id="@+id/requiredSteps"
 		    android:layout_toRightOf="@+id/text1"
 		    android:layout_below="@+id/realDescription"
 		    />
@@ -131,10 +131,10 @@
 		android:layout_alignParentBottom="true"
 		android:layout_marginBottom="5px"
 		android:paddingLeft="15dip" 
-		android:text="Your points: 144"
+		android:text="Your steps: 144"
 		android:textSize="30dip"
 		android:textColor="#9900FF"
 		android:background="#CCCCCC"
-		android:id="@id/points"
+		android:id="@id/steps"
 		/>
 </RelativeLayout>  

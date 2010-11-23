@@ -40,7 +40,7 @@ public class FootponDetailsActivity extends Activity {
 
 		TextView storeName = (TextView) findViewById(R.id.detail_store_name);
 		TextView description = (TextView) findViewById(R.id.detail_real_description);
-		TextView pointsRequired = (TextView) findViewById(R.id.detail_required_points);
+		TextView stepsRequired = (TextView) findViewById(R.id.detail_required_steps);
 		TextView expireDate = (TextView) findViewById(R.id.detail_expire_date);
 
 		Footpon footpon = null;
@@ -63,7 +63,7 @@ public class FootponDetailsActivity extends Activity {
 		storeName.setText(footpon.getStoreName());
 		description.setText(footpon.getRealDescription());
 		expireDate.setText(footpon.getEndDate());
-		pointsRequired.setText(Long.toString(footpon.getPointsRequired()));
+		stepsRequired.setText(Long.toString(footpon.getStepsRequired()));
 	}
 
 	public Footpon showByLocation(double latitude, double longitude) {

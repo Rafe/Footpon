@@ -10,7 +10,7 @@
     <RelativeLayout 
     	android:layout_width="fill_parent"    
     	android:layout_height="fill_parent" 
-    	android:layout_above="@+id/points">
+    	android:layout_above="@+id/steps">
 		<ImageView
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
 		    android:layout_marginTop="20px"
 		    android:textSize="40dip"
 		    android:textColor="#000000"
-		    android:id="@+id/detail_required_points"
+		    android:id="@+id/detail_required_steps"
 		    android:layout_below="@+id/detail_real_description"
 		    />
 		<TextView
@@ -57,7 +57,7 @@
 			android:textSize="20dip"
 			android:textColor="#000000"
 			android:id="@+id/date1"
-			android:layout_below="@+id/detail_required_points"
+			android:layout_below="@+id/detail_required_steps"
 			/>
 		<TextView
 		    android:layout_width="wrap_content"
@@ -68,7 +68,7 @@
 		    android:textColor="#FF4500"
 		    android:id="@+id/detail_expire_date"
 		    android:layout_toRightOf="@+id/date1"
-		    android:layout_below="@+id/detail_required_points"
+		    android:layout_below="@+id/detail_required_steps"
 		    />
 		<Button
 			android:layout_width="wrap_content"
@@ -87,10 +87,10 @@
 		android:layout_alignParentBottom="true"
 		android:layout_marginBottom="5px"
 		android:paddingLeft="15dip" 
-		android:text="Your points: 144"
+		android:text="Your steps: 144"
 		android:textSize="30dip"
 		android:textColor="#9900FF"
 		android:background="#CCCCCC"
-		android:id="@id/points"
+		android:id="@id/steps"
 		/>
 </RelativeLayout>  

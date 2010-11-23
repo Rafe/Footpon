@@ -306,7 +306,7 @@ public class Login extends Activity {
 				String username=json_data.getString("username");
 				String firstName=json_data.getString("firstName");
 				String lastName=json_data.getString("lastName");
-				Long points=json_data.getLong("points");
+				Long steps=json_data.getLong("steps");
 
 	    		//Writing to file code modified from http://groups.google.com/group/android-beginners/browse_thread/thread/b8fd909e33eab7c1
     			File root=Environment.getExternalStorageDirectory();
@@ -326,22 +326,18 @@ public class Login extends Activity {
     				out.write("Last Name: ");
     				out.write(lastName);
     				out.write("\n");
-    				out.write("Previously Stored Points: ");
-    				out.write(Long.toString(points));
+    				out.write("Previously Stored Steps: ");
+    				out.write(Long.toString(steps));
     				out.write("\n\n");
     				out.write("Coupons ID Redeemed:");
-    				out.write("\n");
+    				out.write("\n\n");
     				out.close();
     			}
 				
 				for(i=0;i<jArray.length();i++)
 				{
 					json_data = jArray.getJSONObject(i);
-					
-					//String username=json_data.getString("username");
-					//String firstName=json_data.getString("firstName");
-					//String lastName=json_data.getString("lastName");
-					//Long points=json_data.getLong("points");
+
 					Long id=json_data.getLong("id");
 					
 					//currentUser=new User(username, firstName, lastName, points);

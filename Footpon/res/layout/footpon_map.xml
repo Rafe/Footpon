@@ -17,18 +17,42 @@
     	android:layout_height="wrap_content" 
     	android:background="#EEE">
     	<TextView android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:text="Points:"
+			android:layout_height="wrap_content" android:text="Steps:"
 			android:textStyle="bold"
 			android:textSize="24sp"
 			android:textColor="#222"
 			android:layout_weight="1"
 		></TextView>
-		<TextSwitcher android:id="@+id/points" android:layout_width="fill_parent"
-			android:layout_height="wrap_content" android:text="0.00"
+		<TextSwitcher android:id="@+id/steps" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:text="0"
 			android:textStyle="bold"
 			android:textSize="26sp"
 			android:textColor="#222"
 			android:layout_weight="2"
 		/>
 	</LinearLayout>
+	
+	<Button android:id="@+id/searchButton" 
+    	android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_alignParentBottom="true"
+		android:password="false"
+		android:text="Search"></Button>
+
+	<Button android:id="@+id/myCouponButton" 
+    	android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_alignParentBottom="true"
+		android:layout_centerHorizontal="true"
+		android:password="false"
+		android:text="My Coupon"></Button>
+	
+	<Button android:id="@+id/accountButton" 
+    	android:layout_width="wrap_content"
+		android:layout_height="wrap_content" 
+		android:layout_alignParentBottom="true"
+		android:layout_alignParentRight="true"
+		android:password="false"
+		android:text="Account"></Button>
+	
 </RelativeLayout>

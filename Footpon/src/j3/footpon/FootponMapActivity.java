@@ -16,6 +16,7 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -32,14 +33,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 public class FootponMapActivity extends MapActivity implements StepDisplayer
 {
+	Button search;
+	Button myCoupon;
+	Button account;
+	
 	MapView mapView;
-	TextSwitcher pointView;
+	TextSwitcher stepView;
 	
 	ArrayList<Footpon> footpons;
 	FootponMapActivity context = this;
@@ -49,7 +55,7 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	IFootponService service;
 	StepService stepService;
 	
-	float point;
+	//float point;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,8 +67,8 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
         mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
         
-        pointView = (TextSwitcher) findViewById(R.id.points);
-        setAnimation(pointView);
+        stepView = (TextSwitcher) findViewById(R.id.steps);
+        setAnimation(stepView);
         
         myLocationOverlay = getLocationOverlay(); 
         service = FootponServiceFactory.getService();
@@ -76,9 +82,16 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
         MapController controller = mapView.getController();
         controller.setZoom(17);
         
+        
+        
+        myCoupon=(Button) findViewById(R.id.myCouponButton);  
+        myCoupon.setOnClickListener(getMyCoupon);  
+        
+        account=(Button) findViewById(R.id.accountButton);  
+        account.setOnClickListener(getAccount);
     }
 	
-	// set animation for Point changes : not necessary
+	// set animation for step changes : not necessary
 	private void setAnimation(TextSwitcher switcher) {
 		Animation in = AnimationUtils.loadAnimation(this,
                 android.R.anim.fade_in);
@@ -163,6 +176,26 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	    }
 	}
 	
+    private View.OnClickListener getMyCoupon = new View.OnClickListener()
+    {
+		@Override
+		public void onClick(View v) 
+		{
+			Intent intent=new Intent(context, FootponListActivity.class);
+			startActivity(intent);
+		}
+    };
+	
+    private View.OnClickListener getAccount = new View.OnClickListener()
+    {
+		@Override
+		public void onClick(View v) 
+		{
+			Intent intent=new Intent(context, ShowInformation.class);
+			startActivity(intent);
+		}
+    };
+	
 	//pass footponList and overlay and default drawable icon, set MapItem on map
 	public void setMapItems(FootponItemizedOverlay overlay, Drawable drawable, ArrayList<Footpon> footpons){
 		
@@ -170,8 +203,8 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 		{
 			GeoPoint point = new GeoPoint((int)(fp.getLatitude()* 1E6) ,(int)(fp.getLongitude()* 1E6));
 	        OverlayItem oItem = new OverlayItem(point,fp.getStoreName(), 
-	        		fp.getHiddenDescription() +"\npoints: " + 
-	        		fp.getPointsRequired());
+	        		fp.getHiddenDescription() +"\nSteps: " + 
+	        		fp.getStepsRequired());
 	        Drawable image;
 	        //TODO: move this if-else nest to IconManager.getIcon(fp.getCategory());
 	        if(fp.getCategory().equals(Footpon.CATEGORY_FOOD)){
@@ -229,11 +262,11 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
     
     //
 	@Override
-	public void passValue(int steps, float points) {
+	public void passValue(long steps, long currentSteps)//, float points) {
+	{
+		//point = points;
 		
-		point = points;
-		
-		pointView.setText(String.valueOf(point));
+		stepView.setText(String.valueOf(steps));
 	}
 	
 	@Override

@@ -20,8 +20,9 @@ import android.widget.Toast;
 
 public class StepService extends Service implements StepListener{
 	
-	int steps;
-	float points;
+	long steps;
+	long currentSteps;
+	//float points;
 	
 	private SharedPreferences state;
     private SharedPreferences.Editor stateEditor;
@@ -55,8 +56,9 @@ public class StepService extends Service implements StepListener{
         wakeLock.acquire();
         
         state = getSharedPreferences("state", 0);
-        points = state.getFloat("points", 0);
-        steps = state.getInt("steps", 0);
+        //points = state.getFloat("points", 0);
+        steps = state.getLong("currentSteps", 0);
+        steps = state.getLong("steps", 0);
         
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         showNotification();
@@ -83,8 +85,9 @@ public class StepService extends Service implements StepListener{
 		wakeLock.release();
 		
 		stateEditor = state.edit();
-	    stateEditor.putInt("steps", steps);
-	    stateEditor.putFloat("points", points);
+	    stateEditor.putLong("steps", steps);
+	    stateEditor.putLong("currentSteps", currentSteps);
+	    //stateEditor.putFloat("points", points);
 	    stateEditor.commit();
 		
 		notificationManager.cancel(R.string.app_name);
@@ -116,15 +119,16 @@ public class StepService extends Service implements StepListener{
     
     public void setStepDisplayer(StepDisplayer displayer){
     	stepDisplayer = displayer;
-    	displayer.passValue(steps, points);
+    	displayer.passValue(steps, currentSteps);//, points);
     }
     
 	@Override
 	public void onStep() {
-		points += 0.25f;
+		//points += 0.25f;
+		currentSteps+=1;
 		steps += 1;
 		if(stepDisplayer != null){
-			stepDisplayer.passValue(steps, points);
+			stepDisplayer.passValue(steps, currentSteps);//, points);
 		}
 	}
 

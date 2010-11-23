@@ -32,7 +32,7 @@ public class FakeFootponService implements IFootponService {
 	public boolean useFootpon(int userId,int footponId){
 		return false;
 	}
-	public boolean sync(int point){
+	public boolean sync(int step){
 		return false;
 	}
 
