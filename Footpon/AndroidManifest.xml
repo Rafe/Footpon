@@ -54,6 +54,8 @@
    				<action android:name="android.intent.action.MAIN"/>
    			</intent-filter>
 		</service>
+		<service android:name=".FootponService" android:enabled="true">
+11	    </service>
         
 		<uses-library android:name="com.google.android.maps" />
     </application>

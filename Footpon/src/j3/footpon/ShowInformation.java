@@ -1,33 +1,55 @@
 package j3.footpon;
 
-import j3.footpon.R;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 public class ShowInformation extends Activity {
+	private final String SHARE_USER_INF_TAG = "USER_INF_TAG";
+	private String SHARE_USERNAME = "FOOTPON_USERNAME";
+	private String SHARE_PASSWORD = "FOOTPON_PASSWORD";
+	private String SHARE_FIRSTNAME = "FOOTPON_FIRSTNAME";
+	private String SHARE_LASTNAME = "FOOTPON_LASTNAME";
+	private String SHARE_POINTS = "FOOTPON_POINTS";
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-				
-		//Reading from file code modified from http://stackoverflow.com/questions/2902689/read-text-file-data-in-android
-		File sdcard=Environment.getExternalStorageDirectory();
-		File file=new File(sdcard, "user.txt");
-
-		if(file.exists())
+		setContentView(R.layout.user_information);
+		
+		SharedPreferences share = getSharedPreferences(SHARE_USER_INF_TAG, 0);
+		
+		String userName = share.getString(SHARE_USERNAME, "");
+		if(!userName.equals(""))
 		{
-			setContentView(R.layout.user_information);
+			String firstName = share.getString(SHARE_FIRSTNAME, "");
+			String lastName = share.getString(SHARE_LASTNAME, "");
+			long points = share.getLong(SHARE_POINTS, 0);
 			
 			StringBuilder text=new StringBuilder();
+			text.append("Welcome, " + firstName + " " + lastName);
+			text.append('\n');
+			text.append('\n');
+			text.append("Your username: ");
+			text.append(userName);
+			text.append("\nYour stored points: ");
+			text.append(points);
+			text.append('\n');
+			
+			File sdcard=Environment.getExternalStorageDirectory();
+			File file=new File(sdcard, "coupons.txt");
 			
 			try
 			{
@@ -40,16 +62,12 @@ public class ShowInformation extends Activity {
 					text.append('\n');
 				}
 			}
-
 			catch (FileNotFoundException e)
 			{
-				text.append("No information found.");
-				text.append('\n');
-			} 
-			
+				Log.e("log_tag", "File not found. "+e.toString());
+			}
 			catch (IOException e) 
 			{
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -64,8 +82,7 @@ public class ShowInformation extends Activity {
 		}
 		else
 		{
-			startActivity(
-    	    	new Intent(ShowInformation.this, Login.class));
+			startActivity(new Intent(ShowInformation.this, Login.class));
 		}
 	}
 	
@@ -86,8 +103,16 @@ public class ShowInformation extends Activity {
 		@Override
 		public void onClick(View v) 
 		{
+			SharedPreferences share = getSharedPreferences(SHARE_USER_INF_TAG, 0);
+			share.edit().putString(SHARE_USERNAME, "").commit();
+			share.edit().putString(SHARE_PASSWORD, "").commit();
+			share.edit().putString(SHARE_FIRSTNAME, "").commit();
+			share.edit().putString(SHARE_LASTNAME, "").commit();
+			share.edit().putLong(SHARE_POINTS, 0).commit();
+			share = null;
+			
 			File sdcard=Environment.getExternalStorageDirectory();
-			File file=new File(sdcard, "user.txt");
+			File file=new File(sdcard, "coupons.txt");
 			file.delete();
 			
 			Intent intent=new Intent();

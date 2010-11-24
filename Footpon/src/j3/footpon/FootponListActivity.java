@@ -47,5 +47,4 @@ public class FootponListActivity extends Activity {
 	    	startActivity(i);
 	    }
 	};
-	
 }

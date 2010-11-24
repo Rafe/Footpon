@@ -19,7 +19,6 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,10 +41,11 @@ public class Register extends Activity {
 	protected TextView view_firstName;
 	protected TextView view_lastName;
 	
-	private final String SHARE_LOGIN_TAG = "LOGIN_TAG";
+	private final String SHARE_USER_INF_TAG = "USER_INF_TAG";
 	private String SHARE_USERNAME = "FOOTPON_USERNAME";
 	private String SHARE_PASSWORD = "FOOTPON_PASSWORD";
 	private String SHARE_FIRSTNAME = "FOOTPON_FIRSTNAME";
+	private String SHARE_LASTNAME = "FOOTPON_LASTNAME";
 
 	private ProgressDialog proDialog;
 	private boolean isNetError;
@@ -129,7 +129,6 @@ public class Register extends Activity {
 					
 					is = entity.getContent();
 				}
-
 				catch(Exception ee)
 				{
 					Log.e("log_tag", "Error in http connection "+ee.toString());
@@ -141,7 +140,6 @@ public class Register extends Activity {
 					BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
 					
 					StringBuilder sb = new StringBuilder();
-					
 					String line = null;
 					
 					while ((line = reader.readLine()) != null)
@@ -153,7 +151,6 @@ public class Register extends Activity {
 					
 					result=sb.toString();
 				}
-
 				catch(Exception eee)
 				{
 					Log.e("log_tag", "Error converting result "+eee.toString());
@@ -173,10 +170,11 @@ public class Register extends Activity {
 						if(success.equalsIgnoreCase("true"))
 						{
 							//Register success
-							SharedPreferences share = getSharedPreferences(SHARE_LOGIN_TAG, 0);
+							SharedPreferences share = getSharedPreferences(SHARE_USER_INF_TAG, 0);
 							share.edit().putString(SHARE_USERNAME, userName).commit();
 							share.edit().putString(SHARE_PASSWORD, password).commit();
 							share.edit().putString(SHARE_FIRSTNAME, firstName).commit();
+							share.edit().putString(SHARE_LASTNAME, lastName).commit();
 							share = null;
 							
 							//Intent intent = new Intent();
@@ -190,7 +188,6 @@ public class Register extends Activity {
 							finish();
 							//finish this
 						}
-						
 						else
 						{
 							//Register failed
@@ -205,7 +202,6 @@ public class Register extends Activity {
 						}
 					}
 				}
-
 				catch(JSONException e)
 				{
 					Log.e("log_tag", "Error parsing data "+e.toString());
@@ -256,7 +252,6 @@ public class Register extends Activity {
 		{
 			return true;
 		}
-		
 		else
 		{
 			return false;
@@ -269,7 +264,6 @@ public class Register extends Activity {
 		view_lastName.setText("");
 		view_password.setText("");
 		view_passwordConfirm.setText("");
-
 		view_userName.requestFocus();
 	}
 }

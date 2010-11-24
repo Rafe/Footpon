@@ -2,6 +2,7 @@ package j3.footpon.model;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -98,98 +99,92 @@ public class FootponService implements IFootponService {
 		return footpons;
 	}
 
+	@Override
 	public ArrayList<Footpon> getMyFootpons() {
 		ArrayList<Footpon> footpons = new ArrayList<Footpon>();
 		
 		File sdcard=Environment.getExternalStorageDirectory();
-		File file=new File(sdcard, "user.txt");
+		File file=new File(sdcard, "coupons.txt");
 
 		int coupon_id=0;
-		
-		if(file.exists())
+		String result = "";
+		InputStream is = null;
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+	
+	
+		try
 		{
-			String result = "";
-			InputStream is = null;
-			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-		
-			try
+			BufferedReader readerUserInf = new BufferedReader(new FileReader(file));
+			
+			coupon_id = readerUserInf.read()-48;
+			
+			while(coupon_id>=0)		// loop on the id of coupons user possess
 			{
-				BufferedReader readerUserInf = new BufferedReader(new FileReader(file));
+				nameValuePairs.add(new BasicNameValuePair("id", ""+coupon_id));
 				
-				for(int i=0;i<6;i++)	// go to the line of coupon id in the file
+				//http post
+				try
 				{
-					readerUserInf.readLine();
+					HttpClient httpclient = new DefaultHttpClient();
+					HttpPost httppost = new HttpPost("http://pdc-amd01.poly.edu/~jli15/footpon/getCoupon.php");
+					httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+					HttpResponse response = httpclient.execute(httppost);
+					HttpEntity entity = response.getEntity();
+					is = entity.getContent();
+				}
+				catch(Exception e)
+				{
+					Log.e("log_tag", "Error in http connection "+e.toString());
 				}
 				
+				//convert response to string
+				try
+				{
+					BufferedReader readerCp = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
+					
+					StringBuilder sb = new StringBuilder();
+					String line = null;
+					
+					while ((line = readerCp.readLine()) != null)
+					{
+						sb.append(line + "\n");
+					}
+					
+					is.close();
+					result=sb.toString();
+				//	Log.e("log_tag", "result: "+result);
+				}
+				catch(Exception e)
+				{
+					Log.e("log_tag", "Error converting result "+e.toString());
+				}
+				
+				//parse json data
+				try
+				{
+					JSONArray jArray = new JSONArray(result);
+					JSONObject json_data = jArray.getJSONObject(0);
+					
+					footpons.add(new Footpon(json_data));		
+				}
+				catch(JSONException e)
+				{
+					Log.e("log_tag", "Error parsing data "+e.toString());
+				}
+				
+				readerUserInf.read();
 				coupon_id=readerUserInf.read()-48;
-				
-				while(coupon_id>=0)		// loop on the id of coupons user possess
-				{
-					nameValuePairs.add(new BasicNameValuePair("id", ""+coupon_id));
-					
-					//http post
-					try
-					{
-						HttpClient httpclient = new DefaultHttpClient();
-						HttpPost httppost = new HttpPost("http://pdc-amd01.poly.edu/~jli15/footpon/getCoupon.php");
-						httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-						HttpResponse response = httpclient.execute(httppost);
-						HttpEntity entity = response.getEntity();
-						is = entity.getContent();
-					}
-					catch(Exception e)
-					{
-						Log.e("log_tag", "Error in http connection "+e.toString());
-					}
-					
-					//convert response to string
-					try
-					{
-						BufferedReader readerCp = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
-						
-						StringBuilder sb = new StringBuilder();
-						String line = null;
-						
-						while ((line = readerCp.readLine()) != null)
-						{
-							sb.append(line + "\n");
-						}
-						
-						is.close();
-						result=sb.toString();
-					//	Log.e("log_tag", "result: "+result);
-					}
-					catch(Exception e)
-					{
-						Log.e("log_tag", "Error converting result "+e.toString());
-					}
-					
-					//parse json data
-					try
-					{
-						JSONArray jArray = new JSONArray(result);
-						JSONObject json_data = jArray.getJSONObject(0);
-						
-						footpons.add(new Footpon(json_data));		
-					}
-					catch(JSONException e)
-					{
-						Log.e("log_tag", "Error parsing data "+e.toString());
-					}
-					
-					readerUserInf.read();
-					coupon_id=readerUserInf.read()-48;
-					Log.e("log_tag", "ID: "+coupon_id);
-				}
-			}
-			catch (IOException e) 
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Log.e("log_tag", "ID: "+coupon_id);
 			}
 		}
-		else
-			Log.e("log_tag", "File does't exist");
+		catch (FileNotFoundException e)
+		{
+			Log.e("log_tag", "File not found. "+e.toString());
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		}
 	
 		return footpons;
 	}
@@ -203,13 +198,17 @@ public class FootponService implements IFootponService {
 		return _instance;
 	}
 	
+	@Override
 	public boolean redeemFootpon(int userId,int footponId){
 		return false;
 	}
 	
+	@Override
 	public boolean useFootpon(int userId,int footponId){
 		return false;
 	}
+	
+	@Override
 	public boolean sync(int step){
 		return false;
 	}
@@ -232,7 +231,8 @@ public class FootponService implements IFootponService {
 			HttpResponse response = httpclient.execute(httppost);
 			HttpEntity entity = response.getEntity();
 			is = entity.getContent();
-		} catch (Exception ee) {
+		} 
+		catch (Exception ee) {
 			Log.e("log_tag", "Error in http connection " + ee.toString());
 		}
 
@@ -250,7 +250,8 @@ public class FootponService implements IFootponService {
 
 			is.close();
 			result = sb.toString();
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			Log.e("log_tag", "Error converting result " + e.toString());
 		}
 
@@ -261,7 +262,8 @@ public class FootponService implements IFootponService {
 
 			footpon = new Footpon(json_data);
 
-		} catch (JSONException e) {
+		} 
+		catch (JSONException e) {
 			Log.e("log_tag", "Error parsing data " + e.toString());
 		}
 
@@ -288,7 +290,6 @@ public class FootponService implements IFootponService {
 			HttpClient httpclient = new DefaultHttpClient();
 
 			HttpPost httppost = new HttpPost("http://pdc-amd01.poly.edu/~jli15/footpon/getSingle.php");
-			
 			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
 			HttpResponse response = httpclient.execute(httppost);
@@ -297,7 +298,6 @@ public class FootponService implements IFootponService {
 
 			is = entity.getContent();
 		}
-
 		catch (Exception e) {
 			Log.e("log_tag", "Error in http connection " + e.toString());
 		}
@@ -316,10 +316,8 @@ public class FootponService implements IFootponService {
 			}
 
 			is.close();
-
 			result = sb.toString();
 		}
-
 		catch (Exception e) {
 			Log.e("log_tag", "Error converting result " + e.toString());
 		}
@@ -332,12 +330,10 @@ public class FootponService implements IFootponService {
 
 			footpon = new Footpon(json_data);
 		}
-
 		catch (JSONException e) {
 			Log.e("log_tag", "Error parsing data " + e.toString());
 		}
 		
 		return footpon;
 	}
-
 }

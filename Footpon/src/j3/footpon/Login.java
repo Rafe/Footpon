@@ -1,22 +1,14 @@
 package j3.footpon;
 
-import j3.footpon.model.User;
 import j3.footpon.R;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.DataInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
 import org.apache.http.HttpEntity;
@@ -59,15 +51,16 @@ public class Login extends Activity {
 	private Button view_loginSubmit;
 	private Button view_loginRegister;
 	
-	private final String SHARE_LOGIN_TAG = "LOGIN_TAG";
+	private final String SHARE_REMEBER_ME_TAG = "REMEBER_ME_TAG";
+	private final String SHARE_USER_INF_TAG = "USER_INF_TAG";
 	private String SHARE_USERNAME = "FOOTPON_USERNAME";
 	private String SHARE_PASSWORD = "FOOTPON_PASSWORD";
 	private String SHARE_FIRSTNAME = "FOOTPON_FIRSTNAME";
+	private String SHARE_LASTNAME = "FOOTPON_LASTNAME";
+	private String SHARE_STEPS = "FOOTPON_POINTS";
 
 	private boolean isNetError;
 	private ProgressDialog proDialog;
-	
-	private User currentUser=null;
 
 	Handler loginHandler = new Handler() {
 		public void handleMessage(Message msg) {
@@ -93,8 +86,7 @@ public class Login extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
 		findViewsById();
-		initView(false);
-		
+		initView();
 		setListener();
 	}
 
@@ -106,8 +98,8 @@ public class Login extends Activity {
 		view_loginRegister = (Button) findViewById(R.id.loginRegister);
 	}
 
-	private void initView(boolean isRememberMe) {
-		SharedPreferences share = getSharedPreferences(SHARE_LOGIN_TAG, 0);
+	private void initView() {
+		SharedPreferences share = getSharedPreferences(SHARE_REMEBER_ME_TAG, 0);
 		String userName = share.getString(SHARE_USERNAME, "");
 		String password = share.getString(SHARE_PASSWORD, "");
 		Log.d(this.toString(), "userName=" + userName + " password=" + password);
@@ -121,58 +113,9 @@ public class Login extends Activity {
 
 		share = null;
 	}
-
-	/*private boolean validateLocalLogin(String userName, String password,
-			String validateUrl) {
-		boolean loginState = false;
-		HttpURLConnection conn = null;
-		DataInputStream dis = null;
-		try {
-			URL url = new URL(validateUrl);
-			conn = (HttpURLConnection) url.openConnection();
-			conn.setConnectTimeout(5000);
-			conn.setRequestMethod("GET");
-			conn.connect();
-			dis = new DataInputStream(conn.getInputStream());
-			if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
-				Log.d(this.toString(), "getResponseCode() unsuccessful");
-				isNetError = true;
-				return false;
-			}
-			
-			int loginStateInt = dis.readInt();
-			if (loginStateInt > 0) {
-				loginState = true;
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			isNetError = true;
-			Log.d(this.toString(), e.getMessage() + "  127 line");
-		} finally {
-			if (conn != null) {
-				conn.disconnect();
-			}
-		}
-		
-		if (loginState) {
-			if (isRememberMe()) {
-				saveSharePreferences(true, true);
-			} else {
-				saveSharePreferences(true, false);
-			}
-		} else {
-			if (!isNetError) {
-				clearSharePassword();
-			}
-		}
-		if (!view_rememberMe.isChecked()) {
-			clearSharePassword();
-		}
-		return loginState;
-	}*/
-
+	
 	private void saveSharePreferences(boolean saveUserName, boolean savePassword) {
-		SharedPreferences share = getSharedPreferences(SHARE_LOGIN_TAG, 0);
+		SharedPreferences share = getSharedPreferences(SHARE_REMEBER_ME_TAG, 0);
 		if (saveUserName) {
 			Log.d(this.toString(), "saveUserName="
 					+ view_userName.getText().toString());
@@ -227,7 +170,7 @@ public class Login extends Activity {
 	}
 
 	private void clearSharePassword() {
-		SharedPreferences share = getSharedPreferences(SHARE_LOGIN_TAG, 0);
+		SharedPreferences share = getSharedPreferences(SHARE_REMEBER_ME_TAG, 0);
 		share.edit().putString(SHARE_PASSWORD, "").commit();
 		share = null;
 	}
@@ -242,7 +185,6 @@ public class Login extends Activity {
 
 			//Code modified from http://www.helloandroid.com/tutorials/connecting-mysql-database.
 			String result = "";
-		//	String username="";
 			InputStream is = null;
 
 			ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -264,10 +206,9 @@ public class Login extends Activity {
 				
 				is = entity.getContent();
 			}
-
-			catch(Exception ee)
+			catch(Exception e)
 			{
-				Log.e("log_tag", "Error in http connection "+ee.toString());
+				Log.e("log_tag", "Error in http connection "+e.toString());
 			}
 
 			//convert response to string
@@ -276,7 +217,6 @@ public class Login extends Activity {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
 				
 				StringBuilder sb = new StringBuilder();
-				
 				String line = null;
 				
 				while ((line = reader.readLine()) != null)
@@ -285,135 +225,93 @@ public class Login extends Activity {
 				}
 				
 				is.close();
-				
 				result=sb.toString();
-				Log.e("log_tag", "result: "+result);
+			//	Log.e("log_tag", "result: "+result);
+			}
+			catch(Exception e)
+			{
+				Log.e("log_tag", "Error converting result "+e.toString());
 			}
 
-			catch(Exception eee)
+			if(result.equals("null\n"))
 			{
-				Log.e("log_tag", "Error converting result "+eee.toString());
-			}
-
-			//parse json data
-			try
-			{
-				JSONArray jArray = new JSONArray(result);
-
-				int i=0;
-				JSONObject json_data = jArray.getJSONObject(i);
-				
-				String username=json_data.getString("username");
-				String firstName=json_data.getString("firstName");
-				String lastName=json_data.getString("lastName");
-				Long steps=json_data.getLong("steps");
-
-	    		//Writing to file code modified from http://groups.google.com/group/android-beginners/browse_thread/thread/b8fd909e33eab7c1
-    			File root=Environment.getExternalStorageDirectory();
-    			
-    			if(root.canWrite())
-    			{
-    				File file=new File(root, "user.txt");
-    				FileWriter writer=new FileWriter(file, true);
-    				BufferedWriter out=new BufferedWriter(writer);
-    				
-    				out.write("Username: ");
-    				out.write(username);
-    				out.write("\n");
-    				out.write("First Name: ");
-    				out.write(firstName);
-    				out.write("\n");
-    				out.write("Last Name: ");
-    				out.write(lastName);
-    				out.write("\n");
-    				out.write("Previously Stored Steps: ");
-    				out.write(Long.toString(steps));
-    				out.write("\n\n");
-    				out.write("Coupons ID Redeemed:");
-    				out.write("\n\n");
-    				out.close();
-    			}
-				
-				for(i=0;i<jArray.length();i++)
-				{
-					json_data = jArray.getJSONObject(i);
-
-					Long id=json_data.getLong("id");
-					
-					//currentUser=new User(username, firstName, lastName, points);
-					
-		    		try 
-					{
-///		    			File root=Environment.getExternalStorageDirectory();
-		    			
-		    			if(root.canWrite())
-		    			{
-		    				File file=new File(root, "user.txt");
-		    				FileWriter writer=new FileWriter(file, true);
-		    				BufferedWriter out=new BufferedWriter(writer);
-		    				
-		    				//out.write("Username: ");
-		    				//out.write(username);
-		    				//out.write("\n");
-		    				//out.write("First Name: ");
-		    				//out.write(firstName);
-		    				//out.write("\n");
-		    				//out.write("Last Name: ");
-		    				//out.write(lastName);
-		    				//out.write("\n");
-		    				//out.write("Previously Stored Points: ");
-		    				out.write(Long.toString(id));
-		    				out.write("\n");
-		    				out.close();
-		    			}
-					}
-					
-					catch (IOException e) 
-					{
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-
-			catch(JSONException e)
-			{
-				Log.e("log_tag", "Error parsing data "+e.toString());
-			}
-			catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
-			File sdcard=Environment.getExternalStorageDirectory();
-			File file=new File(sdcard, "user.txt");
-
-			if(file.exists())
-			{
-				// login success
-				if (isRememberMe()) {
-					saveSharePreferences(true, true);
-				} else {
-					saveSharePreferences(true, false);
-				}
-				if (!view_rememberMe.isChecked()) {
-					clearSharePassword();
-				}
-				
-				Intent intent = new Intent();
-				intent.setClass(Login.this, ShowInformation.class);
-				startActivity(intent);
-				proDialog.dismiss();
-			} 
-			
-			else 
-			{
-				// login failed
+				//// login failed
 				Message message = new Message();
 				Bundle bundle = new Bundle();
 				bundle.putBoolean("isNetError ", isNetError);
 				message.setData(bundle);
 				loginHandler.sendMessage(message);
+			}
+			else
+			{
+				//// login success
+				//parse json data
+				try
+				{
+					JSONArray jArray = new JSONArray(result);
+
+					int i=0;
+					JSONObject json_data = jArray.getJSONObject(i);
+					
+					String _userName=json_data.getString("username");
+					String _password=json_data.getString("password");
+					String _firstName=json_data.getString("firstName");
+					String _lastName=json_data.getString("lastName");
+			//		Long _steps=json_data.getLong("currentSteps");
+					
+					SharedPreferences share = getSharedPreferences(SHARE_USER_INF_TAG, 2);
+					share.edit().putString(SHARE_USERNAME, _userName).commit();
+					share.edit().putString(SHARE_PASSWORD, _password).commit();
+					share.edit().putString(SHARE_FIRSTNAME, _firstName).commit();
+					share.edit().putString(SHARE_LASTNAME, _lastName).commit();
+					
+					share.edit().putLong(SHARE_STEPS, 100).commit();
+					
+					
+					for(i=0;i<jArray.length();i++)
+					{
+						json_data = jArray.getJSONObject(i);
+						Long id = json_data.getLong("id");
+						Log.e("log_tag", "ID: "+id);
+						try 
+						{
+							File root=Environment.getExternalStorageDirectory();
+			    			
+			    			if(root.canWrite())
+			    			{
+			    				File file=new File(root, "coupons.txt");
+			    				FileWriter writer=new FileWriter(file, true);
+			    				BufferedWriter out=new BufferedWriter(writer);
+			    				
+			    				out.write(Long.toString(id));
+			    				out.write("\n");
+			    				out.close();
+			    			}
+						}
+		    			catch (IOException e) 
+						{
+							e.printStackTrace();
+						}
+					}
+					
+					if (isRememberMe()) {
+						saveSharePreferences(true, true);
+					} else {
+						saveSharePreferences(true, false);
+					}
+					if (!view_rememberMe.isChecked()) {
+						clearSharePassword();
+					}
+					
+					Intent intent = new Intent();
+					intent.setClass(Login.this, ShowInformation.class);
+					startActivity(intent);
+					proDialog.dismiss();
+				}
+				catch(JSONException e)
+				{
+					Log.e("log_tag", "Error parsing data "+e.toString());
+				}
 			}
 		}
 	}

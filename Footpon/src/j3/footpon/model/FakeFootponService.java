@@ -21,17 +21,22 @@ public class FakeFootponService implements IFootponService {
 		return getFootponsInArea(0,0);
 	}
 	
+	@Override
 	public ArrayList<Footpon> getMyFootpons(){
 		return null;
 	}
 	
+	@Override
 	public boolean redeemFootpon(int userId,int footponId){
 		return false;
 	}
 	
+	@Override
 	public boolean useFootpon(int userId,int footponId){
 		return false;
 	}
+	
+	@Override
 	public boolean sync(int step){
 		return false;
 	}

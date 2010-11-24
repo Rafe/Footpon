@@ -33,27 +33,38 @@
 		<TextView   
 		    android:layout_width="fill_parent" 
 		    android:layout_height="wrap_content"   
-		    android:layout_marginTop="18px"
+		    android:layout_marginTop="16px"
 		    android:textSize="18dip"   
 		    android:paddingLeft="12dip" 
 		    android:textColor="#000000"  
 		    android:id="@+id/detail_real_description" 
 		    android:layout_below="@+id/detail_store_name"
 		    />
+		<TextView   
+		    android:layout_width="fill_parent" 
+		    android:layout_height="wrap_content"
+		    android:textSize="18dip"
+		    android:paddingLeft="12dip" 
+		    android:textColor="#000000"  
+		    android:id="@+id/detail_hidden_description" 
+		    android:layout_below="@+id/detail_real_description"
+		    />
 		<TextView
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
-		    android:layout_marginTop="20px"
+		    android:layout_marginTop="18px"
+		    android:paddingLeft="20dip" 
 		    android:textSize="40dip"
 		    android:textColor="#000000"
 		    android:id="@+id/detail_required_steps"
-		    android:layout_below="@+id/detail_real_description"
+		    android:layout_below="@+id/detail_hidden_description"
 		    />
 		<TextView
 	    	android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="Expires at:     "
 			android:layout_marginTop="4px"
+			android:paddingLeft="12dip" 
+			android:text="Starts at:     "
 			android:textSize="20dip"
 			android:textColor="#000000"
 			android:id="@+id/date1"
@@ -64,11 +75,29 @@
 		    android:layout_height="wrap_content"
 		    android:layout_marginTop="4px"
 		    android:textSize="20dip"
-		    android:text="Nov 31"
 		    android:textColor="#FF4500"
-		    android:id="@+id/detail_expire_date"
+		    android:id="@+id/detail_start_date"
 		    android:layout_toRightOf="@+id/date1"
 		    android:layout_below="@+id/detail_required_steps"
+		    />
+		<TextView
+	    	android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:paddingLeft="12dip" 
+			android:text="Expires at:     "
+			android:textSize="20dip"
+			android:textColor="#000000"
+			android:id="@+id/date2"
+			android:layout_below="@+id/detail_start_date"
+			/>
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:textSize="20dip"
+		    android:textColor="#FF4500"
+		    android:id="@+id/detail_expire_date"
+		    android:layout_toRightOf="@+id/date2"
+		    android:layout_below="@+id/detail_start_date"
 		    />
 		<Button
 			android:layout_width="wrap_content"
@@ -78,7 +107,7 @@
 		    android:id="@+id/Use"
 		    android:textColor="#FF0000"
 		    android:layout_marginTop="20px"
-		    android:layout_below="@+id/date1"
+		    android:layout_below="@+id/date2"
 		    />
     </RelativeLayout> 
     <TextView
