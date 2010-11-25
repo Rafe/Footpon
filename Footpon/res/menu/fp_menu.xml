@@ -7,4 +7,6 @@
   		android:title="My Footpons"/>
   <item android:id="@+id/showInformation"
   		android:title="Login"/>
+  <item android:id="@+id/stopService"
+  		android:title="Stop"/>
 </menu>

@@ -59,8 +59,9 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
         super.onCreate(savedInstanceState);
         setContentView(R.layout.footpon_map);
         
-        getView();
+        //steps for testing
         
+        getView();
         myFootpon.setOnClickListener(getMyFootpon);  
         account.setOnClickListener(getAccount);
         setAnimation(stepView);
@@ -166,12 +167,19 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	    case R.id.showInformation:
 	    	startActivity(new Intent(context, ShowInformation.class));
 	    	return true;
+	    case R.id.stopService:
+	    	stopStepService();
 	    default:
 	        return super.onOptionsItemSelected(item);
 	    }
 	}
 	
-    private View.OnClickListener getMyFootpon = new View.OnClickListener()
+    private void stopStepService() {
+    	stopService(new Intent(FootponMapActivity.this,
+                StepService.class));
+	}
+
+	private View.OnClickListener getMyFootpon = new View.OnClickListener()
     {
 		@Override
 		public void onClick(View v) 

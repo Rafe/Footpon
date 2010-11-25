@@ -20,8 +20,9 @@ import android.widget.Toast;
 
 public class StepService extends Service implements StepListener{
 	
-	long steps;
-	long currentSteps;
+	public static long steps;
+	public static long currentSteps;
+	
 	boolean isStarted = false;
 	
 	private SharedPreferences state;
