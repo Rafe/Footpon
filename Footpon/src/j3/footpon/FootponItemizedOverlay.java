@@ -67,8 +67,8 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 		dialog.setContentView(R.layout.footpon_dialog);
 
 		IFootponService service = FootponServiceFactory.getService();
-		footpon = service.getFootponByLocation(
-				(double) point.getLongitudeE6(), (double) point.getLatitudeE6());
+		footpon = service.getFootponByLocation((double) point.getLongitudeE6(),
+				(double) point.getLatitudeE6());
 
 		TextView description = (TextView) dialog
 				.findViewById(R.id.dialog_realDescription);
@@ -80,123 +80,44 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 		detailsButton.setOnClickListener(new Button.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+
 				File sdcard = Environment.getExternalStorageDirectory();
 				File file = new File(sdcard, "user.txt");
 
-				if (file.exists()) {
-					String text = new String();
-
-					try {
-						BufferedReader reader = new BufferedReader(
-								new FileReader(file));
-						String line;
-
-						line = reader.readLine();
-						String[] temp = line.split(" ");
-						text = temp[1];
-
-						String result = "";
-						InputStream is = null;
-
-						//Data to send.
-						ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-						nameValuePairs.add(new BasicNameValuePair("username",
-								text));
-						nameValuePairs.add(new BasicNameValuePair("id", Long
-								.toString(footpon.getID())));
-
-						// http post
-						try {
-							HttpClient httpclient = new DefaultHttpClient();
-
-							HttpPost httppost = new HttpPost(
-									"http://pdc-amd01.poly.edu/~jli15/footpon/redeemCoupon.php");
-							httppost.setEntity(new UrlEncodedFormEntity(
-									nameValuePairs));
-
-							HttpResponse response = httpclient
-									.execute(httppost);
-
-							HttpEntity entity = response.getEntity();
-
-							is = entity.getContent();
-						}
-
-						catch (Exception e) {
-							Log.e("log_tag",
-									"Error in http connection " + e.toString());
-						}
-
-						// convert response to string
-						try {
-							reader = new BufferedReader(new InputStreamReader(
-									is, "iso-8859-1"), 8);
-
-							StringBuilder sb = new StringBuilder();
-
-							line = null;
-
-							while ((line = reader.readLine()) != null) {
-								sb.append(line + "\n");
-							}
-
-							is.close();
-
-							result = sb.toString();
-						}
-
-						catch (Exception e) {
-							Log.e("log_tag",
-									"Error converting result " + e.toString());
-						}
-
-						// parse json data
-						try {
-							JSONArray jArray = new JSONArray(result);
-							JSONObject json_data = jArray.getJSONObject(0);
-
-							String success = json_data.getString("success");
-
-							if (sdcard.canWrite()) {
-								FileWriter writer = new FileWriter(file, true);
-								BufferedWriter out = new BufferedWriter(writer);
-
-								out.append(Long.toString(footpon.getID()));
-								out.append("\n\n");
-								out.close();
-							}
-
-							if (success.equalsIgnoreCase("true")) {
-								Intent i = new Intent(mContext,
-										FootponDetailsActivity.class);
-								i.putExtra("latitude", footpon.getLatitude());
-								i.putExtra("longitude", footpon.getLongitude());
-								i.putExtra("isRedeemed", true);
-								mContext.startActivity(i);
-							}
-
-							else {
-							}
-						}
-
-						catch (JSONException e) {
-							Log.e("log_tag",
-									"Error parsing data " + e.toString());
-						}
-					}
-
-					catch (FileNotFoundException e) {
-						text = "File not found.\n";
-					}
-
-					catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				if (!file.exists()) {
+					Intent i = new Intent(mContext, ShowInformation.class);
+					mContext.startActivity(i);
 				}
 
-				else {
-					Intent i = new Intent(mContext, ShowInformation.class);
+				String userName = getUserName(file);
+
+				IFootponService service = FootponServiceFactory.getService();
+				boolean isSuccess = service.redeemFootpon(userName,
+						(long) footpon.getID());
+
+				try {
+
+					if (sdcard.canWrite()) {
+						FileWriter writer = new FileWriter(file, true);
+						BufferedWriter out = new BufferedWriter(writer);
+
+						out.append(Long.toString(footpon.getID()));
+						out.append("\n\n");
+						out.close();
+					}
+
+				} catch (FileNotFoundException e) {
+					Log.e("log_tag", "File not found.\n");
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				
+				if (isSuccess) {
+					Intent i = new Intent(mContext,
+							FootponDetailsActivity.class);
+					i.putExtra("latitude", footpon.getLatitude());
+					i.putExtra("longitude", footpon.getLongitude());
+					i.putExtra("isRedeemed", true);
 					mContext.startActivity(i);
 				}
 			}
@@ -209,6 +130,20 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 
 		return true;
 
+	}
+
+	private String getUserName(File file) {
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String line;
+
+			line = reader.readLine();
+			String[] temp = line.split(" ");
+			return temp[1];
+		} catch (Exception e) {
+			Log.e("log_tag", "Error in http connection " + e.toString());
+		}
+		return null;
 	}
 
 	public void addOverlay(OverlayItem overlay) {

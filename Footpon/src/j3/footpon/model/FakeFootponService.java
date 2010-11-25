@@ -27,11 +27,6 @@ public class FakeFootponService implements IFootponService {
 	}
 	
 	@Override
-	public boolean redeemFootpon(int userId,int footponId){
-		return false;
-	}
-	
-	@Override
 	public boolean useFootpon(int userId,int footponId){
 		return false;
 	}
@@ -51,6 +46,12 @@ public class FakeFootponService implements IFootponService {
 	public Footpon getFootponByLocation(double longtitude, double latitude) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean redeemFootpon(String userName, long footponId) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

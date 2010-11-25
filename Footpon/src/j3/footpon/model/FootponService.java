@@ -1,9 +1,13 @@
 package j3.footpon.model;
 
+import j3.footpon.FootponDetailsActivity;
+
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -21,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Environment;
 import android.util.Log;
 
@@ -104,9 +109,36 @@ public class FootponService implements IFootponService {
 	}
 	
 	@Override
-	public boolean redeemFootpon(int userId,int footponId){
+	public boolean redeemFootpon(String userName,long footponId){
+		//Data to send.
+		String result = null;
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("username",
+				userName));
+		nameValuePairs.add(new BasicNameValuePair("id", Long
+				.toString(footponId)));
+
+		// http post
+		result = POST("http://pdc-amd01.poly.edu/~jli15/footpon/redeemCoupon.php",
+					nameValuePairs);
+
+		// parse json data
+		try {
+			JSONArray jArray = new JSONArray(result);
+			JSONObject json_data = jArray.getJSONObject(0);
+
+			String success = json_data.getString("success");
+			if (success.equalsIgnoreCase("true"))
+				return true;
+
+		}catch (JSONException e) {
+			Log.e("log_tag",
+					"Error parsing data " + e.toString());
+		}
+		
 		return false;
 	}
+	
 	
 	@Override
 	public boolean useFootpon(int userId,int footponId){

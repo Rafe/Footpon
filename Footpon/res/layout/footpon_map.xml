@@ -36,7 +36,6 @@
     	android:layout_width="wrap_content"
 		android:layout_height="wrap_content" 
 		android:layout_alignParentBottom="true"
-		android:password="false"
 		android:text="Search"></Button>
 
 	<Button android:id="@+id/myFootponButton" 
@@ -44,15 +43,13 @@
 		android:layout_height="wrap_content" 
 		android:layout_alignParentBottom="true"
 		android:layout_centerHorizontal="true"
-		android:password="false"
-		android:text="My Coupon"></Button>
+		android:text="My Footpon"></Button>
 	
 	<Button android:id="@+id/accountButton" 
     	android:layout_width="wrap_content"
 		android:layout_height="wrap_content" 
 		android:layout_alignParentBottom="true"
 		android:layout_alignParentRight="true"
-		android:password="false"
 		android:text="Account"></Button>
 	
 </RelativeLayout>
