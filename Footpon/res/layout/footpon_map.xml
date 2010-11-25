@@ -39,7 +39,7 @@
 		android:password="false"
 		android:text="Search"></Button>
 
-	<Button android:id="@+id/myCouponButton" 
+	<Button android:id="@+id/myFootponButton" 
     	android:layout_width="wrap_content"
 		android:layout_height="wrap_content" 
 		android:layout_alignParentBottom="true"

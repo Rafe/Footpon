@@ -1,6 +1,8 @@
 package j3.footpon;
 
 import j3.footpon.model.Footpon;
+import j3.footpon.model.FootponServiceFactory;
+import j3.footpon.model.IFootponService;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -60,80 +62,13 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 		OverlayItem item = getItem(index);
 		GeoPoint point = item.getPoint();
 
-		// Toast t = Toast.makeText(mContext, item.getTitle() + " \n" +
-		// item.getSnippet() , Toast.LENGTH_LONG);
-		// t.show();
-		
 		Dialog dialog = new Dialog(mContext);
 		dialog.setTitle(item.getTitle());
 		dialog.setContentView(R.layout.footpon_dialog);
 
-		String result = "";
-		InputStream is = null;
-
-		// the year data to send
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-
-		nameValuePairs.add(new BasicNameValuePair("currentLatitude", Double
-				.toString((double) point.getLatitudeE6() / 1000000)));
-		nameValuePairs.add(new BasicNameValuePair("currentLongitude", Double
-				.toString((double) point.getLongitudeE6() / 1000000)));
-
-		// http post
-		try {
-			HttpClient httpclient = new DefaultHttpClient();
-
-			HttpPost httppost = new HttpPost("http://pdc-amd01.poly.edu/~jli15/footpon/getSingle.php");
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-			HttpResponse response = httpclient.execute(httppost);
-
-			HttpEntity entity = response.getEntity();
-
-			is = entity.getContent();
-		}
-
-		catch (Exception e) {
-			Log.e("log_tag", "Error in http connection " + e.toString());
-		}
-
-		// convert response to string
-		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					is, "iso-8859-1"), 8);
-
-			StringBuilder sb = new StringBuilder();
-
-			String line = null;
-
-			while ((line = reader.readLine()) != null) {
-				sb.append(line + "\n");
-			}
-
-			is.close();
-
-			result = sb.toString();
-		}
-
-		catch (Exception e) {
-			Log.e("log_tag", "Error converting result " + e.toString());
-		}
-
-		// parse json data
-		try {
-			JSONArray jArray = new JSONArray(result);
-
-			JSONObject json_data = jArray.getJSONObject(0);
-
-			footpon = new Footpon(json_data);
-		}
-
-		catch (JSONException e) {
-			Log.e("log_tag", "Error parsing data " + e.toString());
-		}
-
-		// IFootponService service = FootponServiceFactory.getService();
-		// Footpon fp = service.getInstance().get(index);
+		IFootponService service = FootponServiceFactory.getService();
+		footpon = service.getFootponByLocation(
+				(double) point.getLongitudeE6(), (double) point.getLatitudeE6());
 
 		TextView description = (TextView) dialog
 				.findViewById(R.id.dialog_realDescription);

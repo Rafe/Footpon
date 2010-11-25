@@ -12,7 +12,6 @@ import java.util.List;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
@@ -42,9 +41,8 @@ import android.widget.ViewSwitcher;
 public class FootponMapActivity extends MapActivity implements StepDisplayer
 {
 	Button search;
-	Button myCoupon;
+	Button myFootpon;
 	Button account;
-	
 	MapView mapView;
 	TextSwitcher stepView;
 	
@@ -56,41 +54,36 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	IFootponService service;
 	StepService stepService;
 	
-	//float point;
-	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.footpon_map);
         
-        context = this;
+        getView();
         
-        mapView = (MapView) findViewById(R.id.mapview);
-        mapView.setBuiltInZoomControls(true);
-        
-        stepView = (TextSwitcher) findViewById(R.id.steps);
+        myFootpon.setOnClickListener(getMyFootpon);  
+        account.setOnClickListener(getAccount);
         setAnimation(stepView);
+        mapView.setBuiltInZoomControls(true);
         
         myLocationOverlay = getLocationOverlay(); 
         service = FootponServiceFactory.getService();
-
-        //start and bind service... 
+        
+        //start and bind step service... 
         //you have to control service by sending intent and set service connection for callback
         startService(new Intent(FootponMapActivity.this, StepService.class));
         bindStepService();
         
-        
-        MapController controller = mapView.getController();
-        controller.setZoom(17);
-        
-        
-        
-        myCoupon=(Button) findViewById(R.id.myCouponButton);  
-        myCoupon.setOnClickListener(getMyCoupon);  
-        
-        account=(Button) findViewById(R.id.accountButton);  
-        account.setOnClickListener(getAccount);
+        mapView.getController().setZoom(17);
     }
+
+	private void getView() {
+		mapView = (MapView) findViewById(R.id.mapview);
+        stepView = (TextSwitcher) findViewById(R.id.steps);
+        myFootpon =(Button) findViewById(R.id.myFootponButton);
+        account = (Button) findViewById(R.id.accountButton);
+        context = this;
+	}
 	
 	// set animation for step changes : not necessary
 	private void setAnimation(TextSwitcher switcher) {
@@ -113,7 +106,10 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 			}
         });
 	}
-
+	
+	/*
+	 * @set current location and load footpons by current location 
+	 */
 	private MyLocationOverlay getLocationOverlay() {
 		MyLocationOverlay overlay = new MyLocationOverlay(this, mapView);
 		
@@ -125,7 +121,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
             		currentPosition.getLatitudeE6()+" " +
             		currentPosition.getLongitudeE6());
 			
-        	footpons=new ArrayList<Footpon>();
             footpons = service.getFootponsInArea((double)currentPosition.getLatitudeE6()/1000000,
             									 (double)currentPosition.getLongitudeE6()/1000000);
             
@@ -163,7 +158,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	    // Handle item selection
 	    switch (item.getItemId()) {
 	    case R.id.search:
-	    	
 	    	return true;
 	    case R.id.list:
 	    	startActivity(
@@ -177,7 +171,7 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	    }
 	}
 	
-    private View.OnClickListener getMyCoupon = new View.OnClickListener()
+    private View.OnClickListener getMyFootpon = new View.OnClickListener()
     {
 		@Override
 		public void onClick(View v) 
@@ -206,6 +200,7 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	        OverlayItem oItem = new OverlayItem(point,fp.getStoreName(), 
 	        		fp.getHiddenDescription() +"\nSteps: " + 
 	        		fp.getStepsRequired());
+	        
 	        Drawable image = IconHelper.getMapIcon(fp.getCategory(), context);
 	        oItem.setMarker(image);
 			overlay.addOverlay(oItem);
