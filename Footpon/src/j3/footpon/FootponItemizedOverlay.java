@@ -11,21 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -76,52 +62,9 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 				.findViewById(R.id.dialog_stepsRequired);
 		Button detailsButton = (Button) dialog
 				.findViewById(R.id.dialog_show_details);
-
-		detailsButton.setOnClickListener(new Button.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-
-				File sdcard = Environment.getExternalStorageDirectory();
-				File file = new File(sdcard, "user.txt");
-
-				if (!file.exists()) {
-					Intent i = new Intent(mContext, ShowInformation.class);
-					mContext.startActivity(i);
-				}
-
-				String userName = getUserName(file);
-
-				IFootponService service = FootponServiceFactory.getService();
-				boolean isSuccess = service.redeemFootpon(userName,
-						(long) footpon.getID());
-
-				try {
-
-					if (sdcard.canWrite()) {
-						FileWriter writer = new FileWriter(file, true);
-						BufferedWriter out = new BufferedWriter(writer);
-
-						out.append(Long.toString(footpon.getID()));
-						out.append("\n\n");
-						out.close();
-					}
-
-				} catch (FileNotFoundException e) {
-					Log.e("log_tag", "File not found.\n");
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				
-				if (isSuccess) {
-					Intent i = new Intent(mContext,
-							FootponDetailsActivity.class);
-					i.putExtra("latitude", footpon.getLatitude());
-					i.putExtra("longitude", footpon.getLongitude());
-					i.putExtra("isRedeemed", true);
-					mContext.startActivity(i);
-				}
-			}
-		});
+		
+		// set redeem button on dialog
+		detailsButton.setOnClickListener(redeemListener);
 
 		description.setText(footpon.getHiddenDescription());
 		stepsRequired.setText("Steps:" + footpon.getStepsRequired());
@@ -129,9 +72,58 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 		dialog.show();
 
 		return true;
-
 	}
+	
+	private Button.OnClickListener redeemListener = new Button.OnClickListener() {
+		@Override
+		public void onClick(View v) {
 
+			File sdcard = Environment.getExternalStorageDirectory();
+			File file = new File(sdcard, "user.txt");
+			boolean isSuccess = false;
+			
+			if (!file.exists()) {
+				Intent i = new Intent(mContext, ShowInformation.class);
+				mContext.startActivity(i);
+			}
+
+			String userName = getUserName(file);
+			if(userName != null){
+				IFootponService service = FootponServiceFactory.getService();
+				isSuccess = service.redeemFootpon(userName,
+					(long) footpon.getID());
+			}
+			
+			if (isSuccess){
+				save(sdcard, file);
+				Intent i = new Intent(mContext,
+						FootponDetailsActivity.class);
+				i.putExtra("latitude", footpon.getLatitude());
+				i.putExtra("longitude", footpon.getLongitude());
+				i.putExtra("isRedeemed", true);
+				mContext.startActivity(i);
+			}
+		}
+
+		private void save(File sdcard, File file) {
+			try {
+				if (sdcard.canWrite()) {
+					FileWriter writer = new FileWriter(file, true);
+					BufferedWriter out = new BufferedWriter(writer);
+
+					out.append(Long.toString(footpon.getID()));
+					out.append("\n\n");
+					out.close();
+				}
+
+			} catch (FileNotFoundException e) {
+				Log.e("log_tag", "File not found.\n");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	};
+	
 	private String getUserName(File file) {
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
