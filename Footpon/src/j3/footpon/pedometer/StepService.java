@@ -22,24 +22,25 @@ public class StepService extends Service implements StepListener{
 	
 	long steps;
 	long currentSteps;
-	//float points;
+	boolean isStarted = false;
 	
 	private SharedPreferences state;
     private SharedPreferences.Editor stateEditor;
 	
 	StepDetector stepDetector;
 	SensorManager sensorManager;
-	StepBinder binder = new StepBinder();
-	StepDisplayer stepDisplayer;
 	
-	private WakeLock wakeLock;
-	private NotificationManager notificationManager;
+	StepDisplayer stepDisplayer;
+	StepBinder binder = new StepBinder();
 	
 	public class StepBinder extends Binder {
         public StepService getService() {
             return StepService.this;
         }
     }
+	
+	private WakeLock wakeLock;
+	private NotificationManager notificationManager;
 	
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -51,12 +52,12 @@ public class StepService extends Service implements StepListener{
     public void onCreate() {
         super.onCreate();
         
+        //wake power service
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "StepService");
         wakeLock.acquire();
         
         state = getSharedPreferences("state", 0);
-        //points = state.getFloat("points", 0);
         steps = state.getLong("currentSteps", 0);
         steps = state.getLong("steps", 0);
         
@@ -87,7 +88,6 @@ public class StepService extends Service implements StepListener{
 		stateEditor = state.edit();
 	    stateEditor.putLong("steps", steps);
 	    stateEditor.putLong("currentSteps", currentSteps);
-	    //stateEditor.putFloat("points", points);
 	    stateEditor.commit();
 		
 		notificationManager.cancel(R.string.app_name);
@@ -96,9 +96,11 @@ public class StepService extends Service implements StepListener{
 	@Override
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
-
-        // Tell the user we started.
-        Toast.makeText(this, "Started pedometer", Toast.LENGTH_SHORT).show();
+        if(!isStarted){
+        	// Tell the user we started.
+        	Toast.makeText(this, "Started pedometer", Toast.LENGTH_SHORT).show();
+        	isStarted = true;
+        }
     }
 	
 	/**
@@ -119,16 +121,16 @@ public class StepService extends Service implements StepListener{
     
     public void setStepDisplayer(StepDisplayer displayer){
     	stepDisplayer = displayer;
-    	displayer.passValue(steps, currentSteps);//, points);
+    	displayer.passValue(steps, currentSteps);
     }
     
 	@Override
 	public void onStep() {
-		//points += 0.25f;
+
 		currentSteps+=1;
 		steps += 1;
 		if(stepDisplayer != null){
-			stepDisplayer.passValue(steps, currentSteps);//, points);
+			stepDisplayer.passValue(steps, currentSteps);
 		}
 	}
 

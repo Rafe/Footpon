@@ -31,73 +31,24 @@ public class FootponService implements IFootponService {
 	@Override
 	public ArrayList<Footpon> getFootponsInArea(double currentLatitude,
 			double currentLongitude) {
-		String result = "";
-		InputStream is = null;
+		// the position data to send
+		ArrayList<NameValuePair> parameters = new ArrayList<NameValuePair>();
 
-		// the year data to send
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-
-		nameValuePairs.add(new BasicNameValuePair("currentLatitude", Double
+		parameters.add(new BasicNameValuePair("currentLatitude", Double
 				.toString(currentLatitude)));
-		nameValuePairs.add(new BasicNameValuePair("currentLongitude", Double
+		parameters.add(new BasicNameValuePair("currentLongitude", Double
 				.toString(currentLongitude)));
 
 		ArrayList<Footpon> footpons = new ArrayList<Footpon>();
-
-		// http post
-		try {
-			HttpClient httpclient = new DefaultHttpClient();
-
-			HttpPost httppost = new HttpPost(
-					"http://pdc-amd01.poly.edu/~jli15/footpon/getArea.php");
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-			HttpResponse response = httpclient.execute(httppost);
-
-			HttpEntity entity = response.getEntity();
-
-			is = entity.getContent();
-		}
-		catch (Exception e) {
-			Log.e("log_tag", "Error in http connection " + e.toString());
-		}
-
-		// convert response to string
-		try {
-			BufferedReader reader = new BufferedReader(new InputStreamReader(
-					is, "iso-8859-1"), 8);
-
-			StringBuilder sb = new StringBuilder();
-
-			String line = null;
-
-			while ((line = reader.readLine()) != null) {
-				sb.append(line + "\n");
-			}
-
-			is.close();
-			result = sb.toString();
-		}
-		catch (Exception e) {
-			Log.e("log_tag", "Error converting result " + e.toString());
-		}
-
-		// parse json data
-		try {
-			JSONArray jArray = new JSONArray(result);
-
-			for (int i = 0; i < jArray.length(); i++) {
-				JSONObject json_data = jArray.getJSONObject(i);
-
-				footpons.add(new Footpon(json_data));
-			}
-		}
-		catch (JSONException e) {
-			Log.e("log_tag", "Error parsing data " + e.toString());
-		}
+		String result = POST("http://pdc-amd01.poly.edu/~jli15/footpon/getArea.php", 
+				parameters);
+		
+		JSONtoFootpons(result, footpons);
 
 		return footpons;
 	}
+
+	
 
 	@Override
 	public ArrayList<Footpon> getMyFootpons() {
@@ -108,9 +59,7 @@ public class FootponService implements IFootponService {
 
 		int coupon_id=0;
 		String result = "";
-		InputStream is = null;
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-	
+		ArrayList<NameValuePair> parameters = new ArrayList<NameValuePair>();
 	
 		try
 		{
@@ -120,57 +69,13 @@ public class FootponService implements IFootponService {
 			
 			while(coupon_id>=0)		// loop on the id of coupons user possess
 			{
-				nameValuePairs.add(new BasicNameValuePair("id", ""+coupon_id));
+				parameters.add(new BasicNameValuePair("id", ""+coupon_id));
 				
-				//http post
-				try
-				{
-					HttpClient httpclient = new DefaultHttpClient();
-					HttpPost httppost = new HttpPost("http://pdc-amd01.poly.edu/~jli15/footpon/getCoupon.php");
-					httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-					HttpResponse response = httpclient.execute(httppost);
-					HttpEntity entity = response.getEntity();
-					is = entity.getContent();
-				}
-				catch(Exception e)
-				{
-					Log.e("log_tag", "Error in http connection "+e.toString());
-				}
-				
-				//convert response to string
-				try
-				{
-					BufferedReader readerCp = new BufferedReader(new InputStreamReader(is,"iso-8859-1"),8);
-					
-					StringBuilder sb = new StringBuilder();
-					String line = null;
-					
-					while ((line = readerCp.readLine()) != null)
-					{
-						sb.append(line + "\n");
-					}
-					
-					is.close();
-					result=sb.toString();
-				//	Log.e("log_tag", "result: "+result);
-				}
-				catch(Exception e)
-				{
-					Log.e("log_tag", "Error converting result "+e.toString());
-				}
+				result = POST("http://pdc-amd01.poly.edu/~jli15/footpon/getCoupon.php",
+						parameters);
 				
 				//parse json data
-				try
-				{
-					JSONArray jArray = new JSONArray(result);
-					JSONObject json_data = jArray.getJSONObject(0);
-					
-					footpons.add(new Footpon(json_data));		
-				}
-				catch(JSONException e)
-				{
-					Log.e("log_tag", "Error parsing data "+e.toString());
-				}
+				JSONtoFootpons(result, footpons);
 				
 				readerUserInf.read();
 				coupon_id=readerUserInf.read()-48;
@@ -215,68 +120,19 @@ public class FootponService implements IFootponService {
 
 	@Override
 	public Footpon getFootponById(long id) {
-		Footpon footpon = null;
-		InputStream is = null;
 		String result = "";
 
-		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-		nameValuePairs.add(new BasicNameValuePair("id", "" + id));
+		ArrayList<NameValuePair> parameters = new ArrayList<NameValuePair>();
+		parameters.add(new BasicNameValuePair("id", "" + id));
 
-		// http post
-		try {
-			HttpClient httpclient = new DefaultHttpClient();
-			HttpPost httppost = new HttpPost(
-					"http://pdc-amd01.poly.edu/~jli15/footpon/getCoupon.php");
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-			HttpResponse response = httpclient.execute(httppost);
-			HttpEntity entity = response.getEntity();
-			is = entity.getContent();
-		} 
-		catch (Exception ee) {
-			Log.e("log_tag", "Error in http connection " + ee.toString());
-		}
+		result = POST("http://pdc-amd01.poly.edu/~jli15/footpon/getCoupon.php",
+				parameters);
 
-		// convert response to string
-		try {
-			BufferedReader readerCp = new BufferedReader(new InputStreamReader(
-					is, "iso-8859-1"), 8);
-
-			StringBuilder sb = new StringBuilder();
-			String line = null;
-
-			while ((line = readerCp.readLine()) != null) {
-				sb.append(line + "\n");
-			}
-
-			is.close();
-			result = sb.toString();
-		} 
-		catch (Exception e) {
-			Log.e("log_tag", "Error converting result " + e.toString());
-		}
-
-		// parse json data
-		try {
-			JSONArray jArray = new JSONArray(result);
-			JSONObject json_data = jArray.getJSONObject(0);
-
-			footpon = new Footpon(json_data);
-
-		} 
-		catch (JSONException e) {
-			Log.e("log_tag", "Error parsing data " + e.toString());
-		}
-
-		return footpon;
+		return JSONtoFootpon(result);
 	}
 
 	@Override
 	public Footpon getFootponByLocation(double longtitude, double latitude) {
-		String result = "";
-		InputStream is = null;
-		Footpon footpon = null;
-		
-		// the year data to send
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
 		nameValuePairs.add(new BasicNameValuePair("currentLatitude", Double
@@ -285,12 +141,53 @@ public class FootponService implements IFootponService {
 				.add(new BasicNameValuePair("currentLongitude",
 						Double.toString(longtitude / 1000000)));
 
-		// http post
+		String result = POST("http://pdc-amd01.poly.edu/~jli15/footpon/getSingle.php", 
+				nameValuePairs);
+			
+		return JSONtoFootpon(result);
+	}
+	
+	/*
+	 * @parse result string and add footpon into arrayList
+	 */
+	private void JSONtoFootpons(String result, ArrayList<Footpon> footpons) {
+		try {
+			JSONArray jArray = new JSONArray(result);
+
+			for (int i = 0; i < jArray.length(); i++) {
+				JSONObject json_data = jArray.getJSONObject(i);
+
+				footpons.add(new Footpon(json_data));
+			}
+		}
+		catch (JSONException e) {
+			Log.e("log_tag", "Error parsing data " + e.toString());
+		}
+	}
+	
+	/*
+	 * @parse result string and return single footpon
+	 */
+	private Footpon JSONtoFootpon(String result) {
+		try {
+			JSONArray jArray = new JSONArray(result);
+			JSONObject json_data = jArray.getJSONObject(0);
+
+			return new Footpon(json_data);
+		}
+		catch (JSONException e) {
+			Log.e("log_tag", "Error parsing data " + e.toString());
+		}
+		return null;
+	}
+	
+	private String POST(String url,ArrayList<NameValuePair> parameter){
+		InputStream is = null;
 		try {
 			HttpClient httpclient = new DefaultHttpClient();
 
-			HttpPost httppost = new HttpPost("http://pdc-amd01.poly.edu/~jli15/footpon/getSingle.php");
-			httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+			HttpPost httppost = new HttpPost(url);
+			httppost.setEntity(new UrlEncodedFormEntity(parameter));
 
 			HttpResponse response = httpclient.execute(httppost);
 
@@ -304,8 +201,8 @@ public class FootponService implements IFootponService {
 
 		// convert response to string
 		try {
-			BufferedReader reader = new BufferedReader(
-					new InputStreamReader(is, "iso-8859-1"), 8);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					is, "iso-8859-1"), 8);
 
 			StringBuilder sb = new StringBuilder();
 
@@ -316,24 +213,12 @@ public class FootponService implements IFootponService {
 			}
 
 			is.close();
-			result = sb.toString();
+			return sb.toString();
 		}
 		catch (Exception e) {
 			Log.e("log_tag", "Error converting result " + e.toString());
 		}
-
-		// parse json data
-		try {
-			JSONArray jArray = new JSONArray(result);
-
-			JSONObject json_data = jArray.getJSONObject(0);
-
-			footpon = new Footpon(json_data);
-		}
-		catch (JSONException e) {
-			Log.e("log_tag", "Error parsing data " + e.toString());
-		}
 		
-		return footpon;
-	}
+		return null;
+	};
 }

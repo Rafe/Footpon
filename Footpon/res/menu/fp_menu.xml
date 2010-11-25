@@ -2,9 +2,9 @@
 <menu
   xmlns:android="http://schemas.android.com/apk/res/android">
   <item android:id="@+id/search"
-  		android:title="Search Nearby"/>
+  		android:title="Search"/>
   <item android:id="@+id/list"
-  		android:title="My Coupons"/>
+  		android:title="My Footpons"/>
   <item android:id="@+id/showInformation"
-  		android:title="Login/Show Information"/>
+  		android:title="Login"/>
 </menu>

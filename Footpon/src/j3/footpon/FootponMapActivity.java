@@ -3,6 +3,7 @@ package j3.footpon;
 import j3.footpon.model.Footpon;
 import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.IFootponService;
+import j3.footpon.model.IconHelper;
 import j3.footpon.pedometer.StepDisplayer;
 import j3.footpon.pedometer.StepService;
 
@@ -205,29 +206,10 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	        OverlayItem oItem = new OverlayItem(point,fp.getStoreName(), 
 	        		fp.getHiddenDescription() +"\nSteps: " + 
 	        		fp.getStepsRequired());
-	        Drawable image;
-	        //TODO: move this if-else nest to IconManager.getIcon(fp.getCategory());
-	        if(fp.getCategory().equals(Footpon.CATEGORY_FOOD)){
-	        	image = context.getResources().getDrawable(R.drawable.icon_food);
-	        }else if(fp.getCategory().equals(Footpon.CATEGORY_OUTDOOR)){
-	        	image = context.getResources().getDrawable(R.drawable.icon_outdoor);
-	        }else if(fp.getCategory().equals(Footpon.CATEGORY_TOYS)){
-	        	image = context.getResources().getDrawable(R.drawable.icon_toys);
-	        }else if(fp.getCategory().equals(Footpon.CATEGORY_VIDEO_GAME)){
-	        	image = context.getResources().getDrawable(R.drawable.icon_games);
-	        }else{
-	        	image = drawable;
-	        }
-	        boundCenterButtom(image);
+	        Drawable image = IconHelper.getMapIcon(fp.getCategory(), context);
 	        oItem.setMarker(image);
 			overlay.addOverlay(oItem);
 		}
-	}
-	
-	//TODO: move to IconManager.BoundCenterButtom
-	private void boundCenterButtom(Drawable image) {
-		image.setBounds(-image.getIntrinsicWidth() /2, -image.getIntrinsicHeight(),
-						image.getIntrinsicWidth()/2, 0);
 	}
 	
 	@Override
@@ -248,7 +230,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
     }
 	
 	//the connection that access the step service
-	//TODO: get steps data from connection?
 	private ServiceConnection connection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
             stepService = ((StepService.StepBinder) service).getService();
@@ -260,12 +241,9 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
         }
     };
     
-    //
 	@Override
-	public void passValue(long steps, long currentSteps)//, float points) {
+	public void passValue(long steps, long currentSteps)
 	{
-		//point = points;
-		
 		stepView.setText(String.valueOf(steps));
 	}
 	
