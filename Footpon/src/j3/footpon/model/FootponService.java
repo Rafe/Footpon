@@ -47,9 +47,7 @@ public class FootponService implements IFootponService {
 
 		return footpons;
 	}
-
 	
-
 	@Override
 	public ArrayList<Footpon> getMyFootpons() {
 		ArrayList<Footpon> footpons = new ArrayList<Footpon>();
@@ -78,8 +76,8 @@ public class FootponService implements IFootponService {
 				JSONtoFootpons(result, footpons);
 				
 				readerUserInf.read();
-				coupon_id=readerUserInf.read()-48;
-				Log.e("log_tag", "ID: "+coupon_id);
+				coupon_id = readerUserInf.read()-48;
+			//	Log.e("log_tag", "ID: "+coupon_id);
 			}
 		}
 		catch (FileNotFoundException e)
