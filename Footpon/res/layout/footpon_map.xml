@@ -32,24 +32,4 @@
 		/>
 	</LinearLayout>
 	
-	<Button android:id="@+id/searchButton" 
-    	android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:layout_alignParentBottom="true"
-		android:text="Search"></Button>
-
-	<Button android:id="@+id/myFootponButton" 
-    	android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:layout_alignParentBottom="true"
-		android:layout_centerHorizontal="true"
-		android:text="My Footpon"></Button>
-	
-	<Button android:id="@+id/accountButton" 
-    	android:layout_width="wrap_content"
-		android:layout_height="wrap_content" 
-		android:layout_alignParentBottom="true"
-		android:layout_alignParentRight="true"
-		android:text="Account"></Button>
-	
 </RelativeLayout>

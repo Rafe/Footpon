@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu
-  xmlns:android="http://schemas.android.com/apk/res/android">
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  >
   <item android:id="@+id/search"
   		android:title="Search"/>
   <item android:id="@+id/list"
   		android:title="My Footpons"/>
   <item android:id="@+id/showInformation"
-  		android:title="Login"/>
+  		android:title="Account"/>
   <item android:id="@+id/stopService"
   		android:title="Stop"/>
 </menu>

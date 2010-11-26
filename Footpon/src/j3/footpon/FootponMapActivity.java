@@ -17,6 +17,7 @@ import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
+import android.app.ActivityManager.RunningServiceInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -36,13 +37,11 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 public class FootponMapActivity extends MapActivity implements StepDisplayer
 {
-	Button search;
-	Button myFootpon;
-	Button account;
 	MapView mapView;
 	TextSwitcher stepView;
 	
@@ -64,8 +63,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
         
         getView();
         
-        myFootpon.setOnClickListener(getMyFootpon);  
-        account.setOnClickListener(getAccount);
         setAnimation(stepView);
         mapView.setBuiltInZoomControls(true);
         
@@ -83,8 +80,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	private void getView() {
 		mapView = (MapView) findViewById(R.id.mapview);
         stepView = (TextSwitcher) findViewById(R.id.steps);
-        myFootpon =(Button) findViewById(R.id.myFootponButton);
-        account = (Button) findViewById(R.id.accountButton);
         context = this;
 	}
 	
@@ -160,19 +155,20 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle item selection
 	    switch (item.getItemId()) {
-	    case R.id.search:
-	    	return true;
-	    case R.id.list:
-	    	startActivity(
-	    			new Intent(context, FootponListActivity.class));
-	    	return true;
-	    case R.id.showInformation:
-	    	startActivity(new Intent(context, ShowInformation.class));
-	    	return true;
-	    case R.id.stopService:
-	    	stopStepService();
-	    default:
-	        return super.onOptionsItemSelected(item);
+		    case R.id.search:
+		    	return true;
+		    case R.id.list:
+		    	startActivity(
+		    			new Intent(context, FootponListActivity.class));
+		    	return true;
+		    case R.id.showInformation:
+		    	startActivity(new Intent(context, ShowInformation.class));
+		    	return true;
+		    case R.id.stopService:
+		    	stopStepService();
+		    	return true;
+		    default:
+		        return super.onOptionsItemSelected(item);
 	    }
 	}
 	
@@ -225,8 +221,13 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	
 	private void bindStepService() {
 		Log.d(SENSOR_SERVICE, "Start binding service...");
-		bindService(new Intent(FootponMapActivity.this, 
+		//use getApplicationContext().bindService when bindService in Tab
+		//see http://code.google.com/p/android/issues/detail?id=2483
+		boolean connected = getApplicationContext().bindService(new Intent(this, 
                 StepService.class), connection, Context.BIND_AUTO_CREATE);
+		if(!connected){
+			Toast.makeText(context, "connected service failed", 1000);
+		}
     }
 	
 	//unbind step service, called when application stop
