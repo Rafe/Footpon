@@ -232,7 +232,7 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	
 	//unbind step service, called when application stop
 	private void unbindStepService() {
-        unbindService(connection);
+		getApplicationContext().unbindService(connection);
     }
 	
 	//the connection that access the step service

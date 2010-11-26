@@ -47,6 +47,7 @@ public class FootponDetailsActivity extends Activity {
 			footpon = service.getFootponByLocation(_latitude, _longitude);
 		} else{
 			Toast.makeText(this, "no footpon data", 1000);
+			return;
 		}
 		
 		//set footpon data
