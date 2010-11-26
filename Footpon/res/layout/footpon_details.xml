@@ -2,15 +2,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android" 
     android:layout_width="fill_parent"    
     android:layout_height="fill_parent"   
-    android:paddingBottom="4dip"   
-    android:paddingLeft="12dip"  
-    android:paddingRight="12dip"
     android:background="@drawable/item_back"
     android:orientation="vertical">
     <RelativeLayout 
     	android:layout_width="fill_parent"    
-    	android:layout_height="fill_parent" 
-    	android:layout_above="@+id/steps">
+    	android:layout_height="fill_parent"
+    	android:paddingBottom="4dip"   
+    	android:paddingLeft="12dip"  
+    	android:paddingRight="12dip"
+    	android:paddingTop="12dip">
 		<ImageView
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
@@ -26,9 +26,10 @@
 		    android:layout_marginTop="18px"
 		    android:textSize="20dip"
 		    android:paddingLeft="12dip"
+		    android:paddingTop="12dip"
 		    android:textColor="#0000FF"
 		    android:id="@+id/detail_store_name"
-		    android:layout_below="@+id/logo"
+		    android:layout_toRightOf="@+id/logo"
 		    />
 		<TextView   
 		    android:layout_width="fill_parent" 
@@ -37,19 +38,10 @@
 		    android:textSize="18dip"   
 		    android:paddingLeft="12dip" 
 		    android:textColor="#000000"  
-		    android:id="@+id/detail_real_description" 
+		    android:id="@+id/detail_description" 
 		    android:layout_below="@+id/detail_store_name"
 		    />
-		<TextView   
-		    android:layout_width="fill_parent" 
-		    android:layout_height="wrap_content"
-		    android:textSize="18dip"
-		    android:paddingLeft="12dip" 
-		    android:textColor="#000000"  
-		    android:id="@+id/detail_hidden_description" 
-		    android:layout_below="@+id/detail_real_description"
-		    />
-		<TextView
+		    <TextView
 		    android:layout_width="fill_parent"
 		    android:layout_height="wrap_content"
 		    android:layout_marginTop="18px"
@@ -57,7 +49,7 @@
 		    android:textSize="40dip"
 		    android:textColor="#000000"
 		    android:id="@+id/detail_required_steps"
-		    android:layout_below="@+id/detail_hidden_description"
+		    android:layout_below="@+id/detail_description"
 		    />
 		<TextView
 	    	android:layout_width="wrap_content"
@@ -110,16 +102,22 @@
 		    android:layout_below="@+id/date2"
 		    />
     </RelativeLayout> 
-    <TextView
-    	android:layout_width="fill_parent" 
-		android:layout_height="wrap_content"
-		android:layout_alignParentBottom="true"
-		android:layout_marginBottom="5px"
-		android:paddingLeft="15dip" 
-		android:text="Your steps: 144"
-		android:textSize="30dip"
-		android:textColor="#9900FF"
-		android:background="#CCCCCC"
-		android:id="@id/steps"
+    <LinearLayout android:layout_width="fill_parent"
+    	android:layout_height="wrap_content" 
+    	android:background="#EEE">
+    	<TextView android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:text="Steps:"
+			android:textStyle="bold"
+			android:textSize="24sp"
+			android:textColor="#222"
+			android:layout_weight="1"
+		></TextView>
+		<TextView android:id="@+id/detail_steps" android:layout_width="fill_parent"
+			android:layout_height="wrap_content" android:text="0"
+			android:textStyle="bold"
+			android:textSize="26sp"
+			android:textColor="#222"
+			android:layout_weight="2"
 		/>
+	</LinearLayout>
 </RelativeLayout>  
