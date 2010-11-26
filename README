@@ -17,10 +17,9 @@ j3.footpon -- main activity controller
 j3.footpon.model -- data model and data receiver
 j3.footpon.test -- testcase
 
+current works:
 
-Needs for prototype 2
-
-1.complete pedometer
-2.unittest & refactor
-3.mapView add icon and refine
-4.display and get footpon
+Jimmy:
+1.points and reddem function
+2.details should show a dummy barcode while footpon is redeemed
+3.add TabView to MapView
