@@ -59,7 +59,7 @@ public class StepService extends Service implements StepListener{
         wakeLock.acquire();
         
         state = getSharedPreferences("state", 0);
-        steps = state.getLong("currentSteps", 0);
+        currentSteps = 0;
         steps = state.getLong("steps", 0);
         
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
@@ -69,8 +69,8 @@ public class StepService extends Service implements StepListener{
         stepDetector = new StepDetector();
         stepDetector.addStepListener(this);
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        Sensor sensor = sensorManager.getDefaultSensor(sensorManager.SENSOR_ACCELEROMETER);
-        sensorManager.registerListener(stepDetector,sensor,sensorManager.SENSOR_DELAY_FASTEST);
+        Sensor sensor = sensorManager.getDefaultSensor(SensorManager.SENSOR_ACCELEROMETER);
+        sensorManager.registerListener(stepDetector,sensor,SensorManager.SENSOR_DELAY_FASTEST);
         
 	}	
 	

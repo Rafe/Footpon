@@ -54,14 +54,16 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	IFootponService service;
 	StepService stepService;
 	
+	//temp varible
+	private long steps;
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.footpon_map);
         
-        //steps for testing
-        
         getView();
+        
         myFootpon.setOnClickListener(getMyFootpon);  
         account.setOnClickListener(getAccount);
         setAnimation(stepView);
@@ -235,7 +237,8 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	//the connection that access the step service
 	private ServiceConnection connection = new ServiceConnection() {
         public void onServiceConnected(ComponentName className, IBinder service) {
-            stepService = ((StepService.StepBinder) service).getService();
+            //IMPORTANT: get service instance:
+        	stepService = ((StepService.StepBinder) service).getService();
             stepService.setStepDisplayer(FootponMapActivity.this);
         }
 
@@ -243,10 +246,12 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
         	stepService = null;
         }
     };
+	
     
 	@Override
 	public void passValue(long steps, long currentSteps)
 	{
+		this.steps = steps;
 		stepView.setText(String.valueOf(steps));
 	}
 	
