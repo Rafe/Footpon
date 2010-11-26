@@ -157,10 +157,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	    switch (item.getItemId()) {
 		    case R.id.search:
 		    	return true;
-		    case R.id.list:
-		    	startActivity(
-		    			new Intent(context, FootponListActivity.class));
-		    	return true;
 		    case R.id.showInformation:
 		    	startActivity(new Intent(context, ShowInformation.class));
 		    	return true;
