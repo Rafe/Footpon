@@ -36,6 +36,7 @@ public class FootponDetailsActivity extends Activity {
 		//get footpon data by footpon id or location from intent
 		Intent i = getIntent();
 		Bundle bundle = i.getExtras();
+		boolean isRedeem = bundle.getBoolean("isRedeemed", false);
 		long _id = bundle.getLong("id");
 		double _latitude = bundle.getDouble("latitude");
 		double _longitude = bundle.getDouble("longitude");
@@ -48,6 +49,11 @@ public class FootponDetailsActivity extends Activity {
 		} else{
 			Toast.makeText(this, "no footpon data", 1000);
 			return;
+		}
+		
+		//
+		if(isRedeem){
+			
 		}
 		
 		//set footpon data

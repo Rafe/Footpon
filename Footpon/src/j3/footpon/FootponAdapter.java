@@ -120,7 +120,6 @@ public class FootponAdapter extends ArrayAdapter<Footpon> implements Filterable 
 
 	    @Override
 	    protected void publishResults(CharSequence constraint, FilterResults results) {
-	    	footpons = (ArrayList<Footpon>) results.values;
 	        if (results.count > 0) {
 	        	notifyDataSetChanged();
 	        } else {

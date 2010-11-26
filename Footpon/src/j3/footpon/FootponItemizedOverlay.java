@@ -96,17 +96,22 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 			
 			if (isSuccess){
 				save(sdcard, file);
-				
-				Intent i = new Intent(mContext,
-						FootponDetailsActivity.class);
-				i.putExtra("latitude", footpon.getLatitude());
-				i.putExtra("longitude", footpon.getLongitude());
-				i.putExtra("id", footpon.getID());
-				i.putExtra("isRedeemed", true);
-				mContext.startActivity(i);
+				startDetailActivity(footpon,true);
+			}else{
+				startDetailActivity(footpon,false);
 			}
 		}
-
+		
+		private void startDetailActivity(Footpon fp,boolean isRedeemed){
+			Intent i = new Intent(mContext,
+					FootponDetailsActivity.class);
+			i.putExtra("latitude", fp.getLatitude());
+			i.putExtra("longitude", fp.getLongitude());
+			i.putExtra("id", fp.getID());
+			i.putExtra("isRedeemed", isRedeemed);
+			mContext.startActivity(i);
+		}
+		
 		private void save(File sdcard, File file) {
 			try {
 				if (sdcard.canWrite()) {
