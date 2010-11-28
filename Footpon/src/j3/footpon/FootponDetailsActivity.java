@@ -9,6 +9,7 @@ import j3.footpon.pedometer.StepService;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,7 +17,7 @@ import android.widget.Toast;
 public class FootponDetailsActivity extends Activity {
 	private TextView storeName;
 	private TextView description;
-	private TextView stepsRequired;
+	private TextView code;
 	private TextView startDate;
 	private TextView expireDate;
 	private ImageView logo;
@@ -63,7 +64,7 @@ public class FootponDetailsActivity extends Activity {
 	private void getView(){
 		storeName = (TextView) findViewById(R.id.detail_store_name);
 		description = (TextView) findViewById(R.id.detail_description);
-		stepsRequired = (TextView) findViewById(R.id.detail_required_steps);
+		code = (TextView) findViewById(R.id.code);
 		startDate = (TextView) findViewById(R.id.detail_start_date);
 		expireDate = (TextView) findViewById(R.id.detail_expire_date);
 		logo = (ImageView) findViewById(R.id.logo);
@@ -76,9 +77,17 @@ public class FootponDetailsActivity extends Activity {
 			description.setText(footpon.getRealDescription());
 			startDate.setText(footpon.getStartDate());
 			expireDate.setText(footpon.getEndDate());
-			stepsRequired.setText(Long.toString(footpon.getStepsRequired()));
+			code.setText(Long.toString(footpon.getCode()));
 			logo.setImageDrawable(IconHelper.getLogo(footpon.getStoreName(), this));
 			steps.setText(String.valueOf(StepService.steps));
+			
+			StringBuilder address=new StringBuilder("http://pdc-amd01.poly.edu/~jli15/footpon/barcode.php?upc=");
+			address.append(Long.toString(footpon.getCode()));
+
+			WebView mWebView;
+		    mWebView = (WebView) findViewById(R.id.webview);
+		    mWebView.getSettings().setJavaScriptEnabled(true);
+		    mWebView.loadUrl(address.toString());
 		}
 	}
 }

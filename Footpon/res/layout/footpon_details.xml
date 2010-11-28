@@ -48,7 +48,7 @@
 		    android:paddingLeft="20dip" 
 		    android:textSize="40dip"
 		    android:textColor="#000000"
-		    android:id="@+id/detail_required_steps"
+		    android:id="@+id/code"
 		    android:layout_below="@+id/detail_description"
 		    />
 		<TextView
@@ -56,11 +56,11 @@
 			android:layout_height="wrap_content"
 			android:layout_marginTop="4px"
 			android:paddingLeft="12dip" 
-			android:text="Starts at:     "
+			android:text="Starts:     "
 			android:textSize="20dip"
 			android:textColor="#000000"
 			android:id="@+id/date1"
-			android:layout_below="@+id/detail_required_steps"
+			android:layout_below="@+id/code"
 			/>
 		<TextView
 		    android:layout_width="wrap_content"
@@ -70,13 +70,13 @@
 		    android:textColor="#FF4500"
 		    android:id="@+id/detail_start_date"
 		    android:layout_toRightOf="@+id/date1"
-		    android:layout_below="@+id/detail_required_steps"
+		    android:layout_below="@+id/code"
 		    />
 		<TextView
 	    	android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:paddingLeft="12dip" 
-			android:text="Expires at:     "
+			android:text="Expires:     "
 			android:textSize="20dip"
 			android:textColor="#000000"
 			android:id="@+id/date2"
@@ -101,6 +101,15 @@
 		    android:layout_marginTop="20px"
 		    android:layout_below="@+id/date2"
 		    />
+		    
+		<WebView  xmlns:android="http://schemas.android.com/apk/res/android"
+   			android:id="@+id/webview"
+    		android:layout_width="115dp"
+    		android:layout_height="100dp"
+			android:layout_centerInParent="true"
+			android:layout_alignParentBottom="true"
+    
+/>
     </RelativeLayout> 
     <LinearLayout android:layout_width="fill_parent"
     	android:layout_height="wrap_content" 
@@ -119,5 +128,6 @@
 			android:textColor="#222"
 			android:layout_weight="2"
 		/>
+		
 	</LinearLayout>
 </RelativeLayout>  
