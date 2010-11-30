@@ -121,12 +121,11 @@ public class FootponService implements IFootponService {
 			JSONObject json_data = jArray.getJSONObject(0);
 
 			String success = json_data.getString("success");
-			if (success.equalsIgnoreCase("true"))
+			if (success.equalsIgnoreCase("true")){
 				return true;
-
+			}
 		}catch (JSONException e) {
-			Log.e("log_tag",
-					"Error parsing data " + e.toString());
+			Log.e("log_tag","Error parsing data " + e.toString());
 		}
 		
 		return false;

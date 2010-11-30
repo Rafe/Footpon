@@ -51,15 +51,33 @@ public class FootponDetailsActivity extends Activity {
 			return;
 		}
 		
-		//
-		if(isRedeem){
-			
-		}
-		
 		//set footpon data
 		setView(footpon);
+		
+		if(!isRedeem){
+			if(pointsEnough()){
+				showRedeemButton();
+			}else{
+				showNotEnoughText();
+			}
+		}
 	}
 	
+	private void showNotEnoughText() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void showRedeemButton() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private boolean pointsEnough() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 	private void getView(){
 		storeName = (TextView) findViewById(R.id.detail_store_name);
 		description = (TextView) findViewById(R.id.detail_description);

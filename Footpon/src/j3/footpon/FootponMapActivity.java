@@ -17,7 +17,6 @@ import com.google.android.maps.MyLocationOverlay;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
-import android.app.ActivityManager.RunningServiceInfo;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -34,7 +33,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -52,9 +50,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	
 	IFootponService service;
 	StepService stepService;
-	
-	//temp varible
-	private long steps;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -172,26 +167,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
     	stopService(new Intent(FootponMapActivity.this,
                 StepService.class));
 	}
-
-	private View.OnClickListener getMyFootpon = new View.OnClickListener()
-    {
-		@Override
-		public void onClick(View v) 
-		{
-			Intent intent=new Intent(context, FootponListActivity.class);
-			startActivity(intent);
-		}
-    };
-	
-    private View.OnClickListener getAccount = new View.OnClickListener()
-    {
-		@Override
-		public void onClick(View v) 
-		{
-			Intent intent=new Intent(context, ShowInformation.class);
-			startActivity(intent);
-		}
-    };
 	
 	//pass footponList and overlay and default drawable icon, set MapItem on map
 	public void setMapItems(FootponItemizedOverlay overlay, Drawable drawable, ArrayList<Footpon> footpons){
@@ -248,7 +223,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
 	@Override
 	public void passValue(long steps, long currentSteps)
 	{
-		this.steps = steps;
 		stepView.setText(String.valueOf(steps));
 	}
 	
