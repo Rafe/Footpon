@@ -65,5 +65,11 @@ public class FakeFootponService implements IFootponService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	public boolean invalidate(String username, long footponId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }

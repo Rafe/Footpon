@@ -129,12 +129,12 @@ public class FootponService implements IFootponService {
 	}
 	
 	@Override
-	public boolean redeemFootpon(String userName,long footponId){
+	public boolean redeemFootpon(String username,long footponId){
 		//Data to send.
 		String result = null;
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("username",
-				userName));
+				username));
 		nameValuePairs.add(new BasicNameValuePair("id", Long
 				.toString(footponId)));
 
@@ -159,6 +159,37 @@ public class FootponService implements IFootponService {
 		return false;
 	}
 	
+	@Override
+	public boolean invalidate(String username, long id){
+		//Data to send.
+		String result = null;
+		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+		nameValuePairs.add(new BasicNameValuePair("username", username));
+		nameValuePairs.add(new BasicNameValuePair("id", Long.toString(id)));
+
+		// http post
+		result = POST("http://pdc-amd01.poly.edu/~jli15/footpon/invalidate.php", nameValuePairs);
+
+		// parse json data
+		try 
+		{
+			JSONArray jArray = new JSONArray(result);
+			JSONObject json_data = jArray.getJSONObject(0);
+
+			String success = json_data.getString("success");
+			if (success.equalsIgnoreCase("true"))
+			{
+				return true;
+			}
+		}
+		
+		catch (JSONException e) 
+		{
+			Log.e("log_tag", "Error parsing data " + e.toString());
+		}
+		
+		return false;
+	}
 	
 	@Override
 	public boolean useFootpon(int userId,int footponId){

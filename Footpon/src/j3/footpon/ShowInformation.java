@@ -48,6 +48,8 @@ public class ShowInformation extends Activity {
 			text.append(points);
 			text.append('\n');
 			
+			text.append("\nCoupon ID:\n");
+			
 			File sdcard=Environment.getExternalStorageDirectory();
 			File file=new File(sdcard, "coupons.txt");
 			
@@ -80,6 +82,7 @@ public class ShowInformation extends Activity {
 			Button stop=(Button) findViewById(R.id.logoutButton);
 			stop.setOnClickListener(logout);
 		}
+		
 		else
 		{
 			startActivity(new Intent(ShowInformation.this, Login.class));
@@ -91,9 +94,9 @@ public class ShowInformation extends Activity {
 		@Override
 		public void onClick(View v) 
 		{
-			Intent intent=new Intent();
-			intent.setClass(ShowInformation.this, FootponMapActivity.class);
-			startActivity(intent);
+			//Intent intent=new Intent();
+			//intent.setClass(ShowInformation.this, FootponMapActivity.class);
+			//startActivity(intent);
 			finish();
 		}
 	};

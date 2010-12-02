@@ -96,7 +96,7 @@
 		    android:layout_height="wrap_content"
 		    android:layout_centerHorizontal="true"
 		    android:text="Use it now!"
-		    android:id="@+id/Use"
+		    android:id="@+id/use"
 		    android:textColor="#FF0000"
 		    android:layout_marginTop="20px"
 		    android:layout_below="@+id/date2"
