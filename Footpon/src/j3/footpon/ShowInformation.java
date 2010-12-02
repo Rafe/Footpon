@@ -76,8 +76,8 @@ public class ShowInformation extends Activity {
 			TextView view=(TextView)findViewById(R.id.userText);
 			view.setText(text);
 			
-			//Button go=(Button) findViewById(R.id.mapButton);
-			//go.setOnClickListener(map);
+			Button go=(Button) findViewById(R.id.mapButton);
+			go.setOnClickListener(map);
 			
 			Button stop=(Button) findViewById(R.id.logoutButton);
 			stop.setOnClickListener(logout);
@@ -89,17 +89,17 @@ public class ShowInformation extends Activity {
 		}
 	}
 	
-/*	private View.OnClickListener map=new View.OnClickListener()
+	private View.OnClickListener map=new View.OnClickListener()
 	{
 		@Override
 		public void onClick(View v) 
 		{
-			//Intent intent=new Intent();
-			//intent.setClass(ShowInformation.this, FootponMapActivity.class);
-			//startActivity(intent);
-			finish();
+			Intent intent=new Intent();
+			intent.setClass(ShowInformation.this, MainActivity.class);
+			startActivity(intent);
+	//		finish();
 		}
-	};*/
+	};
 	
 	private View.OnClickListener logout=new View.OnClickListener()
 	{
@@ -119,7 +119,7 @@ public class ShowInformation extends Activity {
 			file.delete();
 			
 			Intent intent=new Intent();
-			intent.setClass(ShowInformation.this, FootponMapActivity.class);
+			intent.setClass(ShowInformation.this, MainActivity.class);
 			startActivity(intent);
 		}
 	};

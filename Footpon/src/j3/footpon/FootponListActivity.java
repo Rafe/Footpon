@@ -36,10 +36,13 @@ public class FootponListActivity extends Activity {
 	    
 		SharedPreferences share = getSharedPreferences(User.SHARE_USER_INF_TAG, 0);
 		String username = share.getString(User.SHARE_USERNAME, "");
+		
 	    if(username.equals("")){
-	    	Log.e("LIST_ERROR", "NO username");
-	    	return;
+	    	Intent intent=new Intent();
+			intent.setClass(FootponListActivity.this, Login.class);
+			startActivity(intent);
 	    }
+	    
 		footpons = FootponServiceFactory.getService().getMyFootpons(username);
 		
 		if(footpons != null) {
