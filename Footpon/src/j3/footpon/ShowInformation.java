@@ -82,6 +82,7 @@ public class ShowInformation extends Activity {
 			Button stop=(Button) findViewById(R.id.logoutButton);
 			stop.setOnClickListener(logout);
 		}
+		
 		else
 		{
 			startActivity(new Intent(ShowInformation.this, Login.class));
@@ -93,9 +94,9 @@ public class ShowInformation extends Activity {
 		@Override
 		public void onClick(View v) 
 		{
-			Intent intent=new Intent();
-			intent.setClass(ShowInformation.this, FootponMapActivity.class);
-			startActivity(intent);
+			//Intent intent=new Intent();
+			//intent.setClass(ShowInformation.this, FootponMapActivity.class);
+			//startActivity(intent);
 			finish();
 		}
 	};*/
