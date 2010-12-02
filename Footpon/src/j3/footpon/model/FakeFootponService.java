@@ -27,11 +27,6 @@ public class FakeFootponService implements IFootponService {
 	}
 	
 	@Override
-	public boolean useFootpon(int userId,int footponId){
-		return true;
-	}
-	
-	@Override
 	public boolean sync(int step){
 		return false;
 	}
@@ -52,6 +47,24 @@ public class FakeFootponService implements IFootponService {
 	public boolean redeemFootpon(String userName, long footponId) {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	@Override
+	public ArrayList<Footpon> getMyFootpons(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Footpon getMyFootpons(String username, long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean invalidate(String username, long footponId) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

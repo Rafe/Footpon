@@ -83,7 +83,7 @@
 		    android:layout_centerHorizontal="true"
 		    android:textOff ="Use it now!"
 		    android:textOn ="Redeemed"
-		    android:id="@+id/Use"
+		    android:id="@+id/use"
 		    android:textColor="#FF0000"
 		    android:layout_marginTop="20px"
 		    android:layout_below="@+id/detail_steps_text"
@@ -93,7 +93,7 @@
     		android:layout_width="115dp"
     		android:layout_height="100dp"
 			android:layout_centerInParent="true"
-			android:layout_below="@+id/Use"
+			android:layout_below="@+id/use"
 		/>
 		<TextView
 		    android:layout_width="fill_parent"
@@ -123,6 +123,5 @@
 			android:textColor="#222"
 			android:layout_weight="2"
 		/>
-		
 	</LinearLayout>
 </RelativeLayout>  

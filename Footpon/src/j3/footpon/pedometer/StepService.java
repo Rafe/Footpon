@@ -59,7 +59,7 @@ public class StepService extends Service implements StepListener{
         
         state = getSharedPreferences("state", 0);
         currentSteps = 0;
-        steps = 10000;//state.getLong("steps", 0);
+        steps = state.getLong("steps", 0);
         
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         showNotification();

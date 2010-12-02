@@ -6,6 +6,8 @@ public class User
 	private String firstName;
 	private String lastName;
 	private long steps;
+	public static final String SHARE_USER_INF_TAG = "USER_INF_TAG";
+	public static final String SHARE_USERNAME = "FOOTPON_USERNAME";
 	
 	public User(String username, String firstName, String lastName, long steps)
 	{

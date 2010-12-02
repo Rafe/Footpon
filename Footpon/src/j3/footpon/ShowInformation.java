@@ -31,8 +31,8 @@ public class ShowInformation extends Activity {
 		
 		SharedPreferences share = getSharedPreferences(SHARE_USER_INF_TAG, 0);
 		
-		String userName = share.getString(SHARE_USERNAME, "");
-		if(!userName.equals(""))
+		String username = share.getString(SHARE_USERNAME, "");
+		if(!username.equals(""))
 		{
 			String firstName = share.getString(SHARE_FIRSTNAME, "");
 			String lastName = share.getString(SHARE_LASTNAME, "");
@@ -43,10 +43,12 @@ public class ShowInformation extends Activity {
 			text.append('\n');
 			text.append('\n');
 			text.append("Your username: ");
-			text.append(userName);
+			text.append(username);
 			text.append("\nYour stored points: ");
 			text.append(points);
 			text.append('\n');
+			
+			text.append("\nCoupon ID:\n");
 			
 			File sdcard=Environment.getExternalStorageDirectory();
 			File file=new File(sdcard, "coupons.txt");
@@ -74,8 +76,8 @@ public class ShowInformation extends Activity {
 			TextView view=(TextView)findViewById(R.id.userText);
 			view.setText(text);
 			
-			Button go=(Button) findViewById(R.id.mapButton);
-			go.setOnClickListener(map);
+			//Button go=(Button) findViewById(R.id.mapButton);
+			//go.setOnClickListener(map);
 			
 			Button stop=(Button) findViewById(R.id.logoutButton);
 			stop.setOnClickListener(logout);
@@ -86,7 +88,7 @@ public class ShowInformation extends Activity {
 		}
 	}
 	
-	private View.OnClickListener map=new View.OnClickListener()
+/*	private View.OnClickListener map=new View.OnClickListener()
 	{
 		@Override
 		public void onClick(View v) 
@@ -96,7 +98,7 @@ public class ShowInformation extends Activity {
 			startActivity(intent);
 			finish();
 		}
-	};
+	};*/
 	
 	private View.OnClickListener logout=new View.OnClickListener()
 	{

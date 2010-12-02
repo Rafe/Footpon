@@ -153,9 +153,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer, St
 	    switch (item.getItemId()) {
 		    case R.id.search:
 		    	return true;
-		    case R.id.showInformation:
-		    	startActivity(new Intent(context, ShowInformation.class));
-		    	return true;
 		    case R.id.stopService:
 		    	stopStepService();
 		    	return true;
@@ -221,7 +218,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer, St
         	stepService = null;
         }
     };
-	
     
 	@Override
 	public void passValue(long steps, long currentSteps)

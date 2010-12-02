@@ -1,5 +1,13 @@
 package j3.footpon;
 
+import java.util.ArrayList;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -13,6 +21,7 @@ import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.IFootponService;
 import j3.footpon.model.IconHelper;
 import j3.footpon.model.StepBinder;
+import j3.footpon.model.User;
 import j3.footpon.pedometer.StepDisplayer;
 import j3.footpon.pedometer.StepService;
 
@@ -20,16 +29,18 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
+import android.content.ServiceConnection;
+import android.os.Environment;
+import android.os.IBinder;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,6 +59,12 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 	private TextView stepsRequired;
 	private StepService stepService;
 	private Footpon footpon = null;
+	private TextView steps;
+	
+	long _id;
+	String username;
+	
+	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -59,14 +76,15 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 		//get footpon data by footpon id or location from intent
 		Intent i = getIntent();
 		Bundle bundle = i.getExtras();
-		boolean isRedeem = bundle.getBoolean("isRedeemed", false);
-		long _id = bundle.getLong("id");
+		_id = bundle.getLong("id");
 		double _latitude = bundle.getDouble("latitude");
 		double _longitude = bundle.getDouble("longitude");
 		
-		
+		SharedPreferences share = getSharedPreferences(User.SHARE_USER_INF_TAG, 0);
+		username = share.getString(User.SHARE_USERNAME, "");
+	    
 		if (_id != 0) {
-			footpon = service.getFootponById(_id);
+			footpon=FootponServiceFactory.getService().getMyFootpons(username, _id);
 		} else if (_latitude != 0 || _longitude != 0) {
 			footpon = service.getFootponByLocation(_latitude, _longitude);
 		} else{
@@ -78,7 +96,7 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 		setView(footpon);
 		bindStepService();
 		
-		if(!isRedeem){
+		if(!footpon.getUsed()){
 			if(stepsEnough(StepService.steps,footpon)){
 				showRedeemButton();
 			}else{
@@ -101,11 +119,12 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 					File sdcard = Environment.getExternalStorageDirectory();
 					File file = new File(sdcard, "user.txt");
 					
-					String userName = getUserName(file);
-					Boolean isSuccess = service.redeemFootpon(userName, footpon.getID());
+					Boolean isSuccess = service.redeemFootpon(username, footpon.getID());
 					if(isSuccess){
 						save(sdcard,file);
 						stepService.redeemSteps(footpon.getStepsRequired());
+						//check footpon used at serverside
+						service.invalidate(username, footpon.getID());
 						showBarcodeView(footpon);
 						use.setClickable(false);
 					}
@@ -148,7 +167,7 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 		logo = (ImageView) findViewById(R.id.logo);
 		stepView = (TextView) findViewById(R.id.detail_steps);
 		barcodeView = (WebView) findViewById(R.id.barcode_view);
-		use = (ToggleButton) findViewById(R.id.Use);
+		use = (ToggleButton) findViewById(R.id.use);
 		stepsRequired = (TextView) findViewById(R.id.detail_steps_required);
 	}
 	
@@ -157,10 +176,10 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 			storeName.setText(footpon.getStoreName());
 			description.setText(footpon.getRealDescription());
 			expireDate.setText(footpon.getEndDate());
-			code.setText(Long.toString(footpon.getCode()));
 			logo.setImageDrawable(IconHelper.getLogo(footpon.getStoreName(), this));
 			stepView.setText(String.valueOf(StepService.steps));
 			stepsRequired.setText(String.valueOf(footpon.getStepsRequired()));
+			code.setText(String.valueOf(footpon.getCode()));
 		}
 	}
 	
@@ -194,7 +213,6 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
         	stepService = null;
         }
     };
-	
     
 	@Override
 	public void passValue(long steps, long currentSteps)
@@ -218,19 +236,6 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 		Log.i("Footpon", "stopping the listener");
     }
 	
-	private String getUserName(File file) {
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String line;
-
-			line = reader.readLine();
-			String[] temp = line.split(" ");
-			return temp[1];
-		} catch (Exception e) {
-			Log.e("log_tag", "Error in file " + e.toString());
-		}
-		return null;
-	}
 	private void save(File sdcard, File file) {
 		try {
 			if (sdcard.canWrite()) {

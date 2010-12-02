@@ -16,6 +16,7 @@ public class Footpon {
 	private long stepsRequired;
 	private String startDate;
 	private String endDate;
+	private boolean used;
 	
 	public static final String CATEGORY_VIDEO_GAME="Video Game";
 	public static final String CATEGORY_FOOD="Food";
@@ -54,6 +55,36 @@ public class Footpon {
 		this.longitude = data.getDouble("longitude");
 		this.stepsRequired = data.getLong("stepsRequired");
 		this.code = data.getLong("code");
+		//this.used = data.getInt("used") == 0 ? true : false ;
+	}
+	
+	public Footpon(JSONObject data, boolean mine) throws JSONException
+	{
+		this.id = data.getLong("id");
+		this.storeName = data.getString("storeName");
+		this.code = data.getLong("code");
+		this.category = data.getString("category");
+		this.hiddenDescription = data.getString("hiddenDescription");
+		this.realDescription = data.getString("realDescription");
+		this.category = data.getString("category");
+		this.startDate = data.getString("startDate");
+		this.endDate = data.getString("endDate");
+		this.latitude = data.getDouble("latitude");
+		this.longitude = data.getDouble("longitude");
+		this.stepsRequired = data.getLong("stepsRequired");
+		this.code = data.getLong("code");
+		
+		int temp=data.getInt("used");
+		
+		if(temp==0)
+		{
+			this.used=false;
+		}
+		
+		else
+		{
+			this.used=true;
+		}
 	}
 	
 	//Getter and Setters...
@@ -148,5 +179,11 @@ public class Footpon {
 		return endDate;
 	}
 	
-	
+	public void setUsed(boolean used) {
+		this.used = used;
+	}
+
+	public boolean getUsed() {
+		return used;
+	}
 }

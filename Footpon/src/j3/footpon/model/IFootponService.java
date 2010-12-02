@@ -10,9 +10,10 @@ public interface IFootponService {
 	public ArrayList<Footpon> getInstance();
 	public ArrayList<Footpon> getMyFootpons();
 	public boolean redeemFootpon(String userName,long footponId);
-	public boolean useFootpon(int userId,int footponId);
 	public boolean sync(int step);
 	public Footpon getFootponById(long id);
 	public Footpon getFootponByLocation(double longtitude,double latitude);
-	
+	public ArrayList<Footpon> getMyFootpons(String username);
+	Footpon getMyFootpons(String username, long id);
+	boolean invalidate(String username, long footponId);
 }
