@@ -20,5 +20,9 @@ public class MainActivity extends TabActivity {
         tabHost.addTab(tabHost.newTabSpec("myFootpon")
                 .setIndicator("My Footpon")
                 .setContent(new Intent(this, FootponListActivity.class)));
+        
+        tabHost.addTab(tabHost.newTabSpec("account")
+                .setIndicator("Account")
+                .setContent(new Intent(this, ShowInformation.class)));
     }
 }

@@ -1,5 +1,13 @@
 package j3.footpon;
 
+import java.util.ArrayList;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import j3.footpon.model.Footpon;
 import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.IFootponService;
@@ -10,12 +18,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class FootponDetailsActivity extends Activity {
+	Button use;
 	private TextView storeName;
 	private TextView description;
 	private TextView code;
@@ -26,6 +38,10 @@ public class FootponDetailsActivity extends Activity {
 	IFootponService service;
 	private final String SHARE_USER_INF_TAG = "USER_INF_TAG";
 	private String SHARE_USERNAME = "FOOTPON_USERNAME";
+	
+	long _id;
+	String username;
+	
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -40,13 +56,13 @@ public class FootponDetailsActivity extends Activity {
 		Intent i = getIntent();
 		Bundle bundle = i.getExtras();
 		boolean isRedeem = bundle.getBoolean("isRedeemed", false);
-		long _id = bundle.getLong("id");
+		_id = bundle.getLong("id");
 		double _latitude = bundle.getDouble("latitude");
 		double _longitude = bundle.getDouble("longitude");
 		
 		SharedPreferences share = getSharedPreferences(SHARE_USER_INF_TAG, 0);
 		
-		String username = share.getString(SHARE_USERNAME, "");
+		username = share.getString(SHARE_USERNAME, "");
 	    
 		Footpon footpon = null;
 		if (_id != 0) {
@@ -58,6 +74,9 @@ public class FootponDetailsActivity extends Activity {
 			Toast.makeText(this, "no footpon data", 1000);
 			return;
 		}
+		
+        use=(Button) findViewById(R.id.use);  
+        use.setOnClickListener(invalidate);
 		
 		//set footpon data
 		setView(footpon);
@@ -85,6 +104,7 @@ public class FootponDetailsActivity extends Activity {
 			if(footpon.getUsed())
 			{
 				code.setText("Already used");
+		        use.setEnabled(false);
 			}
 			
 			else
@@ -101,4 +121,21 @@ public class FootponDetailsActivity extends Activity {
 			}
 		}
 	}
+	
+    public Button.OnClickListener invalidate = new Button.OnClickListener()
+    {
+    	public void onClick(View v)
+    	{	
+    		boolean temp=FootponServiceFactory.getService().invalidate(username, _id);
+    		
+    		if(temp==true)
+    		{
+    			finish();
+    		}
+    		
+    		else
+    		{
+    		}
+    	}
+    };
 }

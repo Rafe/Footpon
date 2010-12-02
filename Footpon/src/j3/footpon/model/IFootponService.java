@@ -18,5 +18,7 @@ public interface IFootponService {
 	public ArrayList<Footpon> getMyFootpons(String username);
 
 	Footpon getMyFootpons(String username, long id);
+
+	boolean invalidate(String username, long footponId);
 	
 }
