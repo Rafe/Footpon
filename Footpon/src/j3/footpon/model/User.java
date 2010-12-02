@@ -1,5 +1,7 @@
 package j3.footpon.model;
 
+import android.content.SharedPreferences;
+
 public class User 
 {
 	private String username;

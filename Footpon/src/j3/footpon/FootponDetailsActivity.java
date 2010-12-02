@@ -1,18 +1,8 @@
 package j3.footpon;
 
-import java.util.ArrayList;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -36,11 +26,9 @@ import android.view.View;
 import android.content.ServiceConnection;
 import android.os.Environment;
 import android.os.IBinder;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -59,7 +47,6 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 	private TextView stepsRequired;
 	private StepService stepService;
 	private Footpon footpon = null;
-	private TextView steps;
 	
 	long _id;
 	String username;
@@ -76,9 +63,9 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 		//get footpon data by footpon id or location from intent
 		Intent i = getIntent();
 		Bundle bundle = i.getExtras();
-		_id = bundle.getLong("id");
-		double _latitude = bundle.getDouble("latitude");
-		double _longitude = bundle.getDouble("longitude");
+		_id = bundle.getLong("id",0);
+		double _latitude = bundle.getDouble("latitude",0);
+		double _longitude = bundle.getDouble("longitude",0);
 		
 		SharedPreferences share = getSharedPreferences(User.SHARE_USER_INF_TAG, 0);
 		username = share.getString(User.SHARE_USERNAME, "");
@@ -119,15 +106,13 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 					File sdcard = Environment.getExternalStorageDirectory();
 					File file = new File(sdcard, "user.txt");
 					
-					Boolean isSuccess = service.redeemFootpon(username, footpon.getID());
-					if(isSuccess){
-						save(sdcard,file);
-						stepService.redeemSteps(footpon.getStepsRequired());
-						//check footpon used at serverside
-						service.invalidate(username, footpon.getID());
-						showBarcodeView(footpon);
-						use.setClickable(false);
-					}
+					//TODO: change this save to coupon.txt
+					//save(sdcard,file);
+					stepService.redeemSteps(footpon.getStepsRequired());
+					//check footpon used at serverside
+					service.invalidate(username, footpon.getID());
+					showBarcodeView(footpon);
+					use.setClickable(false);
 				}else{
 					barcodeView.setVisibility(View.INVISIBLE);
 					stepService.addSteps(footpon.getStepsRequired());

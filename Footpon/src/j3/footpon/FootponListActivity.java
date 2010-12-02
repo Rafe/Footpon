@@ -2,6 +2,7 @@ package j3.footpon;
 
 import j3.footpon.model.Footpon;
 import j3.footpon.model.FootponServiceFactory;
+import j3.footpon.model.User;
 
 import java.util.ArrayList;
 
@@ -25,8 +26,6 @@ public class FootponListActivity extends Activity {
 	ArrayList<Footpon> footpons;
 	ArrayList<Long> IDs = new ArrayList<Long>();
 	FootponAdapter adapter;
-	private final String SHARE_USER_INF_TAG = "USER_INF_TAG";
-	private String SHARE_USERNAME = "FOOTPON_USERNAME";
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,10 +34,12 @@ public class FootponListActivity extends Activity {
 		filterText = (EditText) findViewById(R.id.search_box);
 	    filterText.addTextChangedListener(filterTextWatcher);
 	    
-		SharedPreferences share = getSharedPreferences(SHARE_USER_INF_TAG, 0);
-		
-		String username = share.getString(SHARE_USERNAME, "");
-	    
+		SharedPreferences share = getSharedPreferences(User.SHARE_USER_INF_TAG, 0);
+		String username = share.getString(User.SHARE_USERNAME, "");
+	    if(username.equals("")){
+	    	Log.e("LIST_ERROR", "NO username");
+	    	return;
+	    }
 		footpons = FootponServiceFactory.getService().getMyFootpons(username);
 		
 		if(footpons != null) {

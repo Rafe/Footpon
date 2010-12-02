@@ -125,6 +125,7 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer, St
             
             if(footpons.size() > 0){
             	footponOverlay = new FootponItemizedOverlay(drawable, context);
+            	footponOverlay.setContext(context);
             	setMapItems(footponOverlay, drawable, footpons);
             	mapOverlays.add(footponOverlay);
             }

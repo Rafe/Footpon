@@ -23,7 +23,7 @@
   	
   	<Button 
   		android:id="@+id/dialog_show_details"
-  		android:text="Details"
+  		android:text="Add to My Footpon"
   		android:padding="6dip" 
   		android:gravity="center_horizontal"
   		android:layout_width="wrap_content"
