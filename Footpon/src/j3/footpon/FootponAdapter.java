@@ -5,6 +5,7 @@ import j3.footpon.model.Footpon;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,14 +115,16 @@ public class FootponAdapter extends ArrayAdapter<Footpon> implements Filterable 
 	            results.values = newFpList;
 	            results.count = newFpList.size();
 	        }
-
+	        Log.e("log_tag", "dd: ");
 	        return results;
 	    }
 
 	    @Override
 	    protected void publishResults(CharSequence constraint, FilterResults results) {
-	        if (results.count > 0) {
+	    	footpons = (ArrayList<Footpon>) results.values;
+	    	if (results.count > 0) {
 	        	notifyDataSetChanged();
+	        	Log.e("log_tag", "huan: ");
 	        } else {
 	            notifyDataSetInvalidated();
 	        }
