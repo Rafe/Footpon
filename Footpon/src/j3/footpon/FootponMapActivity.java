@@ -4,6 +4,7 @@ import j3.footpon.model.Footpon;
 import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.IFootponService;
 import j3.footpon.model.IconHelper;
+import j3.footpon.model.StepBinder;
 import j3.footpon.pedometer.StepDisplayer;
 import j3.footpon.pedometer.StepService;
 
@@ -38,7 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
-public class FootponMapActivity extends MapActivity implements StepDisplayer
+public class FootponMapActivity extends MapActivity implements StepDisplayer, StepBinder
 {
 	MapView mapView;
 	TextSwitcher stepView;
@@ -190,7 +191,8 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
         bindStepService();
 	}
 	
-	private void bindStepService() {
+	@Override
+	public void bindStepService() {
 		Log.d(SENSOR_SERVICE, "Start binding service...");
 		//use getApplicationContext().bindService when bindService in Tab
 		//see http://code.google.com/p/android/issues/detail?id=2483
@@ -202,7 +204,8 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer
     }
 	
 	//unbind step service, called when application stop
-	private void unbindStepService() {
+	@Override
+	public void unbindStepService() {
 		getApplicationContext().unbindService(connection);
     }
 	

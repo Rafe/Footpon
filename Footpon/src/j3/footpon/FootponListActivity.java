@@ -53,6 +53,7 @@ public class FootponListActivity extends Activity {
 	    	Intent i = new Intent(footponListActivity, FootponDetailsActivity.class);
 	    	Bundle bundle=new Bundle();
 	    	bundle.putLong("id", IDs.get(position));
+	    	bundle.putBoolean("isRedeemed", true);
 	    	i.putExtras(bundle);
 	    	startActivity(i);
 	    }

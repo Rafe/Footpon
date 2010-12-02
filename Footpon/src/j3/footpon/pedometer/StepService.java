@@ -26,7 +26,6 @@ public class StepService extends Service implements StepListener{
 	boolean isStarted = false;
 	
 	private SharedPreferences state;
-    private SharedPreferences.Editor stateEditor;
 	
 	StepDetector stepDetector;
 	SensorManager sensorManager;
@@ -60,7 +59,7 @@ public class StepService extends Service implements StepListener{
         
         state = getSharedPreferences("state", 0);
         currentSteps = 0;
-        steps = state.getLong("steps", 0);
+        steps = 10000;//state.getLong("steps", 0);
         
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         showNotification();
@@ -86,10 +85,7 @@ public class StepService extends Service implements StepListener{
 		
 		wakeLock.release();
 		
-		stateEditor = state.edit();
-	    stateEditor.putLong("steps", steps);
-	    stateEditor.putLong("currentSteps", currentSteps);
-	    stateEditor.commit();
+		savePoints();
 		
 		notificationManager.cancel(R.string.app_name);
 	}
@@ -130,9 +126,40 @@ public class StepService extends Service implements StepListener{
 
 		currentSteps+=1;
 		steps += 1;
+		refresh();
+	}
+
+	public boolean redeemSteps(long s) {
+		
+		if(steps < s){
+			return false;
+		}
+		steps -= s;
+		refresh();
+		savePoints();
+		return true;
+	}
+
+	private void refresh() {
 		if(stepDisplayer != null){
 			stepDisplayer.passValue(steps, currentSteps);
 		}
+	}
+
+	public boolean addSteps(long s) {
+		steps += s;
+		refresh();
+		savePoints();
+		return true;
+	}
+	
+	private boolean savePoints(){
+		SharedPreferences.Editor stateEditor;
+		stateEditor = state.edit();
+	    stateEditor.putLong("steps", steps);
+	    stateEditor.putLong("currentSteps", currentSteps);
+	    stateEditor.commit();
+	    return true;
 	}
 
 }

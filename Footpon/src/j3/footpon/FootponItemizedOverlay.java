@@ -3,6 +3,7 @@ package j3.footpon;
 import j3.footpon.model.Footpon;
 import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.IFootponService;
+import j3.footpon.pedometer.StepService;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -77,29 +78,8 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 	private Button.OnClickListener redeemListener = new Button.OnClickListener() {
 		@Override
 		public void onClick(View v) {
-
-			File sdcard = Environment.getExternalStorageDirectory();
-			File file = new File(sdcard, "user.txt");
-			boolean isSuccess = false;
-			
-			if (!file.exists()) {
-				Intent i = new Intent(mContext, ShowInformation.class);
-				mContext.startActivity(i);
-			}
-
-			String userName = getUserName(file);
-			if(userName != null){
-				IFootponService service = FootponServiceFactory.getService();
-				isSuccess = service.redeemFootpon(userName,
-					(long) footpon.getID());
-			}
-			
-			if (isSuccess){
-				save(sdcard, file);
-				startDetailActivity(footpon,true);
-			}else{
-				startDetailActivity(footpon,false);
-			}
+			//TODO: check isRedeemed
+			startDetailActivity(footpon,false);
 		}
 		
 		private void startDetailActivity(Footpon fp,boolean isRedeemed){
@@ -111,40 +91,8 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 			i.putExtra("isRedeemed", isRedeemed);
 			mContext.startActivity(i);
 		}
-		
-		private void save(File sdcard, File file) {
-			try {
-				if (sdcard.canWrite()) {
-					FileWriter writer = new FileWriter(file, true);
-					BufferedWriter out = new BufferedWriter(writer);
-
-					out.append(Long.toString(footpon.getID()));
-					out.append("\n\n");
-					out.close();
-				}
-
-			} catch (FileNotFoundException e) {
-				Log.e("log_tag", "File not found.\n");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 	};
 	
-	private String getUserName(File file) {
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String line;
-
-			line = reader.readLine();
-			String[] temp = line.split(" ");
-			return temp[1];
-		} catch (Exception e) {
-			Log.e("log_tag", "Error in http connection " + e.toString());
-		}
-		return null;
-	}
-
 	public void addOverlay(OverlayItem overlay) {
 		mOverlays.add(overlay);
 		populate();

@@ -41,37 +41,6 @@
 		    android:id="@+id/detail_description" 
 		    android:layout_below="@+id/detail_store_name"
 		    />
-		    <TextView
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:layout_marginTop="18px"
-		    android:paddingLeft="20dip" 
-		    android:textSize="40dip"
-		    android:textColor="#000000"
-		    android:id="@+id/code"
-		    android:layout_below="@+id/detail_description"
-		    />
-		<TextView
-	    	android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginTop="4px"
-			android:paddingLeft="12dip" 
-			android:text="Starts:     "
-			android:textSize="20dip"
-			android:textColor="#000000"
-			android:id="@+id/date1"
-			android:layout_below="@+id/code"
-			/>
-		<TextView
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:layout_marginTop="4px"
-		    android:textSize="20dip"
-		    android:textColor="#FF4500"
-		    android:id="@+id/detail_start_date"
-		    android:layout_toRightOf="@+id/date1"
-		    android:layout_below="@+id/code"
-		    />
 		<TextView
 	    	android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
@@ -79,8 +48,8 @@
 			android:text="Expires:     "
 			android:textSize="20dip"
 			android:textColor="#000000"
-			android:id="@+id/date2"
-			android:layout_below="@+id/detail_start_date"
+			android:id="@+id/expire_date"
+			android:layout_below="@+id/detail_description"
 			/>
 		<TextView
 		    android:layout_width="wrap_content"
@@ -88,28 +57,54 @@
 		    android:textSize="20dip"
 		    android:textColor="#FF4500"
 		    android:id="@+id/detail_expire_date"
-		    android:layout_toRightOf="@+id/date2"
-		    android:layout_below="@+id/detail_start_date"
+		    android:layout_toRightOf="@+id/expire_date"
+		    android:layout_below="@+id/detail_description"
 		    />
-		<Button
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:textSize="35dip"
+		    android:textColor="#FF4500"
+		    android:id="@+id/detail_steps_required"
+		    android:layout_below="@+id/expire_date"
+		/>
+		<TextView
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:textSize="15dip"
+		    android:text="steps"
+		    android:textColor="#FF4500"
+		    android:id="@+id/detail_steps_text"
+		    android:layout_below="@+id/detail_steps_required"
+		/>
+		<ToggleButton
 			android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
 		    android:layout_centerHorizontal="true"
-		    android:text="Use it now!"
+		    android:textOff ="Use it now!"
+		    android:textOn ="Redeemed"
 		    android:id="@+id/Use"
 		    android:textColor="#FF0000"
 		    android:layout_marginTop="20px"
-		    android:layout_below="@+id/date2"
+		    android:layout_below="@+id/detail_steps_text"
 		    />
-		    
-		<WebView  xmlns:android="http://schemas.android.com/apk/res/android"
-   			android:id="@+id/webview"
+		<WebView
+   			android:id="@+id/barcode_view"
     		android:layout_width="115dp"
     		android:layout_height="100dp"
 			android:layout_centerInParent="true"
-			android:layout_alignParentBottom="true"
-    
-/>
+			android:layout_below="@+id/Use"
+		/>
+		<TextView
+		    android:layout_width="fill_parent"
+		    android:layout_height="wrap_content"
+		    android:textSize="14dip"
+		    android:textColor="#000000"
+		    android:paddingRight="10px"
+		    android:id="@+id/code"
+		    android:gravity="center_vertical|center_horizontal"
+		    android:layout_below="@+id/barcode_view"
+		    />
     </RelativeLayout> 
     <LinearLayout android:layout_width="fill_parent"
     	android:layout_height="wrap_content" 

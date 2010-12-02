@@ -23,12 +23,12 @@ public class FakeFootponService implements IFootponService {
 	
 	@Override
 	public ArrayList<Footpon> getMyFootpons(){
-		return null;
+		return getFootponsInArea(0,0);
 	}
 	
 	@Override
 	public boolean useFootpon(int userId,int footponId){
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -39,19 +39,19 @@ public class FakeFootponService implements IFootponService {
 	@Override
 	public Footpon getFootponById(long id) {
 		// TODO Auto-generated method stub
-		return null;
+		return new Footpon(3, "Toys R Us","Toys","Hidden","Buy one LEGO set, get second LEGO set half off","Oct 10", "Nov 1", 40.757210,-73.985679,90, 0);
 	}
 
 	@Override
 	public Footpon getFootponByLocation(double longtitude, double latitude) {
 		// TODO Auto-generated method stub
-		return null;
+		return new Footpon(3, "Toys R Us","Toys","Hidden","Buy one LEGO set, get second LEGO set half off","Oct 10", "Nov 1", 40.757210,-73.985679,90, 0);
 	}
 
 	@Override
 	public boolean redeemFootpon(String userName, long footponId) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 }

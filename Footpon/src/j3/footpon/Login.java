@@ -61,7 +61,8 @@ public class Login extends Activity {
 
 	private boolean isNetError;
 	private ProgressDialog proDialog;
-
+	
+	//handle login event and response, implement "handleMessage(msg)"
 	Handler loginHandler = new Handler() {
 		public void handleMessage(Message msg) {
 			isNetError = msg.getData().getBoolean("isNetError");

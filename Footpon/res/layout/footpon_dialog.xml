@@ -23,8 +23,9 @@
   	
   	<Button 
   		android:id="@+id/dialog_show_details"
-  		android:text="Redeem"
-  		android:padding="12dip" 
+  		android:text="Details"
+  		android:padding="6dip" 
+  		android:gravity="center_horizontal"
   		android:layout_width="wrap_content"
   		android:layout_height="wrap_content"
   		android:textColor="#000000"></Button>
