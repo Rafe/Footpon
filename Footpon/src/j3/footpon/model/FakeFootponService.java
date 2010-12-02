@@ -53,5 +53,17 @@ public class FakeFootponService implements IFootponService {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
+	@Override
+	public ArrayList<Footpon> getMyFootpons(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Footpon getMyFootpons(String username, long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

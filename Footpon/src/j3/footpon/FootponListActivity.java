@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,6 +24,8 @@ public class FootponListActivity extends Activity {
 	ArrayList<Footpon> footpons;
 	ArrayList<Long> IDs = new ArrayList<Long>();
 	FootponAdapter adapter;
+	private final String SHARE_USER_INF_TAG = "USER_INF_TAG";
+	private String SHARE_USERNAME = "FOOTPON_USERNAME";
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,7 +34,11 @@ public class FootponListActivity extends Activity {
 		filterText = (EditText) findViewById(R.id.search_box);
 	    filterText.addTextChangedListener(filterTextWatcher);
 	    
-		footpons = FootponServiceFactory.getService().getMyFootpons();
+		SharedPreferences share = getSharedPreferences(SHARE_USER_INF_TAG, 0);
+		
+		String username = share.getString(SHARE_USERNAME, "");
+	    
+		footpons = FootponServiceFactory.getService().getMyFootpons(username);
 		
 		if(footpons != null) {
 			adapter = new FootponAdapter(this, R.layout.footpon_listitem, footpons);

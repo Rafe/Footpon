@@ -14,5 +14,9 @@ public interface IFootponService {
 	public boolean sync(int step);
 	public Footpon getFootponById(long id);
 	public Footpon getFootponByLocation(double longtitude,double latitude);
+
+	public ArrayList<Footpon> getMyFootpons(String username);
+
+	Footpon getMyFootpons(String username, long id);
 	
 }

@@ -8,6 +8,7 @@ import j3.footpon.pedometer.StepService;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.widget.ImageView;
@@ -23,7 +24,8 @@ public class FootponDetailsActivity extends Activity {
 	private ImageView logo;
 	private TextView steps;
 	IFootponService service;
-	
+	private final String SHARE_USER_INF_TAG = "USER_INF_TAG";
+	private String SHARE_USERNAME = "FOOTPON_USERNAME";
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -42,19 +44,19 @@ public class FootponDetailsActivity extends Activity {
 		double _latitude = bundle.getDouble("latitude");
 		double _longitude = bundle.getDouble("longitude");
 		
+		SharedPreferences share = getSharedPreferences(SHARE_USER_INF_TAG, 0);
+		
+		String username = share.getString(SHARE_USERNAME, "");
+	    
 		Footpon footpon = null;
 		if (_id != 0) {
-			footpon = service.getFootponById(_id);
+			//footpon = service.getFootponById(_id);
+			footpon=FootponServiceFactory.getService().getMyFootpons(username, _id);
 		} else if (_latitude != 0 || _longitude != 0) {
 			footpon = service.getFootponByLocation(_latitude, _longitude);
 		} else{
 			Toast.makeText(this, "no footpon data", 1000);
 			return;
-		}
-		
-		//
-		if(isRedeem){
-			
 		}
 		
 		//set footpon data
@@ -77,17 +79,26 @@ public class FootponDetailsActivity extends Activity {
 			description.setText(footpon.getRealDescription());
 			startDate.setText(footpon.getStartDate());
 			expireDate.setText(footpon.getEndDate());
-			code.setText(Long.toString(footpon.getCode()));
 			logo.setImageDrawable(IconHelper.getLogo(footpon.getStoreName(), this));
 			steps.setText(String.valueOf(StepService.steps));
-			
-			StringBuilder address=new StringBuilder("http://pdc-amd01.poly.edu/~jli15/footpon/barcode.php?upc=");
-			address.append(Long.toString(footpon.getCode()));
 
-			WebView mWebView;
-		    mWebView = (WebView) findViewById(R.id.webview);
-		    mWebView.getSettings().setJavaScriptEnabled(true);
-		    mWebView.loadUrl(address.toString());
+			if(footpon.getUsed())
+			{
+				code.setText("Already used");
+			}
+			
+			else
+			{
+				code.setText(Long.toString(footpon.getCode()));
+				
+				StringBuilder address=new StringBuilder("http://pdc-amd01.poly.edu/~jli15/footpon/barcode.php?upc=");
+				address.append(Long.toString(footpon.getCode()));
+
+				WebView mWebView;
+				mWebView = (WebView) findViewById(R.id.webview);
+				mWebView.getSettings().setJavaScriptEnabled(true);
+				mWebView.loadUrl(address.toString());
+			}
 		}
 	}
 }

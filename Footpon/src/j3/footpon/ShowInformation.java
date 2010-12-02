@@ -31,8 +31,8 @@ public class ShowInformation extends Activity {
 		
 		SharedPreferences share = getSharedPreferences(SHARE_USER_INF_TAG, 0);
 		
-		String userName = share.getString(SHARE_USERNAME, "");
-		if(!userName.equals(""))
+		String username = share.getString(SHARE_USERNAME, "");
+		if(!username.equals(""))
 		{
 			String firstName = share.getString(SHARE_FIRSTNAME, "");
 			String lastName = share.getString(SHARE_LASTNAME, "");
@@ -43,7 +43,7 @@ public class ShowInformation extends Activity {
 			text.append('\n');
 			text.append('\n');
 			text.append("Your username: ");
-			text.append(userName);
+			text.append(username);
 			text.append("\nYour stored points: ");
 			text.append(points);
 			text.append('\n');

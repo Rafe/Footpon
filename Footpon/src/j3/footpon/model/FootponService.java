@@ -93,6 +93,33 @@ public class FootponService implements IFootponService {
 	}
 	
 	@Override
+	public ArrayList<Footpon> getMyFootpons(String username) {
+		ArrayList<Footpon> footpons = new ArrayList<Footpon>();
+		
+		ArrayList<NameValuePair> parameters = new ArrayList<NameValuePair>();
+		parameters.add(new BasicNameValuePair("username", ""+username));
+				
+		String result = POST("http://pdc-amd01.poly.edu/~jli15/footpon/getMyCoupon.php", parameters);
+				
+		//parse json data
+		JSONtoFootpons(result, footpons, true);
+				
+		return footpons;
+	}
+	
+	@Override
+	public Footpon getMyFootpons(String username, long id) 
+	{
+		ArrayList<NameValuePair> parameters = new ArrayList<NameValuePair>();
+		parameters.add(new BasicNameValuePair("username", ""+username));
+		parameters.add(new BasicNameValuePair("id", ""+id));
+
+		String result = POST("http://pdc-amd01.poly.edu/~jli15/footpon/getMyCouponWithID.php", parameters);
+
+		return JSONtoFootpon(result, true);
+	}
+	
+	@Override
 	public ArrayList<Footpon> getInstance() {
 		
 		if(_instance == null){
@@ -190,6 +217,21 @@ public class FootponService implements IFootponService {
 		}
 	}
 	
+	private void JSONtoFootpons(String result, ArrayList<Footpon> footpons, boolean mine) {
+		try {
+			JSONArray jArray = new JSONArray(result);
+
+			for (int i = 0; i < jArray.length(); i++) {
+				JSONObject json_data = jArray.getJSONObject(i);
+
+				footpons.add(new Footpon(json_data, mine));
+			}
+		}
+		catch (JSONException e) {
+			Log.e("log_tag", "Error parsing data " + e.toString());
+		}
+	}
+	
 	/*
 	 * @parse result string and return single footpon
 	 */
@@ -199,6 +241,33 @@ public class FootponService implements IFootponService {
 			JSONObject json_data = jArray.getJSONObject(0);
 
 			return new Footpon(json_data);
+		}
+		catch (JSONException e) {
+			Log.e("log_tag", "Error parsing data " + e.toString());
+		}
+		return null;
+	}
+	
+	private Footpon JSONtoFootpon(String result, boolean mine) {
+		try {
+			JSONArray jArray = new JSONArray(result);
+			JSONObject json_data = jArray.getJSONObject(0);
+
+			Footpon footpon=new Footpon(json_data);
+			
+			int temp=json_data.getInt("used");
+			
+			if(temp==0)
+			{
+				footpon.setUsed(false);
+			}
+
+			else
+			{
+				footpon.setUsed(true);
+			}
+			
+			return footpon;
 		}
 		catch (JSONException e) {
 			Log.e("log_tag", "Error parsing data " + e.toString());
@@ -245,5 +314,5 @@ public class FootponService implements IFootponService {
 		}
 		
 		return null;
-	};
+	}
 }
