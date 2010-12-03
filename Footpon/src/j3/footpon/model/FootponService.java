@@ -117,7 +117,7 @@ public class FootponService implements IFootponService {
 		parameters.add(new BasicNameValuePair("id", ""+id));
 
 		String result = POST("http://pdc-amd01.poly.edu/~jli15/footpon/getMyCouponWithID.php", parameters);
-
+		Log.e("log_tag", ": "+result);
 		return JSONtoFootpon(result, true);
 	}
 	
@@ -220,7 +220,7 @@ public class FootponService implements IFootponService {
 
 		String result = POST("http://pdc-amd01.poly.edu/~jli15/footpon/getSingle.php", 
 				nameValuePairs);
-			
+	//	Log.e("log_tag", "result: "+result);
 		return JSONtoFootpon(result);
 	}
 	

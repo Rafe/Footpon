@@ -113,6 +113,7 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 				if(steps > footpon.getStepsRequired()) {
 					service = FootponServiceFactory.getService();
 					service.redeemFootpon(username, footpon.getID());
+					steps -= footpon.getStepsRequired();
 					i.putExtra("own", true);
 				}
 				else

@@ -72,7 +72,8 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 		username = share.getString(User.SHARE_USERNAME, "");
 	    
 		if (_id != 0) {
-			footpon = service.getMyFootpons(username, _id);
+			Log.e("log_tag", "id here: "+_id);
+			footpon = service.getFootponById(_id);
 		}else{
 			Toast.makeText(this, "no footpon data", 1000);
 			return;
@@ -86,7 +87,6 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 			if(!footpon.getUsed()){
 				showUseButton();
 				showBarcodeView(footpon);
-				Log.e("log_tag", "show button: ");
 			}
 			else{
 				use.setVisibility(View.GONE);
