@@ -1,5 +1,7 @@
 package j3.footpon;
 
+import j3.footpon.pedometer.StepService;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -113,7 +115,7 @@ public class Register extends Activity {
 				nameValuePairs.add(new BasicNameValuePair("firstName", firstName));
 				nameValuePairs.add(new BasicNameValuePair("lastName", lastName));
 				nameValuePairs.add(new BasicNameValuePair("password", password));
-				nameValuePairs.add(new BasicNameValuePair("steps", Integer.toString(0)));
+				nameValuePairs.add(new BasicNameValuePair("steps", Long.toString(StepService.steps)));
 
 				//http post
 				try
