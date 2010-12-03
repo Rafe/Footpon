@@ -161,4 +161,7 @@ public class StepService extends Service implements StepListener{
 	    return true;
 	}
 
+	public static void setSteps(long temp){
+		steps=temp;
+	}
 }

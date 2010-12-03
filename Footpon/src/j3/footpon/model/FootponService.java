@@ -1,5 +1,7 @@
 package j3.footpon.model;
 
+import j3.footpon.pedometer.StepService;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,12 +23,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
 
-public class FootponService implements IFootponService {
-
+public class FootponService extends Activity implements IFootponService {
+	private final String SHARE_USER_INF_TAG = "USER_INF_TAG";
+	private String SHARE_USERNAME = "FOOTPON_USERNAME";
+	private String SHARE_STEPS = "FOOTPON_POINTS";
+	
 	private static ArrayList<Footpon> _instance;
 
 	@Override
@@ -136,6 +142,10 @@ public class FootponService implements IFootponService {
 	
 	@Override
 	public boolean redeemFootpon(String username, long footponID){
+		SharedPreferences share = getSharedPreferences(User.SHARE_USER_INF_TAG, 0);
+		username = share.getString(User.SHARE_USERNAME, "");
+		String steps = share.getString(SHARE_STEPS, "");
+		
 		//Data to send.
 		String result = null;
 
@@ -144,6 +154,7 @@ public class FootponService implements IFootponService {
 				username));
 		nameValuePairs.add(new BasicNameValuePair("id", Long
 				.toString(footponID)));
+		nameValuePairs.add(new BasicNameValuePair("steps", steps));
 
 		// http post
 		result = POST("http://pdc-amd01.poly.edu/~jli15/footpon/redeemCoupon.php",
@@ -285,17 +296,8 @@ public class FootponService implements IFootponService {
 
 			Footpon footpon=new Footpon(json_data);
 			
-			int temp=json_data.getInt("used");
-			
-			if(temp==0)
-			{
-				footpon.setUsed(false);
-			}
-
-			else
-			{
-				footpon.setUsed(true);
-			}
+			footpon.setUsed(
+					json_data.getInt("used") == 0 ? false : true);
 			
 			return footpon;
 		}
@@ -305,7 +307,6 @@ public class FootponService implements IFootponService {
 		return null;
 	}
 	
-//	private String POST(String url,ArrayList<NameValuePair> parameter){
 	public String POST(String url,ArrayList<NameValuePair> parameter){
 		InputStream is = null;
 		try {

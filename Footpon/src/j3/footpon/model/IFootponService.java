@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 //interface for Footpon Service
 public interface IFootponService {
-	public ArrayList<Footpon> getFootponsInArea(double longtitude,double latitude);
+	public ArrayList<Footpon> getFootponsInArea(double latitude,double longitude);
 
 	//return service instance, it's a singleton
 	public ArrayList<Footpon> getInstance();

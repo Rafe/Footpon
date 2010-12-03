@@ -11,6 +11,9 @@ import j3.footpon.pedometer.StepService;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -134,6 +137,34 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer, St
 		return overlay;
 	}
 
+	private MyLocationOverlay getLocationOverlay(final double latitude, final double longitude) {
+		MyLocationOverlay overlay = new MyLocationOverlay(this, mapView);
+
+		//handle footpons and map after received first position data
+		GeoPoint currentPosition=new GeoPoint((int)(latitude*1000000), (int)(longitude*1000000));
+        mapView.getController().animateTo(currentPosition);
+        
+        Log.d(LOCATION_SERVICE, "picture position:" +
+            		latitude+" " +
+            		longitude);
+			
+        footpons = service.getFootponsInArea(latitude, longitude);
+            
+        List<Overlay> mapOverlays = mapView.getOverlays();
+        Drawable drawable = context.getResources().getDrawable(R.drawable.mark);
+        mapOverlays = mapView.getOverlays();
+        mapOverlays.add(myLocationOverlay);
+            
+        if(footpons.size() > 0)
+        {
+            footponOverlay = new FootponItemizedOverlay(drawable, context);
+            setMapItems(footponOverlay, drawable, footpons);
+            mapOverlays.add(footponOverlay);
+        }
+        
+		return overlay;
+	}
+	
 	@Override
 	protected boolean isRouteDisplayed() {
 		return false;
@@ -156,6 +187,10 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer, St
 		    case R.id.stopService:
 		    	stopStepService();
 		    	return true;
+		    	
+		    case R.id.takePicture:
+		    	takePicture();
+		    	return true;
 		    default:
 		        return super.onOptionsItemSelected(item);
 	    }
@@ -165,7 +200,72 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer, St
     	stopService(new Intent(FootponMapActivity.this,
                 StepService.class));
 	}
+    
+    public void takePicture()
+    {
+    	//Code modified from http://code.google.com/p/zxing/wiki/ScanningViaIntent
+   		Intent intent=new Intent("com.google.zxing.client.android.SCAN");
+   		intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+   		startActivityForResult(intent, 0);
+    };
+    
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent)
+    {
+    	if(requestCode==0)
+    	{
+    		if(resultCode==RESULT_OK)
+    		{
+                String contents = intent.getStringExtra("SCAN_RESULT");
+                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+                Log.i("Format: " + format, "Contents: " + contents);
+                
+            	ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+
+            	String[] values=contents.split("@");
+            	for(int i=0; i<values.length; i+=2)
+            	{
+                	nameValuePairs.add(new BasicNameValuePair(values[i], values[i+1]));
+                    Log.i(values[i], values[i+1]);
+            	}
+            	
+            	//service.getFootponsInArea(Double.parseDouble(values[1]), Double.parseDouble(values[3]));
+            	
+            	myLocationOverlay=getLocationOverlay(Double.parseDouble(values[1]), Double.parseDouble(values[3]));
+    		}
+    		
+    		else if(resultCode==RESULT_CANCELED)
+    		{
+                Log.i(null, "cancelled");
+    		}
+    	}
+    }
+
 	
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	//pass footponList and overlay and default drawable icon, set MapItem on map
 	public void setMapItems(FootponItemizedOverlay overlay, Drawable drawable, ArrayList<Footpon> footpons){
 		
