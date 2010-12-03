@@ -77,26 +77,32 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 		setView(footpon);
 		bindStepService();
 		
-		if(footpon.getUsed()) {
-			use.setVisibility(View.GONE);
-			showBarcodeView(footpon);
+		if(footpon.getUsed()) 
+		{
+			//use.setVisibility(View.GONE);
+			//showBarcodeView(footpon);
+			showUsedButton();
 		}
 		else {
-			if(stepsEnough(StepService.steps, footpon)){
-				showRedeemButton();
-			}else{
-				showNotEnoughText();
-			}
+//			if(stepsEnough(StepService.steps, footpon)){
+//				showRedeemButton();
+//			}else{
+//				showNotEnoughText();
+//			}
+			showUseButton();
 		}
 		
-		use.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+		use.setOnCheckedChangeListener(new OnCheckedChangeListener()
+		{
 			@Override
 			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) {
+					boolean isChecked) 
+			{
 				
 				if(footpon == null) return;
 				
-				if(isChecked){
+				/*if(isChecked)
+				{
 					barcodeView.setVisibility(View.VISIBLE);
 					//TODO: change this save to coupon.txt
 					stepService.redeemSteps(footpon.getStepsRequired());
@@ -104,9 +110,28 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 					service.invalidate(username, footpon.getID());
 					showBarcodeView(footpon);
 					use.setClickable(false);
-				}else{
+				}
+				
+				else
+				{
 					barcodeView.setVisibility(View.INVISIBLE);
 					stepService.addSteps(footpon.getStepsRequired());
+				}*/
+				
+				
+				
+				
+				if(footpon.getUsed())
+				{
+					use.setClickable(false);
+				}
+				
+				else
+				{
+					service.invalidate(username, footpon.getID());
+					code.setText("");
+					barcodeView.setVisibility(View.INVISIBLE);
+					use.setClickable(false);
 				}
 			}
 		}); 
@@ -123,7 +148,15 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 	
 	private void showUseButton() {
 		use.setText("Use it now");
-	//	code.setVisibility(View.VISIBLE);
+		code.setVisibility(View.VISIBLE);
+		showBarcodeView(footpon);
+		code.setText(String.valueOf(footpon.getCode()));
+	}
+
+	private void showUsedButton() {
+		use.setText("Already used");
+		use.setClickable(false);
+		//code.setVisibility(View.VISIBLE);
 	}
 	
 	private void showNotEnoughText() {
@@ -161,7 +194,6 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 			logo.setImageDrawable(IconHelper.getLogo(footpon.getStoreName(), this));
 			stepView.setText(String.valueOf(StepService.steps));
 			stepsRequired.setText(String.valueOf(footpon.getStepsRequired()));
-			code.setText(String.valueOf(footpon.getCode()));
 		}
 	}
 	

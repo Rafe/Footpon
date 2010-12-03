@@ -74,7 +74,7 @@ public class FootponListActivity extends Activity {
 	    	Bundle bundle=new Bundle();
 	    	bundle.putLong("id", footpons.get(position).getID());
 	    	//FootponServiceFactory.getService().redeemFootpon(username, footpons.get(position).getID());
-	    	//bundle.putBoolean("own",true);
+	    	bundle.putBoolean("own",true);
 	    	i.putExtras(bundle);
 	    	startActivity(i);
 	    }
