@@ -1,5 +1,7 @@
 package j3.footpon;
 
+import j3.footpon.pedometer.StepService;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -117,6 +119,8 @@ public class ShowInformation extends Activity {
 			File sdcard=Environment.getExternalStorageDirectory();
 			File file=new File(sdcard, "coupons.txt");
 			file.delete();
+			
+			StepService.setSteps(0);
 			
 			Intent intent=new Intent();
 			intent.setClass(ShowInformation.this, MainActivity.class);
