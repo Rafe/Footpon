@@ -14,19 +14,19 @@ public class MainActivity extends TabActivity {
         final TabHost tabHost = getTabHost();
         
         tabHost.addTab(tabHost.newTabSpec("map")
-                .setIndicator("Map")
+                .setIndicator("Map",getResources().getDrawable(R.drawable.map))
                 .setContent(new Intent(this, FootponMapActivity.class)));
         
         tabHost.addTab(tabHost.newTabSpec("List")
-                .setIndicator("List")
+                .setIndicator("List",getResources().getDrawable(R.drawable.list))
                 .setContent(new Intent(this, FootponListActivity.class)));
 
         tabHost.addTab(tabHost.newTabSpec("myFootpon")
-                .setIndicator("My Footpon")
+                .setIndicator("My Footpon",getResources().getDrawable(R.drawable.foot_icon))
                 .setContent(new Intent(this, MyFootponActivity.class)));
         
         tabHost.addTab(tabHost.newTabSpec("account")
-                .setIndicator("Account")
+                .setIndicator("Account",getResources().getDrawable(R.drawable.account))
                 .setContent(new Intent(this, ShowInformation.class)));
     }
 }

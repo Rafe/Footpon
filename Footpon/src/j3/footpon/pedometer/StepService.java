@@ -106,13 +106,13 @@ public class StepService extends Service implements StepListener{
      */
     private void showNotification() {
         CharSequence text = getText(R.string.app_name);
-        Notification notification = new Notification(R.drawable.icon, null,
+        Notification notification = new Notification(R.drawable.foot, null,
                 System.currentTimeMillis());
         notification.flags = Notification.FLAG_NO_CLEAR | Notification.FLAG_ONGOING_EVENT;
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, FootponMapActivity.class), 0);
         notification.setLatestEventInfo(this, text,
-                getText(R.string.app_name), contentIntent);
+                "Accumulating your steps and get coupons!!", contentIntent);
         notificationManager.notify(R.string.app_name, notification);
     }
     
