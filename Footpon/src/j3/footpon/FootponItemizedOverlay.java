@@ -61,7 +61,7 @@ public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 		// set redeem button on dialog
 		detailsButton.setOnClickListener(redeemListener);
 
-		description.setText(footpon.getHiddenDescription());
+		description.setText(footpon.getRealDescription());
 		stepsRequired.setText("Steps:" + footpon.getStepsRequired());
 
 		dialog.show();

@@ -67,6 +67,7 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 			footpon = service.getMyFootpons(username, _id);
 			if(footpon == null) {
 				footpon = service.getFootponById(_id);
+			}
 		}else{
 			Toast.makeText(this, "no footpon data", 1000);
 			return;
@@ -108,8 +109,7 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 					stepService.addSteps(footpon.getStepsRequired());
 				}
 			}
-		} ); 
-		}
+		}); 
 	}
 
 	private void showBarcodeView(Footpon fp) {
