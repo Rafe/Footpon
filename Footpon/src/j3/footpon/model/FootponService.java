@@ -296,17 +296,8 @@ public class FootponService extends Activity implements IFootponService {
 
 			Footpon footpon=new Footpon(json_data);
 			
-			int temp=json_data.getInt("used");
-			
-			if(temp==0)
-			{
-				footpon.setUsed(false);
-			}
-
-			else
-			{
-				footpon.setUsed(true);
-			}
+			footpon.setUsed(
+					json_data.getInt("used") == 0 ? false : true);
 			
 			return footpon;
 		}
@@ -316,7 +307,6 @@ public class FootponService extends Activity implements IFootponService {
 		return null;
 	}
 	
-//	private String POST(String url,ArrayList<NameValuePair> parameter){
 	public String POST(String url,ArrayList<NameValuePair> parameter){
 		InputStream is = null;
 		try {
