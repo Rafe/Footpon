@@ -87,14 +87,13 @@ public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 				if(StepService.steps>=footpon.getStepsRequired())
 				{
 					service.redeemFootpon(username, footpon.getID(), StepService.steps-footpon.getStepsRequired());
+					mContext.startActivity(i);
 				}
 				
 				else
 				{
 					//Text box that says not enough steps.
 				}
-				
-				mContext.startActivity(i);
 			}
 			else {
 				mContext.startActivity(new Intent(mContext, Login.class));
