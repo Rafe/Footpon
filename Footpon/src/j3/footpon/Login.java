@@ -1,6 +1,7 @@
 package j3.footpon;
 
 import j3.footpon.R;
+import j3.footpon.pedometer.StepService;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -265,8 +266,10 @@ public class Login extends Activity {
 					share.edit().putString(SHARE_PASSWORD, _password).commit();
 					share.edit().putString(SHARE_FIRSTNAME, _firstName).commit();
 					share.edit().putString(SHARE_LASTNAME, _lastName).commit();
+					share.edit().putLong(SHARE_STEPS, _steps).commit();
 					
-				//	share.edit().putLong(SHARE_STEPS, _steps).commit();
+					StepService.setSteps(_steps);
+
 					try 
 					{
 						File root=Environment.getExternalStorageDirectory();
