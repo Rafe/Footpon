@@ -1,6 +1,7 @@
 package j3.footpon;
 
 import j3.footpon.model.Footpon;
+import j3.footpon.model.FootponService;
 import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.IFootponService;
 import j3.footpon.model.User;
@@ -12,6 +13,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -84,6 +91,7 @@ public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 			
 			SharedPreferences share = mContext.getSharedPreferences(User.SHARE_USER_INF_TAG, 0);
 			String username = share.getString(User.SHARE_USERNAME, "");
+
 			long steps = 0;
 			
 			if(username!=null){
@@ -107,15 +115,56 @@ public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 			
 				Intent i = new Intent(mContext, FootponDetailsActivity.class);
 				
-				steps += StepService.steps;
+				steps=StepService.steps;
 				Log.e("log_tag", "result: "+steps);
 				if(steps > footpon.getStepsRequired()) {
-					service = FootponServiceFactory.getService();
-					service.redeemFootpon(username, footpon.getID());
-					i.putExtra("own", true);
+//					service = FootponServiceFactory.getService();
+//					service.redeemFootpon(username, footpon.getID());
+					
+					//Data to send.
+					String result = null;
+
+					ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+					nameValuePairs.add(new BasicNameValuePair("username",
+							username));
+					nameValuePairs.add(new BasicNameValuePair("id", Long
+							.toString(footpon.getID())));
+					nameValuePairs.add(new BasicNameValuePair("steps", Long.toString(steps)));
+
+					// http post
+					result = FootponService.POST("http://pdc-amd01.poly.edu/~jli15/footpon/redeemCoupon.php",
+								nameValuePairs);
+					Log.e("log_tag", "result: "+result);
+					// parse json data
+					try {
+						JSONArray jArray = new JSONArray(result);
+						JSONObject json_data = jArray.getJSONObject(0);
+
+						String success = json_data.getString("success");
+						
+						if (success.equalsIgnoreCase("true"))
+						{
+							steps-=footpon.getStepsRequired();
+							StepService.setSteps(steps);
+							
+							i.putExtra("own", true);
+						}
+						
+						else
+						{
+							i.putExtra("own", false);
+						}
+					}
+					
+					catch (JSONException e) 
+					{
+						Log.e("log_tag","Error parsing data " + e.toString());
+					}
+					
+					//i.putExtra("own", true);
 				}
-				else
-					i.putExtra("own", false);
+				//else
+			//		i.putExtra("own", false);
 
 				i.putExtra("steps", steps);
 				i.putExtra("id", footpon.getID());

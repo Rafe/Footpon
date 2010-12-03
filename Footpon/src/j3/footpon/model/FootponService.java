@@ -28,7 +28,7 @@ import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
 
-public class FootponService extends Activity implements IFootponService {
+public class FootponService implements IFootponService {
 	private final String SHARE_USER_INF_TAG = "USER_INF_TAG";
 	private String SHARE_USERNAME = "FOOTPON_USERNAME";
 	private String SHARE_STEPS = "FOOTPON_POINTS";
@@ -142,9 +142,11 @@ public class FootponService extends Activity implements IFootponService {
 	
 	@Override
 	public boolean redeemFootpon(String username, long footponID){
-		SharedPreferences share = getSharedPreferences(User.SHARE_USER_INF_TAG, 0);
-		username = share.getString(User.SHARE_USERNAME, "");
-		String steps = share.getString(SHARE_STEPS, "");
+		//SharedPreferences share = getSharedPreferences(User.SHARE_USER_INF_TAG, 0);
+		//username = share.getString(User.SHARE_USERNAME, "");
+		//String steps = share.getString(SHARE_STEPS, "");
+		
+		String steps=null;
 		
 		//Data to send.
 		String result = null;
@@ -307,7 +309,7 @@ public class FootponService extends Activity implements IFootponService {
 		return null;
 	}
 	
-	public String POST(String url,ArrayList<NameValuePair> parameter){
+	public static String POST(String url,ArrayList<NameValuePair> parameter){
 		InputStream is = null;
 		try {
 			HttpClient httpclient = new DefaultHttpClient();
