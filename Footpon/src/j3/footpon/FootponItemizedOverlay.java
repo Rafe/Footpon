@@ -86,7 +86,7 @@ public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 			String username = share.getString(User.SHARE_USERNAME, "");
 			long steps = 0;
 			
-			if(username!=null) {
+			if(username!=null){
 				File sdcard=Environment.getExternalStorageDirectory();
 				File file=new File(sdcard, "steps.txt");
 				

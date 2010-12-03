@@ -65,7 +65,11 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 		username = share.getString(User.SHARE_USERNAME, "");
 	    
 		if (_id != 0) {
-			footpon = service.getMyFootpons(username, _id);
+			if(own_coupon){
+				footpon = service.getMyFootpons(username, _id);
+			}else{
+				footpon = service.getFootponById(_id);
+			}
 		}else{
 			Toast.makeText(this, "no footpon data", 1000);
 			return;
