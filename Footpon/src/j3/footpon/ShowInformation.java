@@ -44,7 +44,7 @@ public class ShowInformation extends Activity {
 			text.append('\n');
 			text.append("Your username: ");
 			text.append(username);
-			text.append("\nYour stored points: ");
+			text.append("\nYour stored steps: ");
 			text.append(points);
 			text.append('\n');
 			

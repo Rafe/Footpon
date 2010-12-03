@@ -332,6 +332,11 @@ public class Login extends Activity {
 				}
 				catch(JSONException e)
 				{
+					Intent intent = new Intent();
+					intent.setClass(Login.this, ShowInformation.class);
+					startActivity(intent);
+					proDialog.dismiss();
+					
 					Log.e("log_tag", "Error parsing data "+e.toString());
 				}
 			}
