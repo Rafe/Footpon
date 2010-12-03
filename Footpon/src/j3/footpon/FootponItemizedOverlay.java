@@ -24,7 +24,9 @@ import com.google.android.maps.OverlayItem;
 public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 	
 	Footpon footpon = null;
+	Button detailsButton;
 	IFootponService service;
+	StepService stepService;
 	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 
 	public FootponItemizedOverlay(Drawable defaultMarker) {
@@ -57,7 +59,7 @@ public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 				.findViewById(R.id.dialog_realDescription);
 		TextView stepsRequired = (TextView) dialog
 				.findViewById(R.id.dialog_stepsRequired);
-		Button detailsButton = (Button) dialog
+		detailsButton = (Button) dialog
 				.findViewById(R.id.dialog_show_details);
 		
 		// set redeem button on dialog
@@ -83,17 +85,19 @@ public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 				Intent i = new Intent(mContext, FootponDetailsActivity.class);
 				service = FootponServiceFactory.getService();
 				i.putExtra("id", footpon.getID());
-				
-				if(StepService.steps>=footpon.getStepsRequired())
-				{
-					service.redeemFootpon(username, footpon.getID(), StepService.steps-footpon.getStepsRequired());
+
+				if (StepService.steps >= footpon.getStepsRequired()) {
+					service.redeemFootpon(username, footpon.getID(),
+							StepService.steps - footpon.getStepsRequired());
+					if (stepService != null) {
+						stepService.redeemSteps(footpon.getStepsRequired());
+					}
+				} else {
+					detailsButton.setEnabled(false);
+					detailsButton.setText("Points not enough");
+					return;
 				}
-				
-				else
-				{
-					//Text box that says not enough steps.
-				}
-				
+
 				mContext.startActivity(i);
 			}
 			else {
@@ -118,4 +122,7 @@ public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 		return mOverlays.size();
 	}
 	
+	public void setStepService(StepService stepService){
+		this.stepService = stepService;
+	}
 }

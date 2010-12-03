@@ -30,7 +30,7 @@ public class StepService extends Service implements StepListener{
 	
 	StepDetector stepDetector;
 	SensorManager sensorManager;
-	
+	//TODO: change it to Array of Displayer
 	StepDisplayer stepDisplayer;
 	StepBinder binder = new StepBinder();
 	
@@ -45,7 +45,6 @@ public class StepService extends Service implements StepListener{
 	
 	@Override
 	public IBinder onBind(Intent arg0) {
-		// TODO Auto-generated method stub
 		return binder;
 	}
 	

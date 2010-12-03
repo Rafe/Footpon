@@ -41,7 +41,6 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 	private StepService stepService;
 	private Footpon footpon = null;
 	
-	long _steps;
 	long _id;
 	String username;
 	boolean own_coupon = false;
@@ -77,18 +76,9 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 		setView(footpon);
 		bindStepService();
 		
-		if(footpon.getUsed()) 
-		{
-			//use.setVisibility(View.GONE);
-			//showBarcodeView(footpon);
+		if (footpon.getUsed()) {
 			showUsedButton();
-		}
-		else {
-//			if(stepsEnough(StepService.steps, footpon)){
-//				showRedeemButton();
-//			}else{
-//				showNotEnoughText();
-//			}
+		} else {
 			showUseButton();
 		}
 		
@@ -98,36 +88,13 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 			public void onCheckedChanged(CompoundButton buttonView,
 					boolean isChecked) 
 			{
-				
-				if(footpon == null) return;
-				
-				/*if(isChecked)
-				{
-					barcodeView.setVisibility(View.VISIBLE);
-					//TODO: change this save to coupon.txt
-					stepService.redeemSteps(footpon.getStepsRequired());
-					//check footpon used at serverside
-					service.invalidate(username, footpon.getID());
-					showBarcodeView(footpon);
+
+				if (footpon == null)
+					return;
+
+				if (footpon.getUsed()) {
 					use.setClickable(false);
-				}
-				
-				else
-				{
-					barcodeView.setVisibility(View.INVISIBLE);
-					stepService.addSteps(footpon.getStepsRequired());
-				}*/
-				
-				
-				
-				
-				if(footpon.getUsed())
-				{
-					use.setClickable(false);
-				}
-				
-				else
-				{
+				} else {
 					service.invalidate(username, footpon.getID());
 					code.setText("");
 					barcodeView.setVisibility(View.INVISIBLE);
@@ -159,21 +126,6 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 		//code.setVisibility(View.VISIBLE);
 	}
 	
-	private void showNotEnoughText() {
-		use.setText("Not Enough Steps");
-		use.setEnabled(false);
-		code.setVisibility(View.INVISIBLE);
-	}
-
-	private void showRedeemButton() {
-		use.setText("Redeem");
-		code.setVisibility(View.INVISIBLE);
-	}
-
-	private boolean stepsEnough(long point,Footpon footpon) {
-		return point >= footpon.getStepsRequired();
-	}
-
 	private void getView(){
 		storeName = (TextView) findViewById(R.id.detail_store_name);
 		description = (TextView) findViewById(R.id.detail_description);
