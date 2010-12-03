@@ -4,6 +4,8 @@ import j3.footpon.model.Footpon;
 import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.IFootponService;
 import j3.footpon.model.User;
+import j3.footpon.pedometer.StepService;
+
 import java.util.ArrayList;
 
 import android.app.Dialog;
@@ -61,7 +63,7 @@ public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 		// set redeem button on dialog
 		detailsButton.setOnClickListener(redeemListener);
 
-		description.setText(footpon.getRealDescription());
+		description.setText(footpon.getHiddenDescription());
 		stepsRequired.setText("Steps:" + footpon.getStepsRequired());
 
 		dialog.show();
@@ -76,12 +78,22 @@ public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 			SharedPreferences share = mContext.getSharedPreferences(User.SHARE_USER_INF_TAG, 0);
 			String username = share.getString(User.SHARE_USERNAME, "");
 
-			if(username!=null){
-			
+			if(username!=null)
+			{
 				Intent i = new Intent(mContext, FootponDetailsActivity.class);
 				service = FootponServiceFactory.getService();
-				service.redeemFootpon(username, footpon.getID());
 				i.putExtra("id", footpon.getID());
+				
+				if(StepService.steps>=footpon.getStepsRequired())
+				{
+					service.redeemFootpon(username, footpon.getID(), StepService.steps-footpon.getStepsRequired());
+				}
+				
+				else
+				{
+					//Text box that says not enough steps.
+				}
+				
 				mContext.startActivity(i);
 			}
 			else {

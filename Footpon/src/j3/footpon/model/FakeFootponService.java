@@ -44,12 +44,6 @@ public class FakeFootponService implements IFootponService {
 	}
 
 	@Override
-	public boolean redeemFootpon(String userName, long footponID) {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
 	public ArrayList<Footpon> getMyFootpons(String username) {
 		// TODO Auto-generated method stub
 		return getFootponsInArea(0,0);
@@ -65,6 +59,19 @@ public class FakeFootponService implements IFootponService {
 	public boolean invalidate(String username, long footponId) {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	@Override
+	public boolean redeemFootpon(String username, long footponID,
+			long difference) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean redeemFootpon(String userName, long footponID) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }
