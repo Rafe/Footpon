@@ -57,8 +57,7 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 		//get footpon data by footpon id or location from intent
 		Intent i = getIntent();
 		Bundle bundle = i.getExtras();
-		own_coupon = bundle.getBoolean("own", true);
-		_steps = bundle.getLong("steps",0);
+		own_coupon = bundle.getBoolean("own", false);
 		_id = bundle.getLong("id",0);
 		
 		SharedPreferences share = getSharedPreferences(User.SHARE_USER_INF_TAG, 0);
@@ -67,6 +66,9 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 		if (_id != 0) {
 			if(own_coupon){
 				footpon = service.getMyFootpons(username, _id);
+				if(footpon == null) {
+					footpon = service.getFootponById(_id);
+				}
 			}else{
 				footpon = service.getFootponById(_id);
 			}
@@ -79,19 +81,12 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 		setView(footpon);
 		bindStepService();
 		
-		if(own_coupon) {
-			if(!footpon.getUsed()){
-				showUseButton();
-				showBarcodeView(footpon);
-				Log.e("log_tag", "show button: ");
-			}
-			else{
-				use.setVisibility(View.GONE);
-				showBarcodeView(footpon);
-			}
+		if(footpon.getUsed()) {
+			use.setVisibility(View.GONE);
+			showBarcodeView(footpon);
 		}
 		else {
-			if(stepsEnough(_steps, footpon)){
+			if(stepsEnough(StepService.steps, footpon)){
 				showRedeemButton();
 			}else{
 				showNotEnoughText();
@@ -108,7 +103,6 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 				if(isChecked){
 					barcodeView.setVisibility(View.VISIBLE);
 					//TODO: change this save to coupon.txt
-					//save(sdcard,file);
 					stepService.redeemSteps(footpon.getStepsRequired());
 					//check footpon used at serverside
 					service.invalidate(username, footpon.getID());
@@ -139,6 +133,7 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 	private void showNotEnoughText() {
 		use.setText("Not Enough Steps");
 		use.setEnabled(false);
+		code.setVisibility(View.INVISIBLE);
 	}
 
 	private void showRedeemButton() {

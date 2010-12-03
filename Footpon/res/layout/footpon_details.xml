@@ -39,6 +39,7 @@
 		    android:textColor="#000000"  
 		    android:id="@+id/detail_description" 
 		    android:layout_below="@+id/detail_store_name"
+		    android:layout_toRightOf="@+id/logo"
 		    />
 		<TextView
 	    	android:layout_width="wrap_content"
@@ -48,7 +49,7 @@
 			android:textSize="20dip"
 			android:textColor="#000000"
 			android:id="@+id/expire_date"
-			android:layout_below="@+id/detail_description"
+			android:layout_below="@+id/logo"
 			/>
 		<TextView
 		    android:layout_width="wrap_content"
@@ -57,7 +58,7 @@
 		    android:textColor="#FF4500"
 		    android:id="@+id/detail_expire_date"
 		    android:layout_toRightOf="@+id/expire_date"
-		    android:layout_below="@+id/detail_description"
+		    android:layout_below="@+id/logo"
 		    />
 		<TextView
 		    android:layout_width="wrap_content"
@@ -81,7 +82,7 @@
 		    android:layout_height="wrap_content"
 		    android:layout_centerHorizontal="true"
 		    android:textOff ="Use it now!"
-		    android:textOn ="Redeemed"
+		    android:textOn ="Use it now!"
 		    android:id="@+id/use"
 		    android:textColor="#FF0000"
 		    android:layout_marginTop="20px"
