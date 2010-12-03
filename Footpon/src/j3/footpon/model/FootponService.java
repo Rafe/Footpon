@@ -141,7 +141,7 @@ public class FootponService implements IFootponService {
 	}
 	
 	@Override
-	public boolean redeemFootpon(String username, long footponID){
+	public boolean redeemFootpon(String username, long footponID, long difference){
 		//SharedPreferences share = getSharedPreferences(User.SHARE_USER_INF_TAG, 0);
 		//username = share.getString(User.SHARE_USERNAME, "");
 		//String steps = share.getString(SHARE_STEPS, "");
@@ -156,7 +156,7 @@ public class FootponService implements IFootponService {
 				username));
 		nameValuePairs.add(new BasicNameValuePair("id", Long
 				.toString(footponID)));
-		nameValuePairs.add(new BasicNameValuePair("steps", steps));
+		nameValuePairs.add(new BasicNameValuePair("steps", Long.toString(difference)));
 
 		// http post
 		result = POST("http://pdc-amd01.poly.edu/~jli15/footpon/redeemCoupon.php",
@@ -169,6 +169,7 @@ public class FootponService implements IFootponService {
 
 			String success = json_data.getString("success");
 			if (success.equalsIgnoreCase("true")){
+				StepService.setSteps(difference);
 				return true;
 			}
 		}catch (JSONException e) {
@@ -348,5 +349,11 @@ public class FootponService implements IFootponService {
 		}
 		
 		return null;
+	}
+
+	@Override
+	public boolean redeemFootpon(String userName, long footponID) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }
