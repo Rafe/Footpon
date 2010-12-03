@@ -95,84 +95,15 @@ public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 			long steps = 0;
 			
 			if(username!=null){
-				File sdcard=Environment.getExternalStorageDirectory();
-				File file=new File(sdcard, "steps.txt");
-				
-				// get steps
-				try {
-					BufferedReader reader = new BufferedReader(new FileReader(file));
-					try {
-						String line = reader.readLine();
-						steps = Long.parseLong(line);
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			
 				Intent i = new Intent(mContext, FootponDetailsActivity.class);
-				
-				steps=StepService.steps;
-				Log.e("log_tag", "result: "+steps);
-				if(steps > footpon.getStepsRequired()) {
-//					service = FootponServiceFactory.getService();
-//					service.redeemFootpon(username, footpon.getID());
-					
-					//Data to send.
-					String result = null;
-
-					ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-					nameValuePairs.add(new BasicNameValuePair("username",
-							username));
-					nameValuePairs.add(new BasicNameValuePair("id", Long
-							.toString(footpon.getID())));
-					nameValuePairs.add(new BasicNameValuePair("steps", Long.toString(steps)));
-
-					// http post
-					result = FootponService.POST("http://pdc-amd01.poly.edu/~jli15/footpon/redeemCoupon.php",
-								nameValuePairs);
-					Log.e("log_tag", "result: "+result);
-					// parse json data
-					try {
-						JSONArray jArray = new JSONArray(result);
-						JSONObject json_data = jArray.getJSONObject(0);
-
-						String success = json_data.getString("success");
-						
-						if (success.equalsIgnoreCase("true"))
-						{
-							steps-=footpon.getStepsRequired();
-							StepService.setSteps(steps);
-							
-							i.putExtra("own", true);
-						}
-						
-						else
-						{
-							i.putExtra("own", false);
-						}
-					}
-					
-					catch (JSONException e) 
-					{
-						Log.e("log_tag","Error parsing data " + e.toString());
-					}
-					
-					//i.putExtra("own", true);
-				}
-				//else
-			//		i.putExtra("own", false);
-
-				i.putExtra("steps", steps);
+				service = FootponServiceFactory.getService();
+				service.redeemFootpon(username, footpon.getID());
 				i.putExtra("id", footpon.getID());
 				mContext.startActivity(i);
 			}
 			else {
-				Intent i = new Intent(mContext, Login.class);
-				mContext.startActivity(i);
+				mContext.startActivity(new Intent(mContext, Login.class));
 			}
 		}
 	};
