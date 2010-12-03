@@ -181,9 +181,7 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer, St
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle item selection
 	    switch (item.getItemId()) {
-		    case R.id.search:
-		    	
-		    	return true;
+
 		    case R.id.stopService:
 		    	stopStepService();
 		    	return true;

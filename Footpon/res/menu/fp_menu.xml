@@ -2,8 +2,6 @@
 <menu
   xmlns:android="http://schemas.android.com/apk/res/android"
   >
-  <item android:id="@+id/search"
-  		android:title="Search"/>
   <item android:id="@+id/stopService"
   		android:title="Stop"/>
   <item android:id="@+id/takePicture"
