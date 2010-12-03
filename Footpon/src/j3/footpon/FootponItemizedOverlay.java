@@ -89,9 +89,11 @@ public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 				if (StepService.steps >= footpon.getStepsRequired()) {
 					service.redeemFootpon(username, footpon.getID(),
 							StepService.steps - footpon.getStepsRequired());
-					if (stepService != null) {
-						stepService.redeemSteps(footpon.getStepsRequired());
+					if (stepService == null) {
+						stepService = StepService.getInstance();
 					}
+					stepService.redeemSteps(footpon.getStepsRequired());
+					
 				} else {
 					detailsButton.setEnabled(false);
 					detailsButton.setText("Points not enough");

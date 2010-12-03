@@ -285,9 +285,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer, St
             //IMPORTANT: get service instance:
         	stepService = ((StepService.StepBinder) service).getService();
             stepService.setStepDisplayer(FootponMapActivity.this);
-            if(footponOverlay != null){
-            	footponOverlay.setStepService(stepService);
-            }
         }
         public void onServiceDisconnected(ComponentName className) {
         	stepService = null;

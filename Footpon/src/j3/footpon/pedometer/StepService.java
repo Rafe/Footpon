@@ -42,6 +42,7 @@ public class StepService extends Service implements StepListener{
 	
 	private WakeLock wakeLock;
 	private NotificationManager notificationManager;
+	private static StepService instance;
 	
 	@Override
 	public IBinder onBind(Intent arg0) {
@@ -98,6 +99,7 @@ public class StepService extends Service implements StepListener{
         	Toast.makeText(this, "Started pedometer", Toast.LENGTH_SHORT).show();
         	isStarted = true;
         }
+        instance = this;
     }
 	
 	/**
@@ -163,4 +165,12 @@ public class StepService extends Service implements StepListener{
 	public static void setSteps(long temp){
 		steps=temp;
 	}
+	
+	public static StepService getInstance(){
+		if(instance != null){
+			return instance;
+		}
+		return null;
+	}
+	
 }
