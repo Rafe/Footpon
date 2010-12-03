@@ -1,11 +1,5 @@
 package j3.footpon;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import j3.footpon.model.Footpon;
 import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.IFootponService;
@@ -24,7 +18,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.content.ServiceConnection;
-import android.os.Environment;
 import android.os.IBinder;
 import android.webkit.WebView;
 import android.widget.CompoundButton;
@@ -50,7 +43,6 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 	
 	long _id;
 	String username;
-	
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -103,9 +95,6 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 				
 				if(isChecked){
 					barcodeView.setVisibility(View.VISIBLE);
-					File sdcard = Environment.getExternalStorageDirectory();
-					File file = new File(sdcard, "user.txt");
-					
 					//TODO: change this save to coupon.txt
 					//save(sdcard,file);
 					stepService.redeemSteps(footpon.getStepsRequired());
@@ -220,22 +209,4 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 		// Stop receiving location notifications.
 		Log.i("Footpon", "stopping the listener");
     }
-	
-	private void save(File sdcard, File file) {
-		try {
-			if (sdcard.canWrite()) {
-				FileWriter writer = new FileWriter(file, true);
-				BufferedWriter out = new BufferedWriter(writer);
-
-				out.append(Long.toString(footpon.getID()));
-				out.append("\n\n");
-				out.close();
-			}
-
-		} catch (FileNotFoundException e) {
-			Log.e("log_tag", "File not found.\n");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 }

@@ -20,12 +20,10 @@ import com.google.android.maps.GeoPoint;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 
-public class FootponItemizedOverlay extends ItemizedOverlay {
+public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 	
 	Footpon footpon = null;
 	IFootponService service;
-	private Context context;
-	
 	private ArrayList<OverlayItem> mOverlays = new ArrayList<OverlayItem>();
 
 	public FootponItemizedOverlay(Drawable defaultMarker) {
@@ -49,10 +47,11 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 		dialog.setTitle(item.getTitle());
 		dialog.setContentView(R.layout.footpon_dialog);
 		if(service == null){
-			IFootponService service = FootponServiceFactory.getService();
-			footpon = service.getFootponByLocation((double) point.getLongitudeE6(),
-					(double) point.getLatitudeE6());
+			service = FootponServiceFactory.getService();
 		}
+		footpon = service.getFootponByLocation((double) point.getLongitudeE6(),
+				(double) point.getLatitudeE6());
+		
 		TextView description = (TextView) dialog
 				.findViewById(R.id.dialog_realDescription);
 		TextView stepsRequired = (TextView) dialog
@@ -75,7 +74,7 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 		@Override
 		public void onClick(View v) {
 			
-			SharedPreferences share = context.getSharedPreferences(User.SHARE_USER_INF_TAG, 0);
+			SharedPreferences share = mContext.getSharedPreferences(User.SHARE_USER_INF_TAG, 0);
 			String username = share.getString(User.SHARE_USERNAME, "");
 			if (service == null) 
 				service = FootponServiceFactory.getService();
@@ -106,7 +105,4 @@ public class FootponItemizedOverlay extends ItemizedOverlay {
 		return mOverlays.size();
 	}
 	
-	public void setContext(Context context){
-		this.context = context;
-	}
 }

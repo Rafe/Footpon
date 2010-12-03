@@ -119,7 +119,8 @@ public class FootponAdapter extends ArrayAdapter<Footpon> implements Filterable 
 	        return results;
 	    }
 
-	    @Override
+		@Override
+		@SuppressWarnings("unchecked")
 	    protected void publishResults(CharSequence constraint, FilterResults results) {
 	    	footpons = (ArrayList<Footpon>) results.values;
 	    	if (results.count > 0) {

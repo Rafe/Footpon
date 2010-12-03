@@ -1,7 +1,5 @@
 package j3.footpon.model;
 
-import android.content.SharedPreferences;
-
 public class User 
 {
 	private String username;
@@ -10,7 +8,7 @@ public class User
 	private long steps;
 	public static final String SHARE_USER_INF_TAG = "USER_INF_TAG";
 	public static final String SHARE_USERNAME = "FOOTPON_USERNAME";
-	
+	public static final String SHARE_POINTS = "FOOTPON_POINTS";
 	public User(String username, String firstName, String lastName, long steps)
 	{
 		this.username=username;

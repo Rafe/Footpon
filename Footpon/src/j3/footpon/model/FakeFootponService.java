@@ -52,19 +52,19 @@ public class FakeFootponService implements IFootponService {
 	@Override
 	public ArrayList<Footpon> getMyFootpons(String username) {
 		// TODO Auto-generated method stub
-		return null;
+		return getFootponsInArea(0,0);
 	}
 
 	@Override
 	public Footpon getMyFootpons(String username, long id) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return new Footpon(3, "Toys R Us","Toys","Hidden","Buy one LEGO set, get second LEGO set half off","Oct 10", "Nov 1", 40.757210,-73.985679,90, 0);
 	}
 
 	@Override
 	public boolean invalidate(String username, long footponId) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 }

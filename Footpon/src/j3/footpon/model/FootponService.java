@@ -44,7 +44,10 @@ public class FootponService implements IFootponService {
 				parameters);
 		
 		JSONtoFootpons(result, footpons);
-
+		
+		//save data for List;
+		_instance = footpons;
+		
 		return footpons;
 	}
 	
@@ -124,7 +127,8 @@ public class FootponService implements IFootponService {
 	public ArrayList<Footpon> getInstance() {
 		
 		if(_instance == null){
-			_instance = getFootponsInArea(0,0);
+			//hardcode default position...
+			_instance = getFootponsInArea(40.757942,-73.979478);
 		}
 		return _instance;
 	}

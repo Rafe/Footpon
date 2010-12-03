@@ -23,8 +23,7 @@ public class FootponListActivity extends Activity {
 	FootponListActivity footponListActivity = this;
 	ListView listView;
 	EditText filterText = null;
-	ArrayList<Footpon> footpons;
-	ArrayList<Long> IDs = new ArrayList<Long>();
+	ArrayList<Footpon> footpons = null;
 	FootponAdapter adapter;
 	
 	public void onCreate(Bundle savedInstanceState) {
@@ -38,16 +37,23 @@ public class FootponListActivity extends Activity {
 		String username = share.getString(User.SHARE_USERNAME, "");
 	    if(username.equals("")){
 	    	Log.e("LIST_ERROR", "NO username");
+	    	startActivity(new Intent(footponListActivity,Login.class));
 	    	return;
 	    }
-		footpons = FootponServiceFactory.getService().getMyFootpons(username);
-		
+	    
+		getFootponSource(username);
+	}
+	
+	//get Footpon Source and show List
+	//using callback is for location information...but getInstance is better
+	protected void getFootponSource(String username) {
+		footpons = FootponServiceFactory.getService().getInstance();
+		showList(footpons);
+	}
+	
+	protected void showList(ArrayList<Footpon> footpons){
 		if(footpons != null) {
 			adapter = new FootponAdapter(this, R.layout.footpon_listitem, footpons);
-			
-			for(int i=0;i<footpons.size();i++) {
-				IDs.add(footpons.get(i).getID());
-			}
 			
 			listView = (ListView) findViewById(R.id.footponlist);
 			listView.setTextFilterEnabled(true);
@@ -56,19 +62,19 @@ public class FootponListActivity extends Activity {
 		}
 	}
 	
+
 	public OnItemClickListener detailsListener = new OnItemClickListener() {
 		public void onItemClick(AdapterView<?> parent, View view,
 	            int position, long id) {
 	    	Intent i = new Intent(footponListActivity, FootponDetailsActivity.class);
 	    	Bundle bundle=new Bundle();
-	    	bundle.putLong("id", IDs.get(position));
-	    	bundle.putBoolean("isRedeemed", true);
+	    	bundle.putLong("id", footpons.get(position).getID());
 	    	i.putExtras(bundle);
 	    	startActivity(i);
 	    }
 	};
 	
-	private TextWatcher filterTextWatcher = new TextWatcher() {
+	protected TextWatcher filterTextWatcher = new TextWatcher() {
 	    public void afterTextChanged(Editable s) {
 	    }
 	    

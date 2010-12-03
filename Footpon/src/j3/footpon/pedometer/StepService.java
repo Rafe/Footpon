@@ -2,6 +2,7 @@ package j3.footpon.pedometer;
 
 import j3.footpon.FootponMapActivity;
 import j3.footpon.R;
+import j3.footpon.model.User;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -57,9 +58,9 @@ public class StepService extends Service implements StepListener{
         wakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "StepService");
         wakeLock.acquire();
         
-        state = getSharedPreferences("state", 0);
+        state = getSharedPreferences(User.SHARE_USER_INF_TAG, 0);
         currentSteps = 0;
-        steps = state.getLong("steps", 0);
+        steps = state.getLong(User.SHARE_POINTS, 0);
         
         notificationManager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
         showNotification();
@@ -112,7 +113,6 @@ public class StepService extends Service implements StepListener{
                 new Intent(this, FootponMapActivity.class), 0);
         notification.setLatestEventInfo(this, text,
                 getText(R.string.app_name), contentIntent);
-
         notificationManager.notify(R.string.app_name, notification);
     }
     
@@ -156,8 +156,7 @@ public class StepService extends Service implements StepListener{
 	private boolean savePoints(){
 		SharedPreferences.Editor stateEditor;
 		stateEditor = state.edit();
-	    stateEditor.putLong("steps", steps);
-	    stateEditor.putLong("currentSteps", currentSteps);
+	    stateEditor.putLong(User.SHARE_POINTS, steps);
 	    stateEditor.commit();
 	    return true;
 	}
