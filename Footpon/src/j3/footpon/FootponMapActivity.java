@@ -8,11 +8,6 @@ import j3.footpon.model.StepBinder;
 import j3.footpon.pedometer.StepDisplayer;
 import j3.footpon.pedometer.StepService;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +18,6 @@ import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.Gravity;
@@ -131,11 +125,9 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer, St
             
             if(footpons.size() > 0){
             	footponOverlay = new FootponItemizedOverlay(drawable, context);
-            	footponOverlay.setContext(context);
             	setMapItems(footponOverlay, drawable, footpons);
             	mapOverlays.add(footponOverlay);
             }
-			
         }});
 		
 		overlay.enableMyLocation();

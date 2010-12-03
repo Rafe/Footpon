@@ -16,10 +16,14 @@ public class MainActivity extends TabActivity {
         tabHost.addTab(tabHost.newTabSpec("map")
                 .setIndicator("Map")
                 .setContent(new Intent(this, FootponMapActivity.class)));
+        
+        tabHost.addTab(tabHost.newTabSpec("List")
+                .setIndicator("List")
+                .setContent(new Intent(this, FootponListActivity.class)));
 
         tabHost.addTab(tabHost.newTabSpec("myFootpon")
                 .setIndicator("My Footpon")
-                .setContent(new Intent(this, FootponListActivity.class)));
+                .setContent(new Intent(this, MyFootponActivity.class)));
         
         tabHost.addTab(tabHost.newTabSpec("account")
                 .setIndicator("Account")
