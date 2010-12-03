@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.util.Log;
 
@@ -134,19 +135,20 @@ public class FootponService implements IFootponService {
 	}
 	
 	@Override
-	public boolean redeemFootpon(String username,long footponId){
+	public boolean redeemFootpon(String username, long footponID){
 		//Data to send.
 		String result = null;
+
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("username",
 				username));
 		nameValuePairs.add(new BasicNameValuePair("id", Long
-				.toString(footponId)));
+				.toString(footponID)));
 
 		// http post
 		result = POST("http://pdc-amd01.poly.edu/~jli15/footpon/redeemCoupon.php",
 					nameValuePairs);
-
+		Log.e("log_tag", "result: "+result);
 		// parse json data
 		try {
 			JSONArray jArray = new JSONArray(result);
@@ -159,7 +161,7 @@ public class FootponService implements IFootponService {
 		}catch (JSONException e) {
 			Log.e("log_tag","Error parsing data " + e.toString());
 		}
-		
+			
 		return false;
 	}
 	
@@ -215,11 +217,10 @@ public class FootponService implements IFootponService {
 	public Footpon getFootponByLocation(double longtitude, double latitude) {
 		ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 
-		nameValuePairs.add(new BasicNameValuePair("currentLatitude", Double
-				.toString(latitude / 1000000)));
-		nameValuePairs
-				.add(new BasicNameValuePair("currentLongitude",
-						Double.toString(longtitude / 1000000)));
+		nameValuePairs.add(new BasicNameValuePair("currentLatitude", 
+				Double.toString(latitude / 1000000)));
+		nameValuePairs.add(new BasicNameValuePair("currentLongitude",
+				Double.toString(longtitude / 1000000)));
 
 		String result = POST("http://pdc-amd01.poly.edu/~jli15/footpon/getSingle.php", 
 				nameValuePairs);
@@ -304,7 +305,8 @@ public class FootponService implements IFootponService {
 		return null;
 	}
 	
-	private String POST(String url,ArrayList<NameValuePair> parameter){
+//	private String POST(String url,ArrayList<NameValuePair> parameter){
+	public String POST(String url,ArrayList<NameValuePair> parameter){
 		InputStream is = null;
 		try {
 			HttpClient httpclient = new DefaultHttpClient();

@@ -11,13 +11,6 @@ import j3.footpon.pedometer.StepService;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.android.maps.GeoPoint;
-import com.google.android.maps.MapActivity;
-import com.google.android.maps.MapView;
-import com.google.android.maps.MyLocationOverlay;
-import com.google.android.maps.Overlay;
-import com.google.android.maps.OverlayItem;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -38,6 +31,13 @@ import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
+
+import com.google.android.maps.GeoPoint;
+import com.google.android.maps.MapActivity;
+import com.google.android.maps.MapView;
+import com.google.android.maps.MyLocationOverlay;
+import com.google.android.maps.Overlay;
+import com.google.android.maps.OverlayItem;
 
 public class FootponMapActivity extends MapActivity implements StepDisplayer, StepBinder
 {
@@ -151,6 +151,7 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer, St
 	    // Handle item selection
 	    switch (item.getItemId()) {
 		    case R.id.search:
+		    	
 		    	return true;
 		    case R.id.stopService:
 		    	stopStepService();

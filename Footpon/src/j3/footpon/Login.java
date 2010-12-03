@@ -258,7 +258,7 @@ public class Login extends Activity {
 					String _password=json_data.getString("password");
 					String _firstName=json_data.getString("firstName");
 					String _lastName=json_data.getString("lastName");
-			//		Long _steps=json_data.getLong("currentSteps");
+					Long _steps=json_data.getLong("steps");
 					
 					SharedPreferences share = getSharedPreferences(SHARE_USER_INF_TAG, 2);
 					share.edit().putString(SHARE_USERNAME, _userName).commit();
@@ -266,14 +266,32 @@ public class Login extends Activity {
 					share.edit().putString(SHARE_FIRSTNAME, _firstName).commit();
 					share.edit().putString(SHARE_LASTNAME, _lastName).commit();
 					
-					share.edit().putLong(SHARE_STEPS, 100).commit();
-					
+				//	share.edit().putLong(SHARE_STEPS, _steps).commit();
+					try 
+					{
+						File root=Environment.getExternalStorageDirectory();
+		    			
+		    			if(root.canWrite())
+		    			{
+		    				File file=new File(root, "steps.txt");
+		    				FileWriter writer=new FileWriter(file, true);
+		    				BufferedWriter out=new BufferedWriter(writer);
+		    				Log.e("log_tag", "result: "+_steps);
+		    				out.write(Long.toString(_steps));
+		    				out.write("\n");
+		    				out.close();
+		    			}
+					}
+	    			catch (IOException e) 
+					{
+						e.printStackTrace();
+					}
 					
 					for(i=0;i<jArray.length();i++)
 					{
 						json_data = jArray.getJSONObject(i);
 						Long id = json_data.getLong("id");
-						Log.e("log_tag", "ID: "+id);
+					//	Log.e("log_tag", "ID: "+id);
 						try 
 						{
 							File root=Environment.getExternalStorageDirectory();

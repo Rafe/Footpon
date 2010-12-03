@@ -4,7 +4,13 @@ import j3.footpon.model.Footpon;
 import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.IFootponService;
 import j3.footpon.model.User;
+import j3.footpon.pedometer.StepService;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import android.app.Dialog;
@@ -12,6 +18,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -76,16 +84,47 @@ public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 			
 			SharedPreferences share = mContext.getSharedPreferences(User.SHARE_USER_INF_TAG, 0);
 			String username = share.getString(User.SHARE_USERNAME, "");
-			if (service == null) 
-				service = FootponServiceFactory.getService();
-			service.redeemFootpon(username, footpon.getID());
+			long steps = 0;
 			
-			Intent i = new Intent(mContext,
-					FootponDetailsActivity.class);
-			i.putExtra("latitude", footpon.getLatitude());
-			i.putExtra("longitude", footpon.getLongitude());
-			i.putExtra("id", footpon.getID());
-			mContext.startActivity(i);
+			if(username!=null) {
+				File sdcard=Environment.getExternalStorageDirectory();
+				File file=new File(sdcard, "steps.txt");
+				
+				// get steps
+				try {
+					BufferedReader reader = new BufferedReader(new FileReader(file));
+					try {
+						String line = reader.readLine();
+						steps = Long.parseLong(line);
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+				Intent i = new Intent(mContext, FootponDetailsActivity.class);
+				
+				steps += StepService.steps;
+				Log.e("log_tag", "result: "+steps);
+				if(steps > footpon.getStepsRequired()) {
+					service = FootponServiceFactory.getService();
+					service.redeemFootpon(username, footpon.getID());
+					i.putExtra("own", true);
+				}
+				else
+					i.putExtra("own", false);
+
+				i.putExtra("steps", steps);
+				i.putExtra("id", footpon.getID());
+				mContext.startActivity(i);
+			}
+			else {
+				Intent i = new Intent(mContext, Login.class);
+				mContext.startActivity(i);
+			}
 		}
 	};
 	

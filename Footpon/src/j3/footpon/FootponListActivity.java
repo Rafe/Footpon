@@ -35,6 +35,7 @@ public class FootponListActivity extends Activity {
 	    
 		SharedPreferences share = getSharedPreferences(User.SHARE_USER_INF_TAG, 0);
 		String username = share.getString(User.SHARE_USERNAME, "");
+		
 	    if(username.equals("")){
 	    	Log.e("LIST_ERROR", "NO username");
 	    	startActivity(new Intent(footponListActivity,Login.class));
@@ -69,6 +70,9 @@ public class FootponListActivity extends Activity {
 	    	Intent i = new Intent(footponListActivity, FootponDetailsActivity.class);
 	    	Bundle bundle=new Bundle();
 	    	bundle.putLong("id", footpons.get(position).getID());
+	    	bundle.putBoolean("own", true);
+	    	bundle.putLong("id", IDs.get(position));
+	    	bundle.putBoolean("isRedeemed", true);
 	    	i.putExtras(bundle);
 	    	startActivity(i);
 	    }
