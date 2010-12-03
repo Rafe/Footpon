@@ -241,31 +241,6 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer, St
     		}
     	}
     }
-
-	
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     
 	//pass footponList and overlay and default drawable icon, set MapItem on map
 	public void setMapItems(FootponItemizedOverlay overlay, Drawable drawable, ArrayList<Footpon> footpons){
