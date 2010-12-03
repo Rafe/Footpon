@@ -83,6 +83,7 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 			if(!footpon.getUsed()){
 				showUseButton();
 				showBarcodeView(footpon);
+				Log.e("log_tag", "show button: ");
 			}
 			else{
 				use.setVisibility(View.GONE);
