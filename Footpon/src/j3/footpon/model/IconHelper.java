@@ -28,6 +28,18 @@ public class IconHelper {
 	}
 	
 	public static Drawable getLogo(String storeName,Activity context){
-		return context.getResources().getDrawable(R.drawable.puma);
+		Drawable image;
+		if(storeName.equals("McDonald's")){
+			image = context.getResources().getDrawable(R.drawable.mcdonald);
+        }else if(storeName.equals("Nintendo World Store")){
+        	image = context.getResources().getDrawable(R.drawable.nintendo);
+        }else if(storeName.equals("Wendy's")){
+        	image = context.getResources().getDrawable(R.drawable.wendys);
+        }else if(storeName.equals("Burger King")){
+        	image = context.getResources().getDrawable(R.drawable.burgerking);
+        }else{
+        	image =context.getResources().getDrawable(R.drawable.mark);
+        }
+		return image;
 	}
 }

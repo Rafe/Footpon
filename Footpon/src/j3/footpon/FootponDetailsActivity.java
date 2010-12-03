@@ -152,34 +152,6 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 
 	private void getView(){
 		storeName = (TextView) findViewById(R.id.detail_store_name);
-
-		ImageView newLogo = (ImageView) logo;
-		
-		if(storeName.equals("McDonald's"))
-		{	
-			newLogo.setImageResource(R.drawable.mcdonald);
-		}
-		
-		else if(storeName.equals("Nintendo World Store"))
-		{	
-			newLogo.setImageResource(R.drawable.nintendo);
-		}
-		
-		else if(storeName.equals("Wendy's"))
-		{	
-			newLogo.setImageResource(R.drawable.wendys);
-		}
-	
-		else if(storeName.equals("Burger King"))
-		{	
-			newLogo.setImageResource(R.drawable.burgerking);
-		}
-		
-		else
-		{
-			newLogo.setImageResource(R.drawable.mark);
-		}
-		
 		description = (TextView) findViewById(R.id.detail_description);
 		code = (TextView) findViewById(R.id.code);
 		expireDate = (TextView) findViewById(R.id.detail_expire_date);
