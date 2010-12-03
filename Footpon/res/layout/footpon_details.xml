@@ -12,13 +12,12 @@
     	android:paddingRight="12dip"
     	android:paddingTop="12dip">
 		<ImageView
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
+		    android:layout_width="100dp"
+		    android:layout_height="100dp"
 		    android:paddingTop="12dip"
 		    android:layout_marginTop="20px"
 		    android:layout_alignParentLeft="true"
 		    android:id="@+id/logo"
-		    android:src="@drawable/puma"
 		    />
 		<TextView
 		    android:layout_width="fill_parent" 

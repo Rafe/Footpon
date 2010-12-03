@@ -71,7 +71,7 @@ public class FootponListActivity extends Activity {
 	    	Bundle bundle=new Bundle();
 	    	bundle.putLong("id", footpons.get(position).getID());
 	    	bundle.putBoolean("own", true);
-	    	bundle.putLong("id", IDs.get(position));
+	    	//bundle.putLong("id", IDs.get(position));
 	    	bundle.putBoolean("isRedeemed", true);
 	    	i.putExtras(bundle);
 	    	startActivity(i);

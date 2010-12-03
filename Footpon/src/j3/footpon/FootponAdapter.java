@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class FootponAdapter extends ArrayAdapter<Footpon> implements Filterable {
@@ -50,6 +51,33 @@ public class FootponAdapter extends ArrayAdapter<Footpon> implements Filterable 
             if (steps != null) {
                	steps.setText(String.valueOf(f.getStepsRequired()));
             }
+            
+    		ImageView newLogo = (ImageView) v.findViewById(R.id.ItemImage);
+    		
+    		if(f.getStoreName().equals("McDonald's"))
+    		{	
+    			newLogo.setImageResource(R.drawable.mcdonald);
+    		}
+    		
+    		else if(f.getStoreName().equals("Nintendo World Store"))
+    		{	
+    			newLogo.setImageResource(R.drawable.nintendo);
+    		}
+    		
+    		else if(f.getStoreName().equals("Wendy's"))
+    		{	
+    			newLogo.setImageResource(R.drawable.wendys);
+    		}
+    	
+    		else if(f.getStoreName().equals("Burger King"))
+    		{	
+    			newLogo.setImageResource(R.drawable.burgerking);
+    		}
+    		
+    		else
+    		{
+    			newLogo.setImageResource(R.drawable.mark);
+    		}
         }
         return v;
 	}
