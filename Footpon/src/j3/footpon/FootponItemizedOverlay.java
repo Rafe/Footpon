@@ -1,32 +1,16 @@
 package j3.footpon;
 
 import j3.footpon.model.Footpon;
-import j3.footpon.model.FootponService;
 import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.IFootponService;
 import j3.footpon.model.User;
-import j3.footpon.pedometer.StepService;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
-import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -92,8 +76,6 @@ public class FootponItemizedOverlay extends ItemizedOverlay<OverlayItem> {
 			SharedPreferences share = mContext.getSharedPreferences(User.SHARE_USER_INF_TAG, 0);
 			String username = share.getString(User.SHARE_USERNAME, "");
 
-			long steps = 0;
-			
 			if(username!=null){
 			
 				Intent i = new Intent(mContext, FootponDetailsActivity.class);

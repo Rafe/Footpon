@@ -1,7 +1,6 @@
 package j3.footpon;
 
 import j3.footpon.model.Footpon;
-import j3.footpon.model.FootponService;
 import j3.footpon.model.FootponServiceFactory;
 import j3.footpon.model.User;
 
@@ -27,7 +26,6 @@ public class FootponListActivity extends Activity {
 	ArrayList<Footpon> footpons = null;
 	FootponAdapter adapter;
 	String username;
-	ArrayList<Long> IDs = new ArrayList<Long>();
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -59,10 +57,6 @@ public class FootponListActivity extends Activity {
 		if(footpons != null) {
 			adapter = new FootponAdapter(this, R.layout.footpon_listitem, footpons);
 			
-			for(int i=0;i<footpons.size();i++) {
-				IDs.add(footpons.get(i).getID());
-				}
-			
 			listView = (ListView) findViewById(R.id.footponlist);
 			listView.setTextFilterEnabled(true);
 			listView.setAdapter(adapter);
@@ -78,8 +72,7 @@ public class FootponListActivity extends Activity {
 			
 	    	Intent i = new Intent(footponListActivity, FootponDetailsActivity.class);
 	    	Bundle bundle=new Bundle();
-	    	//bundle.putLong("id", id);
-	    	bundle.putLong("id", IDs.get(position));
+	    	bundle.putLong("id", footpons.get(position).getID());
 	    	//FootponServiceFactory.getService().redeemFootpon(username, footpons.get(position).getID());
 	    	//bundle.putBoolean("own",true);
 	    	i.putExtras(bundle);
