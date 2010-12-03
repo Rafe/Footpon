@@ -9,7 +9,7 @@ public interface IFootponService {
 	//return service instance, it's a singleton
 	public ArrayList<Footpon> getInstance();
 	public ArrayList<Footpon> getMyFootpons();
-	public boolean redeemFootpon(String userName,long footponId);
+	public boolean redeemFootpon(String userName,long footponID);
 	public boolean sync(int step);
 	public Footpon getFootponById(long id);
 	public Footpon getFootponByLocation(double longtitude,double latitude);

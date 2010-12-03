@@ -48,9 +48,10 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 	private StepService stepService;
 	private Footpon footpon = null;
 	
+	long _steps;
 	long _id;
 	String username;
-	
+	boolean own_coupon = false;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -63,18 +64,16 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 		//get footpon data by footpon id or location from intent
 		Intent i = getIntent();
 		Bundle bundle = i.getExtras();
+		own_coupon = bundle.getBoolean("own", true);
+		_steps = bundle.getLong("steps",0);
 		_id = bundle.getLong("id",0);
-		double _latitude = bundle.getDouble("latitude",0);
-		double _longitude = bundle.getDouble("longitude",0);
 		
 		SharedPreferences share = getSharedPreferences(User.SHARE_USER_INF_TAG, 0);
 		username = share.getString(User.SHARE_USERNAME, "");
 	    
 		if (_id != 0) {
-			footpon=FootponServiceFactory.getService().getMyFootpons(username, _id);
-		} else if (_latitude != 0 || _longitude != 0) {
-			footpon = service.getFootponByLocation(_latitude, _longitude);
-		} else{
+			footpon = service.getMyFootpons(username, _id);
+		}else{
 			Toast.makeText(this, "no footpon data", 1000);
 			return;
 		}
@@ -83,15 +82,23 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 		setView(footpon);
 		bindStepService();
 		
-		if(!footpon.getUsed()){
-			if(stepsEnough(StepService.steps,footpon)){
+		if(own_coupon) {
+			if(!footpon.getUsed()){
+				showUseButton();
+				showBarcodeView(footpon);
+				Log.e("log_tag", "show button: ");
+			}
+			else{
+				use.setVisibility(View.GONE);
+				showBarcodeView(footpon);
+			}
+		}
+		else {
+			if(stepsEnough(_steps, footpon)){
 				showRedeemButton();
 			}else{
 				showNotEnoughText();
 			}
-		}else{
-			use.setVisibility(View.GONE);
-			showBarcodeView(footpon);
 		}
 		
 		use.setOnCheckedChangeListener(new OnCheckedChangeListener(){
@@ -128,6 +135,11 @@ public class FootponDetailsActivity extends Activity implements StepDisplayer,St
 				"http://pdc-amd01.poly.edu/~jli15/footpon/barcode.php?upc=" +
 				fp.getCode()
 		);
+	}
+	
+	private void showUseButton() {
+		use.setText("Use it now");
+	//	code.setVisibility(View.VISIBLE);
 	}
 	
 	private void showNotEnoughText() {

@@ -44,7 +44,7 @@ public class FakeFootponService implements IFootponService {
 	}
 
 	@Override
-	public boolean redeemFootpon(String userName, long footponId) {
+	public boolean redeemFootpon(String userName, long footponID) {
 		// TODO Auto-generated method stub
 		return true;
 	}
