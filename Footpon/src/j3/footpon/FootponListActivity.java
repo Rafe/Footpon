@@ -71,9 +71,8 @@ public class FootponListActivity extends Activity {
 	    	Intent i = new Intent(footponListActivity, FootponDetailsActivity.class);
 	    	Bundle bundle=new Bundle();
 	    	bundle.putLong("id", footpons.get(position).getID());
-	    	boolean own = FootponServiceFactory.getService().redeemFootpon(username, footpons.get(position).getID());
-	    	bundle.putBoolean("own",own);
-	    	bundle.putBoolean("isRedeemed", own);
+	    	//FootponServiceFactory.getService().redeemFootpon(username, footpons.get(position).getID());
+	    	bundle.putBoolean("own",true);
 	    	i.putExtras(bundle);
 	    	startActivity(i);
 	    }
