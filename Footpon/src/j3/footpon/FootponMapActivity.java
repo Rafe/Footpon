@@ -186,19 +186,30 @@ public class FootponMapActivity extends MapActivity implements StepDisplayer, St
 		    	stopStepService();
 		    	return true;
 		    	
+		    case R.id.caloriesBurned:
+		    	caloriesBurned();
+		    	return true;
+		    	
 		    case R.id.takePicture:
 		    	takePicture();
 		    	return true;
+		    	
 		    default:
 		        return super.onOptionsItemSelected(item);
 	    }
 	}
-	
-    private void stopStepService() {
+
+	private void stopStepService() {
     	stopService(new Intent(FootponMapActivity.this,
                 StepService.class));
 	}
     
+    private void caloriesBurned() 
+    {
+    	Intent intent=new Intent(FootponMapActivity.this, CaloriesBurned.class);
+    	startActivityForResult(intent, 0);
+	}
+	
     public void takePicture()
     {
     	//Code modified from http://code.google.com/p/zxing/wiki/ScanningViaIntent

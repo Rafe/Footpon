@@ -4,6 +4,8 @@
   >
   <item android:id="@+id/stopService"
   		android:title="Stop"/>
+  <item android:id="@+id/caloriesBurned"
+  		android:title="Calories Burned"/>
   <item android:id="@+id/takePicture"
-  		android:title="Take picture"/>
+  		android:title="Take Picture"/>
 </menu>
