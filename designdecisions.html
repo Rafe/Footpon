@@ -1,0 +1,242 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>Footpon</title>
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="screen" />
+</head>
+<body>
+    <div id="wrapper">
+        <div id="page">
+            <div id="page-bgtop">
+                <div id="page-bgbtm">
+                    <div id="content">
+                        <div class="post">
+                            <h2 class="title">
+                                <a href="#">Design Decision</a></h2>
+                            <p class="meta">
+                            </p>
+                            <div style="clear: both;">
+                                &nbsp;</div>
+                            <div class="entry">
+                                <ol>
+                                    <li>Application interface</li>
+                                    <ol>
+                                        <li>Display map</li>
+                                        <ol>
+                                            <li>This is the main screen of the application.</li>
+                                            <li>This has been completed and shows the user's current area.</li></ol>
+                                        <li>Display marked locations on map</li>
+                                        <ol>
+                                            <li>This shows locations where there is an available coupon.</li>
+                                            <li>This has been completed and an icon is shown over the store.</li>
+                                        </ol>
+                                        <li>Display information on map</li><ol>
+                                            <li>A vague description will be shown after clicking an icon.</li>
+                                            <li>This has been completed as described above.</li></ol>
+                                        <li>Modify icon used for marked locations</li>
+                                        <ol>
+                                            <li>The original icon used was big and did not relate to the project.</li>
+                                            <li>A different icon was used for each marked location depending on the category of
+                                                the coupon.</li>
+                                        </ol>
+                                        <li>Display options for the user to perform different actions</li>
+                                        <ol>
+                                            <li>When the user presses the menu button on the device, the different actions available
+                                                will be shown.</li>
+                                            <li>This has been changed so that the frequently used actions are in tabs and the less
+                                                frequently used actions are in the menu because it was revealed that </li>
+                                            <li>the user might not know to use the menu button.</li>
+                                        </ol>
+                                    </ol>
+                                    <li>Database</li>
+                                    <ol>
+                                        <li>Create and populate database</li>
+                                        <ol>
+                                            <li>Create the necessary tables and associations to store all the necessary data used
+                                                by the application. Fill the database to test the application.</li>
+                                            <li>This has been completed as described above.</li>
+                                        </ol>
+                                        <li>Implement communication between application and database</li>
+                                        <li>Create database scripts and implement the code for communication on the application
+                                            side</li>
+                                        <ol>
+                                            <li>The application will contact the database script and complete the request.</li>
+                                            <li>This has been completed as described above.</li>
+                                        </ol>
+                                    </ol>
+                                    <li>Coupon</li>
+                                    <ol>
+                                        <li>List display</li>
+                                        <ol>
+                                            <li>Show a list of coupons in the area instead of using the map.</li>
+                                            <li>This has been completed as described above.</li>
+                                        </ol>
+                                        <li>Search list</li>
+                                        <ol>
+                                            <li>Allow the user to search the list.</li>
+                                            <li>This has been completed and the user is able to search by store name.</li>
+                                        </ol>
+                                        <li>Coupon display</li>
+                                        <ol>
+                                            <li>Display the coupon in a way that will be both presentable and readable to both users
+                                                and stores.</li>
+                                            <li>This has been completed as described.</li>
+                                        </ol>
+                                        <li>Show competitive coupons</li>
+                                        <ol>
+                                            <li>Walking into a store will reveal a coupon for that location and show competitive
+                                                coupons.</li>
+                                            <li>This has been removed since there is a list view for the user to view all coupons
+                                                in the area. The time saved was put in the UI design due to criticism</li>
+                                            <li>during the second prototype presentation.</li>
+                                        </ol>
+                                    </ol>
+                                    <li>Pedometer</li>
+                                    <ol>
+                                        <li>Create pedometer and record steps</li>
+                                        <ol>
+                                            <li>Moving with the device will record the amount of steps taken.</li>
+                                            <li>This has been completed as described above.</li>
+                                        </ol>
+                                        <li>Show calories burned</li>
+                                        <ol>
+                                            <li>Display the amount of calories burned based on the amount of current steps taken.</li>
+                                            <li>This has been completed as described above.</li>
+                                        </ol>
+                                    </ol>
+                                    <li>User accounts</li>
+                                    <ol>
+                                        <li>Create display for registering a new account</li>
+                                        <ol>
+                                            <li>This screen allows the user to create an account, contacts the script, and tells
+                                                the user whether it was successful.</li>
+                                            <li>This has been completed as described above.</li>
+                                        </ol>
+                                        <li>Create log in display</li>
+                                        <ol>
+                                            <li>This screen allows the user to enter their credentials, contacts the script, and
+                                                tell the user whether it was successful.</li>
+                                            <li>This has been completed as described above.</li>
+                                        </ol>
+                                        <li>Display user information</li>
+                                        <ol>
+                                            <li>This screen is shown after the user successfully logs in and they can view their
+                                                information and redeemed coupons.</li>
+                                            <li>This has been completed as described above.</li>
+                                        </ol>
+                                    </ol>
+                                    <li>Redeem coupon</li>
+                                    <ol>
+                                        <li>Implement method for redeeming coupon</li>
+                                        <ol>
+                                            <li>This allows the user to redeem a coupon. If it is successful the appropriate steps
+                                                will be deducted and the coupon will be added to the account.</li>
+                                            <li>This has been completed as described above.</li>
+                                        </ol>
+                                    </ol>
+                                    <li>Website</li>
+                                    <ol>
+                                        <li>Create website</li>
+                                        <ol>
+                                            <li>Create a website so that a user can check their account without using the application.</li>
+                                            <li>This has been completed as described above.</li>
+                                        </ol>
+                                        <li>Add change password</li>
+                                        <ol>
+                                            <li>Allow the user to change their password for their account.</li>
+                                            <li>This has been completed as described above.</li>
+                                        </ol>
+                                        <li>View and filter coupon record</li>
+                                        <ol>
+                                            <li>Allow the user to view their coupon record and filter through it by category and
+                                                whether it is used or not.</li>
+                                            <li>This has been completed as described above.</li>
+                                        </ol>
+                                        <li>Add text search</li>
+                                        <ol>
+                                            <li>Allow the user to search their coupon record by store name using text.</li>
+                                            <li>This has been completed as described above.</li>
+                                        </ol>
+                                    </ol>
+                                    <li>Bonus steps</li>
+                                    <ol>
+                                        <li>Integrate with outside service to gain more steps</li>
+                                        <ol>
+                                            <li>Use the Facebook/Foursquare api to allow users to check in and gain more steps.</li>
+                                            <li>This has been removed because it is not required for the prototype to operate properly.
+                                                The time saved was put in the UI design due to criticism during</li>
+                                            <li>the second prototype presentation.</li>
+                                        </ol>
+                                    </ol>
+                                    <li>GPS alternative</li>
+                                    <ol>
+                                        <li>Find an alternative to using GPS for getting current location</li>
+                                        <ol>
+                                            <li>Integrate the application with the ZXing library so that the it can take pictures
+                                                of QR codes to receive current location.</li>
+                                            <li>This has been completed as described above.</li>
+                                        </ol>
+                                    </ol>
+                                </ol>
+                            </div>
+                        </div>
+                        <div style="clear: both;">
+                            &nbsp;</div>
+                    </div>
+                    <!-- end #content -->
+                    <div id="sidebar">
+                        <div id="logo">
+                            <h1 style="font-size: 62px; display: table-cell; vertical-align: middle;">
+                                <a href="#" style="color: RGB(256,256,256); font-style: bold">
+                                    <img src="images/foot.png">Footpon</a></h1>
+                            <p style="font-style: bold">
+                                Foot + Coupon</p>
+                        </div>
+                        <div id="menu">
+                            <ul>
+                                <li class="current_page_item"><a href="home.html">About</a></li>
+                                <li><a href="accomplishments.html">Accomplishment</a></li>
+                                <li><a href="designdecisions.html">Design Decisions</a></li>
+                                <li><a href="worktobecompleted.html">Work to be Completed</a></li>
+                                <li><a href="deploymentplan.html">Deployment Plan</a></li>
+                                <li><a href="lessonslearned.html">Lessons Learned</a></li>
+                                <li><a href="media.html">Media</a></li>
+                                <li><a href="http://pdc-amd01.poly.edu/~jli15/footpon/home.php">Application Website</a></li>
+                            </ul>
+                        </div>
+                        <ul>
+                            <li>
+                                <h2>
+                                    About Us</h2>
+                                <p>
+                                    Created by <b>Team J<sup>3</sup></b>, In NYU Poly 2010 fall Mobile Application Programming
+                                    Class</p>
+                            </li>
+                            <li>
+                                <h2>
+                                    Members</h2>
+                                <ul>
+                                    <li>Jacky Li</li>
+                                    <li>Tang Jiang</li>
+                                    <li>Te-Chun Chao</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- end #sidebar -->
+                    <div style="clear: both;">
+                        &nbsp;</div>
+                </div>
+            </div>
+        </div>
+        <!-- end #page -->
+    </div>
+    <div id="footer">
+        <p>
+            Copyright (c) 2008 Sitename.com. All rights reserved. Design by <a href="http://www.freecsstemplates.org/">
+                CSS Templates</a>.</p>
+    </div>
+    <!-- end #footer -->
+</body>
+</html>
