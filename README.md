@@ -6,7 +6,7 @@ It works as a pedometer, counting user's walking distance and reward user for co
 Base on the amount of steps taken and user location,
 A user can get the coupon near the place he have been arounds.
 
-Read our [Pitch Persentation](http://rafe.github.com/Footpon/Pitch.pdf) for the initial idea. 
+Read our [Pitch Persentation](http://rafe.github.com/Footpon/pitch.pdf) for the initial idea. 
 
 
 ##Packages and directory:
@@ -21,6 +21,6 @@ Read our [Pitch Persentation](http://rafe.github.com/Footpon/Pitch.pdf) for the 
 
 presented by team J3
 
-[Jimmy Chao](http://github.com/Rafe)
-Jacky Li
-Tang Jiang
+[Jimmy Chao](http://github.com/Rafe)  
+Jacky Li  
+Tang Jiang  
